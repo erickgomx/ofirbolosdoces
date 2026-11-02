@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ofir Bolos & Doces | Atelier de Confeitaria em Praia de Pipa</title>
+  <meta name="description" content="Monte seu bolo artesanal exclusivo na Ofir Doceria em Praia de Pipa. Escolha o aro, massa e recheio perfeito.">
+
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Modern Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="atelier-header">
+    <div class="header-inner">
+      <a href="#" class="brand-logo">
+        <span class="brand-title">Ofir</span>
+        <span class="brand-subtitle">Doces & Bolos</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#galeria" class="nav-item">Galeria</a>
+        <a href="#politicas" class="nav-item" id="open-policies-btn">Políticas</a>
+        <a href="#sobre" class="nav-item" id="open-about-btn">Sobre</a>
+        <a href="#monte-seu-bolo" class="nav-item active">Monte Seu Bolo</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://wa.me/5584994114341" target="_blank" rel="noopener noreferrer" class="whatsapp-quick-link" title="Falar com Lucieda no WhatsApp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>(84) 99411-4341</span>
+        </a>
+        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Experience Stage -->
+  <main class="experience-stage" id="monte-seu-bolo">
+    <div class="stage-container">
+
+      <!-- LEFT COLUMN: Customizer Controls -->
+      <section class="customizer-panel card-glass" aria-label="Personalização do bolo">
+        
+        <!-- 01. DIMENSÕES -->
+        <div class="panel-section" id="section-dimensoes">
+          <div class="section-header">
+            <span class="section-tag">01. DIMENSÕES</span>
+            <div class="stepper-controls">
+              <button class="step-btn" id="dim-prev" aria-label="Diminuir tamanho">−</button>
+              <button class="step-btn" id="dim-next" aria-label="Aumentar tamanho">+</button>
+            </div>
+          </div>
+
+          <div class="dimensions-slider-wrapper">
+            <div class="dimension-current-display">
+              <div class="dim-name-group">
+                <strong id="dim-label-name">ARO 20</strong>
+                <span class="dim-servings" id="dim-servings-text">(20-25 fatias)</span>
+              </div>
+              <span class="dim-diameter" id="dim-diameter-text">20 cm</span>
+            </div>
+
+            <!-- Custom Slider -->
+            <div class="slider-track-container">
+              <input type="range" id="dimensions-range" min="0" max="5" step="1" value="2" aria-label="Selecione o tamanho do bolo">
+              <div class="slider-ticks">
+                <span class="tick" data-index="0">10</span>
+                <span class="tick" data-index="1">15</span>
+                <span class="tick active" data-index="2">20</span>
+                <span class="tick" data-index="3">25</span>
+                <span class="tick" data-index="4">28</span>
+                <span class="tick" data-index="5">30</span>
+              </div>
+            </div>
+
+            <!-- Fast Pill Selector -->
+            <div class="size-pills-row">
+              <button class="size-pill" data-index="0">ARO 10 <small>R$70</small></button>
+              <button class="size-pill" data-index="1">ARO 15 <small>R$135</small></button>
+              <button class="size-pill active" data-index="2">ARO 20 <small>R$195</small></button>
+              <button class="size-pill" data-index="3">ARO 25 <small>R$285</small></button>
+              <button class="size-pill" data-index="4">ARO 28 <small>R$365</small></button>
+              <button class="size-pill" data-index="5">ARO 30 <small>R$410</small></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02. A MASSA -->
+        <div class="panel-section" id="section-massa">
+          <div class="section-header">
+            <span class="section-tag">02. A MASSA</span>
+            <div class="section-info-badge">2 opções artesanais</div>
+          </div>
+
+          <div class="massa-options-grid">
+            <label class="massa-card active" data-massa="branco">
+              <input type="radio" name="cake-massa" value="branco" checked>
+              <div class="massa-swatch swatch-branco">
+                <span class="swatch-texture"></span>
+              </div>
+              <span class="massa-title">Branco (ovos)</span>
+              <span class="massa-sub">Massa fofa & amanteigada</span>
+            </label>
+
+            <label class="massa-card" data-massa="chocolate">
+              <input type="radio" name="cake-massa" value="chocolate">
+              <div class="massa-swatch swatch-chocolate">
+                <span class="swatch-texture"></span>
+              </div>
+              <span class="massa-title">Chocolate</span>
+              <span class="massa-sub">Cacau nobre aveludado</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 03. O RECHEIO -->
+        <div class="panel-section" id="section-recheio">
+          <div class="section-header">
+            <span class="section-tag">03. O RECHEIO</span>
+            <span class="section-info-badge">7 sabores exclusivos</span>
+          </div>
+
+          <div class="recheio-list" role="radiogroup" aria-label="Escolha do Recheio">
+            
+            <label class="recheio-item">
+              <input type="radio" name="cake-recheio" value="morango">
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-morango">🍓</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Morango</span>
+                <span class="recheio-desc">Geleia artesanal de morangos selecionados</span>
+              </div>
+            </label>
+
+            <label class="recheio-item">
+              <input type="radio" name="cake-recheio" value="ninho">
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-ninho">🥛</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Ninho</span>
+                <span class="recheio-desc">Brigadeiro cremoso de puro Leite Ninho</span>
+              </div>
+            </label>
+
+            <label class="recheio-item">
+              <input type="radio" name="cake-recheio" value="chocolate">
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-chocolate">🍫</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Chocolate</span>
+                <span class="recheio-desc">Ganache encorpada de chocolate meio amargo</span>
+              </div>
+            </label>
+
+            <label class="recheio-item active">
+              <input type="radio" name="cake-recheio" value="avela" checked>
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-avela">🌰</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Avelã</span>
+                <span class="recheio-desc">Creme gianduja com pedacinhos crocantes</span>
+              </div>
+            </label>
+
+            <label class="recheio-item">
+              <input type="radio" name="cake-recheio" value="coco">
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-coco">🥥</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Côco</span>
+                <span class="recheio-desc">Beijinho suave com lascas de coco fresco</span>
+              </div>
+            </label>
+
+            <label class="recheio-item">
+              <input type="radio" name="cake-recheio" value="maracuja">
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-maracuja">🌟</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Maracujá</span>
+                <span class="recheio-desc">Creme aveludado com redução de maracujá</span>
+              </div>
+            </label>
+
+            <label class="recheio-item">
+              <input type="radio" name="cake-recheio" value="abacaxi">
+              <span class="recheio-indicator"></span>
+              <span class="recheio-avatar recheio-icon-abacaxi">🍍</span>
+              <div class="recheio-info">
+                <span class="recheio-name">Abacaxi</span>
+                <span class="recheio-desc">Compota dourada artesanal com toque cítrico</span>
+              </div>
+            </label>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- CENTER: Interactive 3D Cake Showcase -->
+      <section class="cake-showcase-stage" aria-label="Visualização em tempo real do bolo">
+        <div class="cake-view-container" id="cake-interactive-box">
+          
+          <!-- Atmospheric lighting & shadows -->
+          <div class="ambient-glow"></div>
+          <div class="table-shadow"></div>
+
+          <!-- Interactive Annotation Guide Lines (Desktop) -->
+          <div class="annotation-guides" aria-hidden="true">
+            <!-- Line 1: Cobertura / Topo -->
+            <div class="guide-line line-top">
+              <span class="guide-dot dot-left"></span>
+              <span class="guide-path"></span>
+              <span class="guide-dot dot-target"></span>
+              <span class="guide-label">Acabamento com Frutas & Dourado</span>
+            </div>
+
+            <!-- Line 2: Recheio -->
+            <div class="guide-line line-filling">
+              <span class="guide-dot dot-left"></span>
+              <span class="guide-badge-x">✕</span>
+              <span class="guide-path"></span>
+              <span class="guide-dot dot-target ring-pulse"></span>
+              <span class="guide-label" id="guide-label-recheio">Recheio: Avelã</span>
+            </div>
+
+            <!-- Line 3: Massa -->
+            <div class="guide-line line-sponge">
+              <span class="guide-dot dot-left"></span>
+              <span class="guide-path"></span>
+              <span class="guide-dot dot-target"></span>
+              <span class="guide-label" id="guide-label-massa">Massa: Branco (ovos)</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Cake Visualizer Component -->
+          <div class="cake-stand-rig" id="cake-rig">
+            
+            <!-- CAKE COMPONENT (Dynamic Layers) -->
+            <div class="cake-model cut-view" id="cake-model">
+              
+              <!-- Topper / Fruits Garnish Layer on Top -->
+              <div class="cake-toppers" id="cake-toppers">
+                <div class="garnish-physalis garnish-1"></div>
+                <div class="garnish-berry garnish-2"></div>
+                <div class="garnish-hazelnut garnish-3"></div>
+                <div class="garnish-raspberry garnish-4"></div>
+                <div class="gold-leaf-flakes"></div>
+              </div>
+
+              <!-- Top Surface / Frosting Swirl -->
+              <div class="cake-top-surface">
+                <div class="frosting-swirls"></div>
+                <!-- Cut slice opening wedge on top -->
+                <div class="top-cut-wedge"></div>
+              </div>
+
+              <!-- Cylinder Outer Wall (Chantininho aveludado) -->
+              <div class="cake-outer-wall">
+                <div class="cake-texture-grain"></div>
+              </div>
+
+              <!-- Internal Cutaway Cross-Section (Visible when cut view is active) -->
+              <div class="cake-cross-section" id="cross-section">
+                <!-- Inner Slice Layers -->
+                <div class="slice-wall slice-left">
+                  <!-- Sponge 1 (Top) -->
+                  <div class="layer sponge-layer sponge-top">
+                    <span class="sponge-texture"></span>
+                  </div>
+                  <!-- Filling 1 -->
+                  <div class="layer filling-layer filling-top">
+                    <span class="filling-texture"></span>
+                    <span class="filling-garnishes"></span>
+                  </div>
+                  <!-- Sponge 2 (Middle) -->
+                  <div class="layer sponge-layer sponge-mid">
+                    <span class="sponge-texture"></span>
+                  </div>
+                  <!-- Filling 2 -->
+                  <div class="layer filling-layer filling-bottom">
+                    <span class="filling-texture"></span>
+                    <span class="filling-garnishes"></span>
+                  </div>
+                  <!-- Sponge 3 (Base) -->
+                  <div class="layer sponge-layer sponge-base">
+                    <span class="sponge-texture"></span>
+                  </div>
+                </div>
+
+                <!-- Right Wall of the Cut Wedge -->
+                <div class="slice-wall slice-right">
+                  <div class="layer sponge-layer sponge-top"></div>
+                  <div class="layer filling-layer filling-top"></div>
+                  <div class="layer sponge-layer sponge-mid"></div>
+                  <div class="layer filling-layer filling-bottom"></div>
+                  <div class="layer sponge-layer sponge-base"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pedestal Stand (Luxury Brass + Marble Base Plate) -->
+            <div class="pedestal-stand">
+              <div class="marble-plate">
+                <div class="marble-rim"></div>
+              </div>
+              <div class="brass-stem">
+                <div class="stem-flare-top"></div>
+                <div class="stem-body"></div>
+                <div class="stem-base"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Floating Interactive Pill Buttons -->
+          <div class="floating-view-actions">
+            <button class="view-action-pill" id="btn-rotate-3d">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+              <span>Girar 3D</span>
+            </button>
+
+            <button class="view-action-pill active" id="btn-toggle-slice">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l10 6-10 6L2 8l10-6z"/>
+                <path d="M2 14l10 6 10-6"/>
+              </svg>
+              <span id="slice-toggle-text">Ver Fatia</span>
+            </button>
+          </div>
+
+          <!-- Interaction Hint -->
+          <div class="interaction-hint">
+            Arraste para girar a perspectiva do bolo
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Creation Summary & Checkout -->
+      <section class="creation-summary-panel card-glass" aria-label="Resumo da sua criação">
+        
+        <div class="summary-header">
+          <h2 class="summary-title">SUA CRIAÇÃO</h2>
+          <span class="atelier-tag">Atelier Pipa</span>
+        </div>
+
+        <!-- Sensory Gauges -->
+        <div class="sensory-metrics">
+          <div class="metric-item">
+            <div class="metric-info">
+              <span class="metric-name">Equilíbrio de Sabores</span>
+              <span class="metric-val" id="metric-equilibrio-val">94%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill gold-gradient" id="metric-equilibrio-fill" style="width: 94%;"></div>
+            </div>
+          </div>
+
+          <div class="metric-item">
+            <div class="metric-info">
+              <span class="metric-name">Complexidade</span>
+              <span class="metric-val" id="metric-complex-val">82%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill dark-gradient" id="metric-complex-fill" style="width: 82%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Specifications List -->
+        <div class="creation-specs">
+          <div class="spec-row">
+            <span class="spec-label">Dimensão:</span>
+            <strong class="spec-value" id="summary-aro">ARO 20 (20-25 fatias)</strong>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Massa:</span>
+            <strong class="spec-value" id="summary-massa">Branco (ovos)</strong>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Recheio:</span>
+            <strong class="spec-value" id="summary-recheio">Avelã com crocante</strong>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Topo do Bolo:</span>
+            <div class="topper-choice-wrap">
+              <select id="topper-select" class="topper-dropdown" aria-label="Escolha do Topo de Bolo">
+                <option value="simples">Simples (Incluso)</option>
+                <option value="3d">Especial 3D (+ R$ 35,00)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Luxury Quality Seals (Vintage Scalloped Gold Emblems) -->
+        <div class="quality-badges-row">
+          <div class="seal-badge seal-gold">
+            <div class="seal-inner">
+              <span class="seal-icon">✦</span>
+              <span class="seal-text">Sabor<br>Assinado</span>
+            </div>
+          </div>
+
+          <div class="seal-badge seal-bronze">
+            <div class="seal-inner">
+              <span class="seal-icon">❊</span>
+              <span class="seal-text">Textura<br>Perfeita</span>
+            </div>
+          </div>
+
+          <div class="seal-badge seal-pipa">
+            <div class="seal-inner">
+              <span class="seal-icon">🌊</span>
+              <span class="seal-text">Praia de<br>Pipa / RN</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Policy Warning Reminder -->
+        <div class="policy-reminder-card" id="card-policy-shortcut">
+          <div class="policy-reminder-icon">ℹ</div>
+          <div class="policy-reminder-content">
+            <p><strong>Antecedência mínima de 10 dias.</strong> Retirada em Praia de Pipa. Sinal de 50% para confirmação.</p>
+            <button type="button" class="text-link-btn" id="open-policy-modal-inline">Ver políticas completas</button>
+          </div>
+        </div>
+
+        <!-- Price Section -->
+        <div class="price-checkout-block">
+          <div class="price-display-wrapper">
+            <span class="price-currency">R$</span>
+            <span class="price-amount" id="final-price-value">195,00</span>
+          </div>
+          <div class="deposit-note" id="deposit-note-text">
+            Sinal de 50%: <strong>R$ 97,50</strong> (restante na entrega)
+          </div>
+
+          <!-- Primary CTA Button -->
+          <button class="primary-cta-btn" id="btn-concluir-criacao">
+            <span>Concluir Criação</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL: Encomenda & Finalização (WhatsApp) -->
+  <div class="modal-overlay" id="checkout-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-checkout-modal" aria-label="Fechar">✕</button>
+      
+      <div class="modal-header">
+        <span class="modal-pretitle">Quase lá!</span>
+        <h3 class="modal-title">Finalizar Encomenda no WhatsApp</h3>
+        <p class="modal-desc">Confirme os detalhes do seu bolo e envie a mensagem pré-formatada diretamente para a <strong>Lucieda</strong>.</p>
+      </div>
+
+      <div class="modal-summary-box">
+        <div class="modal-sum-row">
+          <span>Tamanho:</span>
+          <strong id="modal-sum-size">ARO 20 (20-25 fatias)</strong>
+        </div>
+        <div class="modal-sum-row">
+          <span>Massa:</span>
+          <strong id="modal-sum-massa">Branco (ovos)</strong>
+        </div>
+        <div class="modal-sum-row">
+          <span>Recheio:</span>
+          <strong id="modal-sum-recheio">Avelã</strong>
+        </div>
+        <div class="modal-sum-row">
+          <span>Topo:</span>
+          <strong id="modal-sum-topo">Simples (Incluso)</strong>
+        </div>
+        <div class="modal-sum-divider"></div>
+        <div class="modal-sum-row total">
+          <span>Valor Total:</span>
+          <strong id="modal-sum-total">R$ 195,00</strong>
+        </div>
+        <div class="modal-sum-row deposit">
+          <span>Sinal 50% (PIX / Mercado Pago):</span>
+          <strong id="modal-sum-deposit">R$ 97,50</strong>
+        </div>
+      </div>
+
+      <div class="modal-inputs">
+        <div class="input-group">
+          <label for="customer-name">Seu Nome Completo:</label>
+          <input type="text" id="customer-name" placeholder="Ex: Maria Clara" required>
+        </div>
+        <div class="input-group">
+          <label for="pickup-date">Data Desejada para Retirada (mín. 10 dias):</label>
+          <input type="date" id="pickup-date" required>
+          <small class="input-hint" id="date-helper-text">Agendamento com antecedência de segurança.</small>
+        </div>
+        <div class="input-group">
+          <label for="order-notes">Observações ou Tema do Topo (opcional):</label>
+          <textarea id="order-notes" rows="2" placeholder="Ex: Topo com nome 'Lucas 30 anos', cores douradas..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-policy-agree">
+        <label class="custom-checkbox">
+          <input type="checkbox" id="agree-policy-check" checked>
+          <span class="checkmark"></span>
+          <span class="checkbox-label">Estou ciente das políticas de antecedência de 10 dias e retirada em Praia de Pipa.</span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="whatsapp-send-btn" id="btn-send-whatsapp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/>
+          </svg>
+          <span>Enviar Pedido para Lucieda</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: Política de Encomendas Ofir Doceria -->
+  <div class="modal-overlay" id="policy-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card policy-card-modal">
+      <button class="modal-close-btn" id="close-policy-modal" aria-label="Fechar">✕</button>
+
+      <div class="modal-header">
+        <span class="modal-pretitle">Transparência & Qualidade</span>
+        <h3 class="modal-title">Política de Encomendas Ofir Doceria</h3>
+        <p class="modal-desc">Para garantir um produto artesanal impecável e a melhor experiência para a sua comemoração:</p>
+      </div>
+
+      <div class="policy-items-grid">
+        <div class="policy-item-box">
+          <div class="policy-number">01</div>
+          <div class="policy-text">
+            <strong>Antecedência Mínima de 10 Dias</strong>
+            <p>Faça seu pedido com no mínimo <em>10 dias de antecedência</em>. Assim garantimos os melhores ingredientes frescos e reserva na nossa agenda.</p>
+          </div>
+        </div>
+
+        <div class="policy-item-box">
+          <div class="policy-number">02</div>
+          <div class="policy-text">
+            <strong>Confirmação com Sinal de 50%</strong>
+            <p>Encomenda confirmada apenas após pagamento de 50% de sinal via PIX ou Mercado Pago. O restante é quitado no momento da entrega/retirada.</p>
+          </div>
+        </div>
+
+        <div class="policy-item-box">
+          <div class="policy-number">03</div>
+          <div class="policy-text">
+            <strong>Topo de Bolo Simples Incluso</strong>
+            <p>O preço já inclui o topo de bolo simples de alta qualidade. Topos especiais 3D ou personalizados possuem acréscimo proporcional.</p>
+          </div>
+        </div>
+
+        <div class="policy-item-box">
+          <div class="policy-number">04</div>
+          <div class="policy-text">
+            <strong>Alterações até 7 Dias Antes</strong>
+            <p>Alteração de sabor, recheio ou tamanho permitida com até 7 dias de antecedência da data agendada. Após esse prazo, os insumos já foram processados.</p>
+          </div>
+        </div>
+
+        <div class="policy-item-box">
+          <div class="policy-number">05</div>
+          <div class="policy-text">
+            <strong>Retiradas em Praia de Pipa</strong>
+            <p>Não trabalhamos com serviço de delivery. Todas as encomendas são retiradas presencialmente em nosso atelier em Praia de Pipa / RN.</p>
+          </div>
+        </div>
+
+        <div class="policy-item-box">
+          <div class="policy-number">06</div>
+          <div class="policy-text">
+            <strong>Atendimento Direto com Lucieda</strong>
+            <p>Dúvidas, pedidos corporativos ou combinações especiais? Fale diretamente com a Lucieda pelo telefone/WhatsApp: <strong>(84) 99411-4341</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer-policy">
+        <a href="https://wa.me/5584994114341?text=Ol%C3%A1%20Lucieda!%20Li%20as%20pol%C3%ADticas%20da%20Ofir%20Doceria%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida." target="_blank" rel="noopener noreferrer" class="whatsapp-pill-btn">
+          <span>Conversar com Lucieda no WhatsApp</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: Sobre / Atelier -->
+  <div class="modal-overlay" id="about-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card about-card-modal">
+      <button class="modal-close-btn" id="close-about-modal" aria-label="Fechar">✕</button>
+
+      <div class="modal-header">
+        <span class="modal-pretitle">Confeitaria Afetiva</span>
+        <h3 class="modal-title">Ofir Bolos & Doces</h3>
+        <p class="modal-desc">Nascida nas belezas de <strong>Praia de Pipa</strong>, a Ofir Doceria combina a precisão da alta pâtisserie com o carinho e o afeto das receitas artesanais.</p>
+      </div>
+
+      <div class="about-content">
+        <p>Cada bolo é produzido sob encomenda com ovos frescos, chocolates nobres e reduções naturais de frutas regionais e clássicas. Sob o cuidado minucioso de <strong>Lucieda</strong>, transformamos celebrações em memórias inesquecíveis.</p>
+        <div class="about-badges">
+          <span>🍰 Insumos Nobres</span>
+          <span>🌊 Praia de Pipa - RN</span>
+          <span>✨ 100% Artesanal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
