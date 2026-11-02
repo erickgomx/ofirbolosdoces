@@ -209,50 +209,26 @@
 
       </section>
 
-      <!-- CENTER: Interactive Real 3D Cake Showcase (Three.js WebGL) -->
-      <section class="cake-showcase-stage" aria-label="Visualização 3D em tempo real do bolo">
+      <!-- CENTER: Real High-Definition Cake Showcase -->
+      <section class="cake-showcase-stage" aria-label="Visualização fotográfica do bolo">
         <div class="cake-view-container" id="cake-interactive-box">
           
-          <!-- WebGL Three.js Canvas Container -->
-          <div class="webgl-canvas-container" id="webgl-container">
-            <canvas id="cake-3d-canvas"></canvas>
-          </div>
+          <!-- Atmospheric ambient glow & contact shadow -->
+          <div class="ambient-glow"></div>
+          <div class="table-shadow"></div>
 
-          <!-- Interactive Annotation Guide Lines (Desktop) -->
-          <div class="annotation-guides" aria-hidden="true">
-            <!-- Line 1: Cobertura / Topo -->
-            <div class="guide-line line-top">
-              <span class="guide-dot dot-left"></span>
-              <span class="guide-path"></span>
-              <span class="guide-dot dot-target"></span>
-              <span class="guide-label">Acabamento com Frutas & Dourado</span>
-            </div>
-
-            <!-- Line 2: Recheio -->
-            <div class="guide-line line-filling">
-              <span class="guide-dot dot-left"></span>
-              <span class="guide-badge-x">✕</span>
-              <span class="guide-path"></span>
-              <span class="guide-dot dot-target ring-pulse"></span>
-              <span class="guide-label" id="guide-label-recheio">Recheio: Avelã</span>
-            </div>
-
-            <!-- Line 3: Massa -->
-            <div class="guide-line line-sponge">
-              <span class="guide-dot dot-left"></span>
-              <span class="guide-path"></span>
-              <span class="guide-dot dot-target"></span>
-              <span class="guide-label" id="guide-label-massa">Massa: Branco (ovos)</span>
-            </div>
+          <!-- Real Cinematic Cake Stage Image -->
+          <div class="real-cake-wrapper" id="real-cake-wrapper">
+            <img src="assets/stage_branco.png" alt="Bolo Artesanal Ofir" id="main-cake-img" class="real-cake-image">
           </div>
 
           <!-- Floating Interactive Pill Buttons -->
           <div class="floating-view-actions">
-            <button class="view-action-pill" id="btn-rotate-3d" title="Alternar rotação 360°">
+            <button class="view-action-pill" id="btn-rotate-3d" title="Alternar visão / perspectiva suave">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
               </svg>
-              <span>Girar 3D</span>
+              <span id="rotate-btn-text">Girar Perspectiva</span>
             </button>
 
             <button class="view-action-pill active" id="btn-toggle-slice" title="Alternar fatia aberta / bolo inteiro">
@@ -266,7 +242,7 @@
 
           <!-- Interaction Hint -->
           <div class="interaction-hint">
-            <span class="hint-icon">↺</span> Arraste com o mouse para girar o bolo em 3D
+            <span class="hint-icon">✦</span> Mova o cursor sobre o bolo para inclinação tridimensional suave
           </div>
 
         </div>
@@ -553,10 +529,6 @@
     </div>
   </div>
 
-  <!-- Three.js 3D Engine & OrbitControls -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
