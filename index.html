@@ -209,7 +209,7 @@
 
       </section>
 
-      <!-- CENTER: Real High-Definition Cake Showcase -->
+      <!-- CENTER: Real High-Definition Layered Cake Showcase -->
       <section class="cake-showcase-stage" aria-label="Visualização fotográfica do bolo">
         <div class="cake-view-container" id="cake-interactive-box">
           
@@ -217,9 +217,19 @@
           <div class="ambient-glow"></div>
           <div class="table-shadow"></div>
 
-          <!-- Real Cinematic Cake Stage Image -->
+          <!-- Real Multi-Layer Cake Assembly -->
           <div class="real-cake-wrapper" id="real-cake-wrapper">
-            <img src="assets/stage_branco.png" alt="Bolo Artesanal Ofir" id="main-cake-img" class="real-cake-image">
+            <!-- 1. Pedestal Stand Base -->
+            <img src="assets/base.png" alt="Base do Bolo" id="layer-base" class="cake-layer layer-base">
+            
+            <!-- 2. Whole Cake (for "Bolo Inteiro" mode) -->
+            <img src="assets/bolo_completo.png" alt="Bolo Completo" id="layer-completo" class="cake-layer layer-completo">
+
+            <!-- 3. Cut Cake Body (for "Ver Fatia" mode) -->
+            <img src="assets/bolo_cortado_branco.png" alt="Bolo Cortado" id="layer-cortado" class="cake-layer layer-cortado active">
+
+            <!-- 4. Separate Slice Layer (slides/pulls out smoothly) -->
+            <img src="assets/fatia_branco.png" alt="Fatia do Bolo" id="layer-fatia" class="cake-layer layer-fatia active">
           </div>
 
           <!-- Floating Interactive Pill Buttons -->

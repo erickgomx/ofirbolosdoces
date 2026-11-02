@@ -1,6 +1,6 @@
 /**
  * OFIR BOLOS & DOCES - ATELIER EM PRAIA DE PIPA
- * Real High-Resolution Photorealistic Cake Engine & Interactive Customizer
+ * Real High-Resolution Photorealistic Multi-Layer Cake Engine & Interactive Customizer
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,12 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     'branco': {
       name: 'Branco (ovos)',
       desc: 'Massa amanteigada fofa e delicada',
-      image: 'assets/stage_branco.png'
+      cortado: 'assets/bolo_cortado_branco.png',
+      fatia: 'assets/fatia_branco.png'
     },
     'chocolate': {
       name: 'Chocolate',
       desc: 'Cacau nobre aveludado e intenso',
-      image: 'assets/stage_chocolate.png'
+      cortado: 'assets/bolo_cortado_chocolate.png',
+      fatia: 'assets/fatia_chocolate.png'
     }
   };
 
@@ -55,7 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- DOM ELEMENTS ---
   const cakeInteractiveBox = document.getElementById('cake-interactive-box');
   const realCakeWrapper = document.getElementById('real-cake-wrapper');
-  const mainCakeImg = document.getElementById('main-cake-img');
+  
+  // Layer Elements
+  const layerBase = document.getElementById('layer-base');
+  const layerCompleto = document.getElementById('layer-completo');
+  const layerCortado = document.getElementById('layer-cortado');
+  const layerFatia = document.getElementById('layer-fatia');
 
   const dimRange = document.getElementById('dimensions-range');
   const dimPrevBtn = document.getElementById('dim-prev');
@@ -124,36 +131,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initPickupDateConstraint();
 
-  // --- UPDATE APP UI & REAL CAKE IMAGE ---
+  // --- UPDATE APP UI & CAKE LAYERS ---
   function updateApp() {
     const currentSize = SIZES[state.sizeIndex];
     const currentMassa = MASSAS[state.massa];
     const currentRecheio = RECHEIOS[state.recheio];
     const currentTopper = TOPPERS[state.topper];
 
-    // 1. Determine Correct Real Photograph Asset
-    let targetSrc = '';
-    if (!state.cutView) {
-      // Whole closed cake
-      targetSrc = 'assets/stage_whole.png';
-    } else {
-      // Cutaway slice view by selected massa
-      targetSrc = currentMassa.image;
+    // 1. Update Layer Images based on selected Massa
+    if (layerCortado.getAttribute('src') !== currentMassa.cortado) {
+      layerCortado.src = currentMassa.cortado;
+    }
+    if (layerFatia.getAttribute('src') !== currentMassa.fatia) {
+      layerFatia.src = currentMassa.fatia;
     }
 
-    // Smooth subtle crossfade if image changed
-    if (mainCakeImg.getAttribute('src') !== targetSrc) {
-      mainCakeImg.style.opacity = '0.75';
-      mainCakeImg.src = targetSrc;
-      setTimeout(() => {
-        mainCakeImg.style.opacity = '1';
-      }, 150);
+    // 2. Toggle Layers based on Slice vs Whole Cake
+    if (state.cutView) {
+      // Cut View: Display cake body with cutaway + animated separate slice
+      layerCompleto.classList.remove('active');
+      layerCortado.classList.add('active');
+      layerFatia.classList.add('active');
+    } else {
+      // Whole Cake View: Display complete uncut cake, hide cut and slice
+      layerCompleto.classList.add('active');
+      layerCortado.classList.remove('active');
+      layerFatia.classList.remove('active');
     }
 
     // Smoothly scale cake according to selected size
     realCakeWrapper.style.transform = `scale(${currentSize.scale})`;
 
-    // 2. Slider & Controls
+    // 3. Slider & Controls
     dimRange.value = state.sizeIndex;
     dimLabelName.textContent = currentSize.name;
     dimServingsText.textContent = currentSize.slices;
@@ -169,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
       pill.classList.toggle('active', idx === state.sizeIndex);
     });
 
-    // 3. Massa Cards
+    // 4. Massa Cards
     massaCards.forEach(card => {
       const isSel = (card.dataset.massa === state.massa);
       card.classList.toggle('active', isSel);
@@ -177,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (radio) radio.checked = isSel;
     });
 
-    // 4. Recheio Items
+    // 5. Recheio Items
     recheioItems.forEach(item => {
       const radio = item.querySelector('input[type="radio"]');
       const isSel = (radio && radio.value === state.recheio);
@@ -185,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (radio) radio.checked = isSel;
     });
 
-    // 5. Summary & Sensory Metrics
+    // 6. Summary & Sensory Metrics
     summaryAro.textContent = `${currentSize.name} ${currentSize.slices}`;
     summaryMassa.textContent = currentMassa.name;
     summaryRecheio.textContent = currentRecheio.name;
@@ -195,14 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
     metricComplexVal.textContent = `${currentRecheio.comp}%`;
     metricComplexFill.style.width = `${currentRecheio.comp}%`;
 
-    // 6. Pricing Calculation
+    // 7. Pricing Calculation
     const totalPrice = currentSize.price + currentTopper.extra;
     const depositPrice = totalPrice / 2;
 
     finalPriceValue.textContent = totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     depositNoteText.innerHTML = `Sinal de 50%: <strong>R$ ${depositPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong> (restante na entrega)`;
 
-    // 7. Toggle Slice Button State
+    // 8. Toggle Slice Button State
     btnToggleSlice.classList.toggle('active', state.cutView);
     sliceToggleText.textContent = state.cutView ? 'Ver Fatia' : 'Bolo Inteiro';
   }
@@ -429,6 +438,6 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     window.open(`https://wa.me/5584987723897?text=${encodedMessage}`, '_blank');
   });
 
-  // Initial call
+  // Initial render
   updateApp();
 });

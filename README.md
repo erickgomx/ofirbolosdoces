@@ -16,10 +16,12 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
     - `ARO 30` — R$ 410 (50-55 fatias)
   - **Massas Nobres:** Amostras visuais dinâmicas de *Branco (ovos)* e *Chocolate*.
   - **Recheios Exclusivos:** 7 sabores artesanais (*Morango, Ninho, Chocolate, Avelã, Côco, Maracujá e Abacaxi*).
-  - **Visualizador 3D com Fatia (Cutaway):**
-    - Atualização em tempo real das camadas internas (massa e recheio) de acordo com a seleção.
-    - Controles interativos: rotação 3D contínua, inclinação ao arrastar o mouse e alternância entre *Ver Fatia* e *Bolo Inteiro*.
-    - Linhas-guia elegantes com ponteiros para as camadas do bolo.
+  - **Montagem em Camadas Transparentes (PNG sem fundo):**
+    - **Base:** Pedestal artesanal em mármore e latão dourado.
+    - **Bolo Completo:** Visão integral e fechada do bolo.
+    - **Bolo Cortado & Fatia:** Camadas independentes com animação suave de destaque da fatia (*cutaway pull-out*) ao alternar entre *Ver Fatia* e *Bolo Inteiro*.
+    - **Massa Dinâmica:** Alternância imediata entre *Massa Branca (ovos)* e *Chocolate*.
+    - **Parallax 3D Suave:** Inclinação tridimensional sutil ao mover o mouse.
   - **Cálculo de Harmonia & Métricas Sensoriais:**
     - Indicador de *Equilíbrio de Sabores* e *Complexidade*.
     - Escolha de *Topo Simples (Incluso)* ou *Topo Especial 3D (+ R$ 35,00)*.
