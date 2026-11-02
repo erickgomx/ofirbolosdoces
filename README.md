@@ -44,7 +44,9 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
 
 ## 🛠️ Tecnologias Utilizadas
 
+- **Three.js & WebGL 3D Real:** Modelagem procedural tridimensional do bolo com iluminação PBR (Physically Based Rendering), sombras dinâmicas, texturas em tempo real e controle de órbita 360° com toque/mouse.
+- **Animação da Fatia em 3D:** Separação e fechamento suave da fatia (*cutaway view*) expondo camadas internas reais (3 de massa e 2 de recheio).
 - **HTML5 Semântico:** Estrutura acessível com tags ARIA e microdados.
-- **CSS3 Moderno:** Variáveis CSS, Glassmorphism, sombras multi-camadas, gradientes metálicos e perspectiva 3D.
-- **Vanilla JavaScript:** Sem dependências externas pesadas, carregamento instantâneo e total compatibilidade com GitHub Pages.
+- **CSS3 Moderno:** Variáveis CSS, Glassmorphism, sombras multi-camadas e gradientes metálicos.
+- **JavaScript Moderno:** Sem necessidade de build/compilação pesada, carregamento instantâneo e total compatibilidade com GitHub Pages.
 - **Google Fonts:** *Cormorant Garamond* (editorial de luxo) e *Plus Jakarta Sans* (tipografia limpa contemporânea).

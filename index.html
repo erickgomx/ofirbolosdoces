@@ -209,13 +209,14 @@
 
       </section>
 
-      <!-- CENTER: Interactive 3D Cake Showcase -->
-      <section class="cake-showcase-stage" aria-label="Visualização em tempo real do bolo">
+      <!-- CENTER: Interactive Real 3D Cake Showcase (Three.js WebGL) -->
+      <section class="cake-showcase-stage" aria-label="Visualização 3D em tempo real do bolo">
         <div class="cake-view-container" id="cake-interactive-box">
           
-          <!-- Atmospheric lighting & shadows -->
-          <div class="ambient-glow"></div>
-          <div class="table-shadow"></div>
+          <!-- WebGL Three.js Canvas Container -->
+          <div class="webgl-canvas-container" id="webgl-container">
+            <canvas id="cake-3d-canvas"></canvas>
+          </div>
 
           <!-- Interactive Annotation Guide Lines (Desktop) -->
           <div class="annotation-guides" aria-hidden="true">
@@ -245,97 +246,16 @@
             </div>
           </div>
 
-          <!-- Dynamic Cake Visualizer Component -->
-          <div class="cake-stand-rig" id="cake-rig">
-            
-            <!-- CAKE COMPONENT (Dynamic Layers) -->
-            <div class="cake-model cut-view" id="cake-model">
-              
-              <!-- Topper / Fruits Garnish Layer on Top -->
-              <div class="cake-toppers" id="cake-toppers">
-                <div class="garnish-physalis garnish-1"></div>
-                <div class="garnish-berry garnish-2"></div>
-                <div class="garnish-hazelnut garnish-3"></div>
-                <div class="garnish-raspberry garnish-4"></div>
-                <div class="gold-leaf-flakes"></div>
-              </div>
-
-              <!-- Top Surface / Frosting Swirl -->
-              <div class="cake-top-surface">
-                <div class="frosting-swirls"></div>
-                <!-- Cut slice opening wedge on top -->
-                <div class="top-cut-wedge"></div>
-              </div>
-
-              <!-- Cylinder Outer Wall (Chantininho aveludado) -->
-              <div class="cake-outer-wall">
-                <div class="cake-texture-grain"></div>
-              </div>
-
-              <!-- Internal Cutaway Cross-Section (Visible when cut view is active) -->
-              <div class="cake-cross-section" id="cross-section">
-                <!-- Inner Slice Layers -->
-                <div class="slice-wall slice-left">
-                  <!-- Sponge 1 (Top) -->
-                  <div class="layer sponge-layer sponge-top">
-                    <span class="sponge-texture"></span>
-                  </div>
-                  <!-- Filling 1 -->
-                  <div class="layer filling-layer filling-top">
-                    <span class="filling-texture"></span>
-                    <span class="filling-garnishes"></span>
-                  </div>
-                  <!-- Sponge 2 (Middle) -->
-                  <div class="layer sponge-layer sponge-mid">
-                    <span class="sponge-texture"></span>
-                  </div>
-                  <!-- Filling 2 -->
-                  <div class="layer filling-layer filling-bottom">
-                    <span class="filling-texture"></span>
-                    <span class="filling-garnishes"></span>
-                  </div>
-                  <!-- Sponge 3 (Base) -->
-                  <div class="layer sponge-layer sponge-base">
-                    <span class="sponge-texture"></span>
-                  </div>
-                </div>
-
-                <!-- Right Wall of the Cut Wedge -->
-                <div class="slice-wall slice-right">
-                  <div class="layer sponge-layer sponge-top"></div>
-                  <div class="layer filling-layer filling-top"></div>
-                  <div class="layer sponge-layer sponge-mid"></div>
-                  <div class="layer filling-layer filling-bottom"></div>
-                  <div class="layer sponge-layer sponge-base"></div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Pedestal Stand (Luxury Brass + Marble Base Plate) -->
-            <div class="pedestal-stand">
-              <div class="marble-plate">
-                <div class="marble-rim"></div>
-              </div>
-              <div class="brass-stem">
-                <div class="stem-flare-top"></div>
-                <div class="stem-body"></div>
-                <div class="stem-base"></div>
-              </div>
-            </div>
-
-          </div>
-
           <!-- Floating Interactive Pill Buttons -->
           <div class="floating-view-actions">
-            <button class="view-action-pill" id="btn-rotate-3d">
+            <button class="view-action-pill" id="btn-rotate-3d" title="Alternar rotação 360°">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
               </svg>
               <span>Girar 3D</span>
             </button>
 
-            <button class="view-action-pill active" id="btn-toggle-slice">
+            <button class="view-action-pill active" id="btn-toggle-slice" title="Alternar fatia aberta / bolo inteiro">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 2l10 6-10 6L2 8l10-6z"/>
                 <path d="M2 14l10 6 10-6"/>
@@ -346,7 +266,7 @@
 
           <!-- Interaction Hint -->
           <div class="interaction-hint">
-            Arraste para girar a perspectiva do bolo
+            <span class="hint-icon">↺</span> Arraste com o mouse para girar o bolo em 3D
           </div>
 
         </div>
@@ -633,6 +553,10 @@
     </div>
   </div>
 
+  <!-- Three.js 3D Engine & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
