@@ -51,6 +51,7 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
 
 ## 🛠️ Tecnologias Utilizadas
 
+- **Identidade Visual Oficial:** Logo oficial da *Ofir Doceria — Doces e Bolos Gourmet* com ramagens douradas botânicas integrada no topo, modal de apresentação e favicon do navegador.
 - **Imagens Reais em Alta Resolução:** Fotografia cinematográfica do bolo sobre pedestal de mármore e latão nobre, com iluminação de estúdio natural e sombras reais.
 - **Efeito Parallax Tridimensional:** Inclinação suave e dinâmica em 3D guiada pelo movimento do mouse/toque.
 - **Alternância de Massa & Fatia:** Troca fluida e instantânea entre o corte interno (*Massa Branca* e *Massa Chocolate*) e o *Bolo Inteiro* fechado.
