@@ -1,6 +1,6 @@
 /**
  * OFIR BOLOS & DOCES - ATELIER EM PRAIA DE PIPA
- * Real Three.js 3D WebGL Cake Engine & Interactive Customizer
+ * Real Three.js 3D WebGL Cake Engine (Mathematically Aligned Geometry & Warm Studio Lighting)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,14 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     'branco': {
       name: 'Branco (ovos)',
       desc: 'Massa amanteigada fofa e delicada',
-      color: 0xf3e1ae,
-      roughness: 0.82
+      color: 0xdfbf7a, // Warm golden sponge
+      roughness: 0.75
     },
     'chocolate': {
       name: 'Chocolate',
       desc: 'Cacau nobre aveludado e intenso',
-      color: 0x3d2112,
-      roughness: 0.85
+      color: 0x3b2215, // Deep rich dutch cocoa
+      roughness: 0.78
     }
   };
 
@@ -33,17 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
     'morango': {
       name: 'Morango',
       desc: 'Geleia artesanal de morangos selecionados',
-      color: 0xbd243e,
-      roughness: 0.35,
-      metalness: 0.05,
+      color: 0xa81a32,
+      roughness: 0.32,
+      metalness: 0.08,
       eq: 93,
       comp: 82
     },
     'ninho': {
       name: 'Ninho',
       desc: 'Brigadeiro cremoso de puro Leite Ninho',
-      color: 0xf8eed6,
-      roughness: 0.45,
+      color: 0xefe2c8,
+      roughness: 0.42,
       metalness: 0.02,
       eq: 96,
       comp: 70
@@ -51,26 +51,26 @@ document.addEventListener('DOMContentLoaded', () => {
     'chocolate': {
       name: 'Chocolate',
       desc: 'Ganache encorpada de chocolate meio amargo',
-      color: 0x241108,
-      roughness: 0.28,
-      metalness: 0.12,
+      color: 0x221209,
+      roughness: 0.25,
+      metalness: 0.15,
       eq: 89,
       comp: 89
     },
     'avela': {
       name: 'Avelã',
       desc: 'Creme gianduja com pedacinhos crocantes',
-      color: 0x7a4722,
-      roughness: 0.40,
-      metalness: 0.08,
+      color: 0x6e3d1c,
+      roughness: 0.38,
+      metalness: 0.10,
       eq: 97,
       comp: 86
     },
     'coco': {
       name: 'Côco',
       desc: 'Beijinho suave com lascas de coco fresco',
-      color: 0xfcf9f2,
-      roughness: 0.60,
+      color: 0xf2eee4,
+      roughness: 0.55,
       metalness: 0.02,
       eq: 92,
       comp: 74
@@ -78,18 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
     'maracuja': {
       name: 'Maracujá',
       desc: 'Creme aveludado com redução de maracujá',
-      color: 0xe59c19,
-      roughness: 0.30,
-      metalness: 0.06,
+      color: 0xd4850e,
+      roughness: 0.28,
+      metalness: 0.08,
       eq: 95,
       comp: 91
     },
     'abacaxi': {
       name: 'Abacaxi',
       desc: 'Compota dourada artesanal com toque cítrico',
-      color: 0xd9a42b,
-      roughness: 0.32,
-      metalness: 0.05,
+      color: 0xc98e18,
+      roughness: 0.30,
+      metalness: 0.06,
       eq: 94,
       comp: 84
     }
@@ -110,56 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
     isRotating: false
   };
 
-  // --- PROCEDURAL TEXTURE GENERATORS ---
-  function createProceduralNoiseCanvas(width, height, baseHex, speckleHex, density = 0.15) {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = baseHex;
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.fillStyle = speckleHex;
-    const count = Math.floor(width * height * density);
-    for (let i = 0; i < count; i++) {
-      const x = Math.random() * width;
-      const y = Math.random() * height;
-      const radius = Math.random() * 1.8 + 0.4;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    return new THREE.CanvasTexture(canvas);
-  }
-
-  function createMarbleTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 512;
-    const ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = '#faf7f2';
-    ctx.fillRect(0, 0, 512, 512);
-
-    ctx.strokeStyle = 'rgba(180, 170, 160, 0.22)';
-    ctx.lineWidth = 4;
-    for (let i = 0; i < 7; i++) {
-      ctx.beginPath();
-      ctx.moveTo(Math.random() * 512, 0);
-      ctx.bezierCurveTo(
-        Math.random() * 512, 170,
-        Math.random() * 512, 340,
-        Math.random() * 512, 512
-      );
-      ctx.stroke();
-    }
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    return tex;
-  }
-
   // --- 3D ENGINE SETUP ---
   const container = document.getElementById('webgl-container');
   const canvas = document.getElementById('cake-3d-canvas');
@@ -167,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const scene = new THREE.Scene();
 
   const camera = new THREE.PerspectiveCamera(
-    38,
+    36,
     container.clientWidth / container.clientHeight,
     0.1,
     100
   );
-  camera.position.set(0, 2.8, 6.2);
+  camera.position.set(0, 2.5, 5.8);
 
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
@@ -183,85 +133,120 @@ document.addEventListener('DOMContentLoaded', () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.98;
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
+  controls.dampingFactor = 0.06;
   controls.minDistance = 4.2;
   controls.maxDistance = 8.5;
   controls.minPolarAngle = Math.PI * 0.15;
-  controls.maxPolarAngle = Math.PI * 0.49;
-  controls.target.set(0, 0.65, 0);
+  controls.maxPolarAngle = Math.PI * 0.48;
+  controls.target.set(0, 0.45, 0);
 
-  // --- LIGHTING ---
-  const ambientLight = new THREE.HemisphereLight(0xfffaf0, 0xd2c3b2, 0.75);
+  // --- WARM STUDIO LIGHTING (BALANCED CONTRAST, NOT OVEREXPOSED) ---
+  // Warm subtle ambient fill (prevents pure black shadows without blowing highlights)
+  const ambientLight = new THREE.AmbientLight(0x4a433a, 0.40);
   scene.add(ambientLight);
 
-  const keyLight = new THREE.DirectionalLight(0xfff6ea, 1.4);
-  keyLight.position.set(4.5, 7.5, 5.0);
+  // Main Key Light (Warm sunlight from top-left-front)
+  const keyLight = new THREE.DirectionalLight(0xfff3e5, 0.92);
+  keyLight.position.set(-3.2, 5.5, 4.2);
   keyLight.castShadow = true;
   keyLight.shadow.mapSize.width = 2048;
   keyLight.shadow.mapSize.height = 2048;
   keyLight.shadow.bias = -0.0001;
   keyLight.shadow.camera.near = 0.5;
-  keyLight.shadow.camera.far = 20;
+  keyLight.shadow.camera.far = 15;
   keyLight.shadow.camera.left = -3;
   keyLight.shadow.camera.right = 3;
   keyLight.shadow.camera.top = 3;
   keyLight.shadow.camera.bottom = -3;
   scene.add(keyLight);
 
-  const fillLight = new THREE.DirectionalLight(0xe5dcce, 0.55);
-  fillLight.position.set(-4.5, 4.0, -3.5);
+  // Soft Bounce / Fill Light from right
+  const fillLight = new THREE.DirectionalLight(0xdfd3c2, 0.35);
+  fillLight.position.set(4.0, 3.0, 2.0);
   scene.add(fillLight);
 
-  const topGlint = new THREE.PointLight(0xffeedb, 0.8, 6);
-  topGlint.position.set(0, 3.2, 0.5);
-  scene.add(topGlint);
+  // Soft Rim Light from behind
+  const rimLight = new THREE.DirectionalLight(0xf4e6d4, 0.45);
+  rimLight.position.set(0, 4.0, -4.5);
+  scene.add(rimLight);
 
-  // Soft Contact Shadow Plane
-  const shadowPlaneGeo = new THREE.PlaneGeometry(8, 8);
-  const shadowPlaneMat = new THREE.ShadowMaterial({ opacity: 0.14 });
+  // Top Point Light for golden specular shine
+  const glintLight = new THREE.PointLight(0xffeed6, 0.45, 5);
+  glintLight.position.set(0, 2.8, 0.8);
+  scene.add(glintLight);
+
+  // Contact Shadow Plane under pedestal
+  const shadowPlaneGeo = new THREE.PlaneGeometry(7, 7);
+  const shadowPlaneMat = new THREE.ShadowMaterial({ opacity: 0.16 });
   const shadowPlane = new THREE.Mesh(shadowPlaneGeo, shadowPlaneMat);
   shadowPlane.rotation.x = -Math.PI / 2;
-  shadowPlane.position.y = -0.95;
+  shadowPlane.position.y = -1.02;
   shadowPlane.receiveShadow = true;
   scene.add(shadowPlane);
 
-  // --- PEDESTAL (BRASS & MARBLE STAND) ---
+  // --- PEDESTAL STAND (BRASS & CARRARA MARBLE) ---
   const standGroup = new THREE.Group();
-  standGroup.position.y = -0.95;
+  standGroup.position.y = -1.02;
 
   const brassMaterial = new THREE.MeshStandardMaterial({
-    color: 0xc8a45e,
-    metalness: 0.88,
-    roughness: 0.22
+    color: 0xba944d,
+    metalness: 0.85,
+    roughness: 0.26
   });
 
-  const marbleTexture = createMarbleTexture();
-  const marbleMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    map: marbleTexture,
-    roughness: 0.35,
-    metalness: 0.05
+  // Procedural Carrara Marble Platter Texture
+  function generateMarbleCanvas() {
+    const c = document.createElement('canvas');
+    c.width = 512;
+    c.height = 512;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#f4f0e8';
+    ctx.fillRect(0, 0, 512, 512);
+
+    ctx.strokeStyle = 'rgba(165, 155, 145, 0.18)';
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * 512, 0);
+      ctx.bezierCurveTo(
+        Math.random() * 512, 170,
+        Math.random() * 512, 340,
+        Math.random() * 512, 512
+      );
+      ctx.stroke();
+    }
+    const tex = new THREE.CanvasTexture(c);
+    return tex;
+  }
+
+  const marbleMat = new THREE.MeshStandardMaterial({
+    color: 0xfaf6ef,
+    map: generateMarbleCanvas(),
+    roughness: 0.32,
+    metalness: 0.04
   });
 
   // Base Foot
-  const baseFootGeo = new THREE.CylinderGeometry(0.85, 0.95, 0.12, 48);
-  const baseFoot = new THREE.Mesh(baseFootGeo, brassMaterial);
-  baseFoot.position.y = 0.06;
-  baseFoot.castShadow = true;
-  baseFoot.receiveShadow = true;
-  standGroup.add(baseFoot);
+  const footGeo = new THREE.CylinderGeometry(0.82, 0.95, 0.12, 48);
+  const footMesh = new THREE.Mesh(footGeo, brassMaterial);
+  footMesh.position.y = 0.06;
+  footMesh.castShadow = true;
+  footMesh.receiveShadow = true;
+  standGroup.add(footMesh);
 
-  // Fluted Stem
+  // Lathe Stem Column
   const stemPoints = [
-    new THREE.Vector2(0.80, 0.12),
-    new THREE.Vector2(0.40, 0.35),
-    new THREE.Vector2(0.20, 0.75),
-    new THREE.Vector2(0.18, 1.15),
-    new THREE.Vector2(0.32, 1.45),
-    new THREE.Vector2(0.70, 1.60)
+    new THREE.Vector2(0.75, 0.12),
+    new THREE.Vector2(0.38, 0.35),
+    new THREE.Vector2(0.18, 0.75),
+    new THREE.Vector2(0.17, 1.15),
+    new THREE.Vector2(0.30, 1.45),
+    new THREE.Vector2(0.68, 1.60)
   ];
   const stemGeo = new THREE.LatheGeometry(stemPoints, 48);
   const stemMesh = new THREE.Mesh(stemGeo, brassMaterial);
@@ -269,16 +254,16 @@ document.addEventListener('DOMContentLoaded', () => {
   stemMesh.receiveShadow = true;
   standGroup.add(stemMesh);
 
-  // Marble Platter Disk
+  // Platter Plate
   const platterGeo = new THREE.CylinderGeometry(1.82, 1.80, 0.14, 64);
-  const platter = new THREE.Mesh(platterGeo, marbleMaterial);
+  const platter = new THREE.Mesh(platterGeo, marbleMat);
   platter.position.y = 1.67;
   platter.castShadow = true;
   platter.receiveShadow = true;
   standGroup.add(platter);
 
-  // Platter Brass Rim
-  const rimGeo = new THREE.TorusGeometry(1.81, 0.025, 16, 64);
+  // Platter Gold Rim
+  const rimGeo = new THREE.TorusGeometry(1.81, 0.024, 16, 64);
   const rim = new THREE.Mesh(rimGeo, brassMaterial);
   rim.rotation.x = Math.PI / 2;
   rim.position.y = 1.67;
@@ -286,29 +271,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   scene.add(standGroup);
 
-  // --- CAKE 3D PROCEDURAL BUILDER ---
+  // --- CAKE 3D MASTER RIG ---
   const cakeMasterGroup = new THREE.Group();
-  cakeMasterGroup.position.y = 0.80; // Sits exactly on the marble platter
+  cakeMasterGroup.position.y = 0.72; // Rests on top of the marble platter
   scene.add(cakeMasterGroup);
 
   // Shared Dynamic Materials
+  // Mascarpone chantininho frosting (warm rich ivory, NOT washed out white)
   const frostingMat = new THREE.MeshStandardMaterial({
-    color: 0xfdfaf4,
-    roughness: 0.48,
+    color: 0xede6d8,
+    roughness: 0.52,
     metalness: 0.02
   });
 
-  const goldTrimMat = new THREE.MeshStandardMaterial({
-    color: 0xdcb86e,
+  const goldLeafMat = new THREE.MeshStandardMaterial({
+    color: 0xdcb865,
     metalness: 0.92,
-    roughness: 0.18
+    roughness: 0.18,
+    side: THREE.DoubleSide
   });
 
-  // Dynamic sponge & filling materials (instantiated and updated dynamically)
   const spongeMat = new THREE.MeshStandardMaterial({
     color: MASSAS[state.massa].color,
     roughness: MASSAS[state.massa].roughness,
-    metalness: 0.01
+    metalness: 0.02
   });
 
   const fillingMat = new THREE.MeshStandardMaterial({
@@ -317,137 +303,235 @@ document.addEventListener('DOMContentLoaded', () => {
     metalness: RECHEIOS[state.recheio].metalness
   });
 
-  // Cake Dimensions constants
-  const CAKE_RADIUS = 1.42;
-  const CAKE_HEIGHT = 1.40;
-  const CUT_ANGLE_START = -0.32; // -18 deg
-  const CUT_ANGLE_END = 0.65;    // +37 deg
-  const SLICE_ANGLE = CUT_ANGLE_END - CUT_ANGLE_START; // ~55 deg
-  const MAIN_ANGLE = Math.PI * 2 - SLICE_ANGLE;
+  // Cake Dimensions
+  const CAKE_RADIUS = 1.40;
+  const CAKE_HEIGHT = 1.30;
+  // Angles: Cut wedge spans from CUT_START to CUT_END
+  const CUT_START = -0.32; // ~ -18 deg
+  const CUT_END   =  0.62; // ~ +35 deg
+  const SLICE_SPAN = CUT_END - CUT_START;
+  const MAIN_SPAN  = Math.PI * 2 - SLICE_SPAN;
 
-  // Group 1: Main Cake Body
   const mainCakeGroup = new THREE.Group();
   cakeMasterGroup.add(mainCakeGroup);
 
-  // Group 2: Pull-out Slice (Fatia)
   const sliceGroup = new THREE.Group();
   cakeMasterGroup.add(sliceGroup);
 
-  // Helper to build a 2D sector shape on X-Z plane
-  function createSectorShape(radius, startAng, endAng) {
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.lineTo(radius * Math.cos(startAng), radius * Math.sin(startAng));
-    shape.absarc(0, 0, radius, startAng, endAng, false);
-    shape.lineTo(0, 0);
-    return shape;
+  // =========================================================================
+  // MATHEMATICALLY EXACT SECTOR & LAYER BUILDERS (0% MISALIGNMENT / NO BUGS)
+  // =========================================================================
+
+  /**
+   * Builds the curved outer wall mesh for a sector from startAng to endAng
+   */
+  function buildSectorOuterWall(radius, height, startAng, endAng, segments = 48) {
+    const geo = new THREE.BufferGeometry();
+    const positions = [];
+    const normals = [];
+    const uvs = [];
+    const indices = [];
+
+    const angleRange = endAng - startAng;
+
+    for (let i = 0; i <= segments; i++) {
+      const u = i / segments;
+      const a = startAng + u * angleRange;
+      const x = radius * Math.sin(a);
+      const z = radius * Math.cos(a);
+
+      // Bottom vertex
+      positions.push(x, 0, z);
+      normals.push(Math.sin(a), 0, Math.cos(a));
+      uvs.push(u, 0);
+
+      // Top vertex
+      positions.push(x, height, z);
+      normals.push(Math.sin(a), 0, Math.cos(a));
+      uvs.push(u, 1);
+    }
+
+    for (let i = 0; i < segments; i++) {
+      const b0 = i * 2;
+      const t0 = i * 2 + 1;
+      const b1 = (i + 1) * 2;
+      const t1 = (i + 1) * 2 + 1;
+
+      // Standard counter-clockwise quad
+      indices.push(b0, b1, t1);
+      indices.push(b0, t1, t0);
+    }
+
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices);
+
+    return new THREE.Mesh(geo, frostingMat);
   }
 
-  // --- 1. BUILD MAIN CAKE BODY ---
-  // Outer curved frosting wall
-  const mainOuterGeo = new THREE.CylinderGeometry(
-    CAKE_RADIUS, CAKE_RADIUS, CAKE_HEIGHT, 54, 1, true, CUT_ANGLE_END, MAIN_ANGLE
-  );
-  const mainOuterWall = new THREE.Mesh(mainOuterGeo, frostingMat);
-  mainOuterWall.position.y = CAKE_HEIGHT / 2;
-  mainOuterWall.castShadow = true;
-  mainOuterWall.receiveShadow = true;
-  mainCakeGroup.add(mainOuterWall);
+  /**
+   * Builds the top frosting surface sector disk
+   */
+  function buildSectorCap(radius, y, startAng, endAng, isTop = true, segments = 48) {
+    const geo = new THREE.BufferGeometry();
+    const positions = [];
+    const normals = [];
+    const uvs = [];
+    const indices = [];
 
-  // Top frosting surface
-  const mainTopShape = createSectorShape(CAKE_RADIUS, CUT_ANGLE_END, CUT_ANGLE_END + MAIN_ANGLE);
-  const mainTopGeo = new THREE.ShapeGeometry(mainTopShape);
-  const mainTopMesh = new THREE.Mesh(mainTopGeo, frostingMat);
-  mainTopMesh.rotation.x = -Math.PI / 2;
-  mainTopMesh.position.y = CAKE_HEIGHT;
-  mainTopMesh.receiveShadow = true;
-  mainCakeGroup.add(mainTopMesh);
+    const ny = isTop ? 1 : -1;
+    // Center vertex (index 0)
+    positions.push(0, y, 0);
+    normals.push(0, ny, 0);
+    uvs.push(0.5, 0.5);
 
-  // Bottom base plate
-  const mainBottomMesh = new THREE.Mesh(mainTopGeo, frostingMat);
-  mainBottomMesh.rotation.x = Math.PI / 2;
-  mainCakeGroup.add(mainBottomMesh);
+    const angleRange = endAng - startAng;
+    for (let i = 0; i <= segments; i++) {
+      const u = i / segments;
+      const a = startAng + u * angleRange;
+      const x = radius * Math.sin(a);
+      const z = radius * Math.cos(a);
 
-  // Decorative gold top rim for main cake
-  const mainRimShape = new THREE.Curve();
-  const mainRimPoints = [];
-  const rimSteps = 40;
-  for (let i = 0; i <= rimSteps; i++) {
-    const a = CUT_ANGLE_END + (MAIN_ANGLE * i) / rimSteps;
-    mainRimPoints.push(new THREE.Vector3(CAKE_RADIUS * Math.cos(a), CAKE_HEIGHT + 0.015, CAKE_RADIUS * Math.sin(a)));
+      positions.push(x, y, z);
+      normals.push(0, ny, 0);
+      uvs.push(0.5 + 0.5 * Math.sin(a), 0.5 + 0.5 * Math.cos(a));
+    }
+
+    for (let i = 1; i <= segments; i++) {
+      if (isTop) {
+        // Counter-clockwise from above
+        indices.push(0, i + 1, i);
+      } else {
+        indices.push(0, i, i + 1);
+      }
+    }
+
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices);
+
+    const mesh = new THREE.Mesh(geo, frostingMat);
+    mesh.receiveShadow = true;
+    return mesh;
   }
-  const mainRimCurve = new THREE.CatmullRomCurve3(mainRimPoints);
-  const mainRimGeo = new THREE.TubeGeometry(mainRimCurve, 40, 0.022, 12, false);
-  const mainRimMesh = new THREE.Mesh(mainRimGeo, goldTrimMat);
-  mainCakeGroup.add(mainRimMesh);
 
-  // Helper to build internal cut layers on a planar cut wall
-  function buildCutWallLayers(parentGroup, angle, isSlice = false) {
-    const wallGroup = new THREE.Group();
-    wallGroup.rotation.y = -angle;
-
-    // Layer structure: 3 sponges + 2 fillings + top cream
-    const layerDefs = [
-      { h: 0.25, mat: spongeMat, y: 0.125 },      // Sponge 1 (base)
-      { h: 0.15, mat: fillingMat, y: 0.325 },     // Filling 1
-      { h: 0.25, mat: spongeMat, y: 0.525 },      // Sponge 2 (mid)
-      { h: 0.15, mat: fillingMat, y: 0.725 },     // Filling 2
-      { h: 0.25, mat: spongeMat, y: 0.925 },      // Sponge 3 (top)
-      { h: 0.35, mat: frostingMat, y: 1.225 }     // Top frosting layer
+  /**
+   * Builds the individual cake layers on a planar cut wall at angle `ang`.
+   * Directly uses world coordinates (0, y, 0) -> (r*sin(ang), y, r*cos(ang)).
+   * Zero rotation matrices means ZERO risk of misalignment or weird bugs!
+   */
+  function buildCutWallStripes(parentGroup, radius, ang, isStartWall) {
+    // 3 Sponges + 2 Fillings + 1 Top Frosting Cap
+    const layerSpecs = [
+      { y0: 0.00, y1: 0.22, mat: spongeMat },   // Sponge Base
+      { y0: 0.22, y1: 0.36, mat: fillingMat },  // Filling 1
+      { y0: 0.36, y1: 0.58, mat: spongeMat },   // Sponge Mid
+      { y0: 0.58, y1: 0.72, mat: fillingMat },  // Filling 2
+      { y0: 0.72, y1: 0.94, mat: spongeMat },   // Sponge Top
+      { y0: 0.94, y1: 1.30, mat: frostingMat }  // Top Frosting Coat
     ];
 
-    layerDefs.forEach(l => {
-      const geo = new THREE.BoxGeometry(CAKE_RADIUS, l.h, 0.005);
-      const mesh = new THREE.Mesh(geo, l.mat);
-      mesh.position.set(CAKE_RADIUS / 2, l.y, 0);
-      mesh.receiveShadow = true;
-      mesh.castShadow = true;
-      wallGroup.add(mesh);
-    });
+    const sinA = Math.sin(ang);
+    const cosA = Math.cos(ang);
 
-    parentGroup.add(wallGroup);
+    // Wall Normal pointing OUT of the solid cake into the cut gap
+    const nx = isStartWall ? -cosA : cosA;
+    const nz = isStartWall ?  sinA : -sinA;
+
+    layerSpecs.forEach(spec => {
+      const geo = new THREE.BufferGeometry();
+      const p = [];
+      const n = [nx, 0, nz,  nx, 0, nz,  nx, 0, nz,  nx, 0, nz];
+      const uv = [0, 0,  1, 0,  1, 1,  0, 1];
+
+      // Vertices:
+      // V0: (0, y0, 0)
+      // V1: (r*sinA, y0, r*cosA)
+      // V2: (r*sinA, y1, r*cosA)
+      // V3: (0, y1, 0)
+      p.push(0, spec.y0, 0);
+      p.push(radius * sinA, spec.y0, radius * cosA);
+      p.push(radius * sinA, spec.y1, radius * cosA);
+      p.push(0, spec.y1, 0);
+
+      const indices = isStartWall
+        ? [0, 1, 2,  0, 2, 3]
+        : [0, 2, 1,  0, 3, 2];
+
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(p, 3));
+      geo.setAttribute('normal', new THREE.Float32BufferAttribute(n, 3));
+      geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+      geo.setIndex(indices);
+
+      const stripeMesh = new THREE.Mesh(geo, spec.mat);
+      stripeMesh.receiveShadow = true;
+      stripeMesh.castShadow = true;
+      parentGroup.add(stripeMesh);
+    });
   }
 
-  // Cut Wall A & B for Main Cake
-  buildCutWallLayers(mainCakeGroup, CUT_ANGLE_END);
-  buildCutWallLayers(mainCakeGroup, CUT_ANGLE_START);
+  // --- ASSEMBLE 1. MAIN CAKE BODY ---
+  // Outer wall: spans from CUT_END to CUT_END + MAIN_SPAN
+  const mainOuter = buildSectorOuterWall(CAKE_RADIUS, CAKE_HEIGHT, CUT_END, CUT_END + MAIN_SPAN, 48);
+  mainOuter.castShadow = true;
+  mainOuter.receiveShadow = true;
+  mainCakeGroup.add(mainOuter);
 
-  // --- 2. BUILD PULL-OUT SLICE (FATIA) ---
-  // Outer curved wall of slice
-  const sliceOuterGeo = new THREE.CylinderGeometry(
-    CAKE_RADIUS, CAKE_RADIUS, CAKE_HEIGHT, 24, 1, true, CUT_ANGLE_START, SLICE_ANGLE
-  );
-  const sliceOuterWall = new THREE.Mesh(sliceOuterGeo, frostingMat);
-  sliceOuterWall.position.y = CAKE_HEIGHT / 2;
-  sliceOuterWall.castShadow = true;
-  sliceOuterWall.receiveShadow = true;
-  sliceGroup.add(sliceOuterWall);
+  // Top and bottom caps
+  const mainTop = buildSectorCap(CAKE_RADIUS, CAKE_HEIGHT, CUT_END, CUT_END + MAIN_SPAN, true, 48);
+  mainCakeGroup.add(mainTop);
 
-  // Top frosting of slice
-  const sliceTopShape = createSectorShape(CAKE_RADIUS, CUT_ANGLE_START, CUT_ANGLE_END);
-  const sliceTopGeo = new THREE.ShapeGeometry(sliceTopShape);
-  const sliceTopMesh = new THREE.Mesh(sliceTopGeo, frostingMat);
-  sliceTopMesh.rotation.x = -Math.PI / 2;
-  sliceTopMesh.position.y = CAKE_HEIGHT;
-  sliceTopMesh.receiveShadow = true;
-  sliceGroup.add(sliceTopMesh);
+  const mainBottom = buildSectorCap(CAKE_RADIUS, 0, CUT_END, CUT_END + MAIN_SPAN, false, 48);
+  mainCakeGroup.add(mainBottom);
 
-  // Cut walls for the slice
-  buildCutWallLayers(sliceGroup, CUT_ANGLE_END, true);
-  buildCutWallLayers(sliceGroup, CUT_ANGLE_START, true);
+  // Cut Walls of Main Cake:
+  // Wall at CUT_END (cut opening starts here, so normal points backwards)
+  buildCutWallStripes(mainCakeGroup, CAKE_RADIUS, CUT_END, true);
+  // Wall at CUT_START (cut opening ends here, so normal points forwards)
+  buildCutWallStripes(mainCakeGroup, CAKE_RADIUS, CUT_START, false);
 
-  // Slice gold rim
+  // Gold rim on main cake top edge
+  const mainRimPoints = [];
+  for (let i = 0; i <= 36; i++) {
+    const a = CUT_END + (MAIN_SPAN * i) / 36;
+    mainRimPoints.push(new THREE.Vector3(CAKE_RADIUS * Math.sin(a), CAKE_HEIGHT + 0.015, CAKE_RADIUS * Math.cos(a)));
+  }
+  const mainRimCurve = new THREE.CatmullRomCurve3(mainRimPoints);
+  const mainRimGeo = new THREE.TubeGeometry(mainRimCurve, 36, 0.022, 12, false);
+  const mainRimMesh = new THREE.Mesh(mainRimGeo, brassMaterial);
+  mainCakeGroup.add(mainRimMesh);
+
+  // --- ASSEMBLE 2. THE PULL-OUT SLICE (FATIA) ---
+  // Outer wall of slice: spans from CUT_START to CUT_END
+  const sliceOuter = buildSectorOuterWall(CAKE_RADIUS, CAKE_HEIGHT, CUT_START, CUT_END, 20);
+  sliceOuter.castShadow = true;
+  sliceOuter.receiveShadow = true;
+  sliceGroup.add(sliceOuter);
+
+  const sliceTop = buildSectorCap(CAKE_RADIUS, CAKE_HEIGHT, CUT_START, CUT_END, true, 20);
+  sliceGroup.add(sliceTop);
+
+  const sliceBottom = buildSectorCap(CAKE_RADIUS, 0, CUT_START, CUT_END, false, 20);
+  sliceGroup.add(sliceBottom);
+
+  // Cut Walls of Slice (normals point away from slice into the gap):
+  buildCutWallStripes(sliceGroup, CAKE_RADIUS, CUT_START, true);
+  buildCutWallStripes(sliceGroup, CAKE_RADIUS, CUT_END, false);
+
+  // Gold rim on slice top edge
   const sliceRimPoints = [];
-  for (let i = 0; i <= 16; i++) {
-    const a = CUT_ANGLE_START + (SLICE_ANGLE * i) / 16;
-    sliceRimPoints.push(new THREE.Vector3(CAKE_RADIUS * Math.cos(a), CAKE_HEIGHT + 0.015, CAKE_RADIUS * Math.sin(a)));
+  for (let i = 0; i <= 14; i++) {
+    const a = CUT_START + (SLICE_SPAN * i) / 14;
+    sliceRimPoints.push(new THREE.Vector3(CAKE_RADIUS * Math.sin(a), CAKE_HEIGHT + 0.015, CAKE_RADIUS * Math.cos(a)));
   }
   const sliceRimCurve = new THREE.CatmullRomCurve3(sliceRimPoints);
-  const sliceRimGeo = new THREE.TubeGeometry(sliceRimCurve, 16, 0.022, 12, false);
-  const sliceRimMesh = new THREE.Mesh(sliceRimGeo, goldTrimMat);
+  const sliceRimGeo = new THREE.TubeGeometry(sliceRimCurve, 14, 0.022, 12, false);
+  const sliceRimMesh = new THREE.Mesh(sliceRimGeo, brassMaterial);
   sliceGroup.add(sliceRimMesh);
 
-  // --- 3. 3D TOPPERS & GARNISHES (PHYSALIS, BERRIES, HAZELNUTS & GOLD FLAKES) ---
+  // --- 3D GARNISHES ON TOP (PHYSALIS, RASPBERRIES, HAZELNUTS, GOLD LEAF) ---
   const garnishesGroup = new THREE.Group();
   garnishesGroup.position.y = CAKE_HEIGHT;
   mainCakeGroup.add(garnishesGroup);
@@ -458,21 +542,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const berryGeo = new THREE.SphereGeometry(0.14, 24, 24);
   const berryMat = new THREE.MeshStandardMaterial({
-    color: 0xf5a820,
-    roughness: 0.25,
-    metalness: 0.15,
-    emissive: 0x6e4500,
-    emissiveIntensity: 0.2
+    color: 0xeb9c16,
+    roughness: 0.28,
+    metalness: 0.12,
+    emissive: 0x5a3400,
+    emissiveIntensity: 0.18
   });
   const berryMesh = new THREE.Mesh(berryGeo, berryMat);
   berryMesh.castShadow = true;
   physalisGroup.add(berryMesh);
 
-  // Translucent lantern husk petals
+  // Delicate translucent husk petals
   const petalGeo = new THREE.CylinderGeometry(0.01, 0.18, 0.35, 12, 1, true);
   const petalMat = new THREE.MeshStandardMaterial({
-    color: 0xdcb266,
-    roughness: 0.6,
+    color: 0xd4a856,
+    roughness: 0.55,
     transparent: true,
     opacity: 0.85,
     side: THREE.DoubleSide
@@ -486,77 +570,70 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   garnishesGroup.add(physalisGroup);
 
-  // Raspberries (Clusters of red pearls)
+  // Fresh Raspberries
   function createRaspberry(x, z, scale = 1) {
     const rGroup = new THREE.Group();
-    rGroup.position.set(x, 0.08, z);
+    rGroup.position.set(x, 0.07, z);
     rGroup.scale.set(scale, scale, scale);
 
     const rMat = new THREE.MeshStandardMaterial({
-      color: 0xc81e42,
-      roughness: 0.35,
-      metalness: 0.08
+      color: 0xb51838,
+      roughness: 0.32,
+      metalness: 0.06
     });
-    for (let i = 0; i < 18; i++) {
+    for (let i = 0; i < 16; i++) {
       const pGeo = new THREE.SphereGeometry(0.045, 12, 12);
       const pearl = new THREE.Mesh(pGeo, rMat);
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.random() * Math.PI * 0.7;
       pearl.position.set(
         0.08 * Math.sin(phi) * Math.cos(theta),
-        0.09 * Math.cos(phi),
+        0.08 * Math.cos(phi),
         0.08 * Math.sin(phi) * Math.sin(theta)
       );
       rGroup.add(pearl);
     }
     return rGroup;
   }
-
-  garnishesGroup.add(createRaspberry(0.35, 0.25, 1.1));
+  garnishesGroup.add(createRaspberry(0.35, 0.25, 1.05));
   garnishesGroup.add(createRaspberry(-0.65, -0.35, 0.9));
 
-  // Hazelnuts
+  // Roasted Hazelnuts
   function createHazelnut(x, z) {
     const nutGeo = new THREE.SphereGeometry(0.09, 16, 16);
-    nutGeo.scale(1, 1.3, 0.9);
+    nutGeo.scale(1, 1.25, 0.9);
     const nutMat = new THREE.MeshStandardMaterial({
-      color: 0x8a5528,
+      color: 0x7a431c,
       roughness: 0.38,
-      metalness: 0.12
+      metalness: 0.08
     });
     const nut = new THREE.Mesh(nutGeo, nutMat);
-    nut.position.set(x, 0.07, z);
-    nut.rotation.z = 0.4;
+    nut.position.set(x, 0.06, z);
+    nut.rotation.z = 0.35;
     nut.castShadow = true;
     return nut;
   }
   garnishesGroup.add(createHazelnut(0.12, -0.45));
   garnishesGroup.add(createHazelnut(-0.48, 0.38));
 
-  // Edible Gold Leaf Flakes
-  const flakeMat = new THREE.MeshStandardMaterial({
-    color: 0xf0c868,
-    metalness: 0.95,
-    roughness: 0.15,
-    side: THREE.DoubleSide
-  });
+  // Shimmering Gold Leaf Flakes
   for (let f = 0; f < 18; f++) {
     const fGeo = new THREE.PlaneGeometry(0.04 + Math.random() * 0.04, 0.03 + Math.random() * 0.03);
-    const flake = new THREE.Mesh(fGeo, flakeMat);
-    const ang = CUT_ANGLE_END + Math.random() * MAIN_ANGLE;
+    const flake = new THREE.Mesh(fGeo, goldLeafMat);
+    const ang = CUT_END + Math.random() * MAIN_SPAN;
     const rad = 0.35 + Math.random() * 0.85;
-    flake.position.set(rad * Math.cos(ang), 0.015, rad * Math.sin(ang));
+    flake.position.set(rad * Math.sin(ang), 0.012, rad * Math.cos(ang));
     flake.rotation.x = -Math.PI / 2;
     flake.rotation.z = Math.random() * Math.PI;
     garnishesGroup.add(flake);
   }
 
-  // --- SLICE SLIDE / EXPLODE ANIMATION ---
-  const SLICE_MID_ANGLE = (CUT_ANGLE_START + CUT_ANGLE_END) / 2;
+  // --- SLICE SLIDE / CUTAWAY ANIMATION ---
+  const SLICE_MID_ANGLE = (CUT_START + CUT_END) / 2;
   const SLICE_PULL_VECTOR = new THREE.Vector3(
-    Math.cos(SLICE_MID_ANGLE) * 0.95,
-    0.06,
-    Math.sin(SLICE_MID_ANGLE) * 0.95
+    Math.sin(SLICE_MID_ANGLE) * 0.88,
+    0.04,
+    Math.cos(SLICE_MID_ANGLE) * 0.88
   );
 
   let sliceCurrentPos = new THREE.Vector3(0, 0, 0);
@@ -569,7 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
   sliceGroup.position.copy(SLICE_PULL_VECTOR);
   sliceCurrentPos.copy(SLICE_PULL_VECTOR);
 
-  // --- WINDOW RESIZE LISTENER ---
+  // --- RESIZE HANDLER ---
   window.addEventListener('resize', () => {
     if (!container) return;
     camera.aspect = container.clientWidth / container.clientHeight;
@@ -634,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const orderNotesInput = document.getElementById('order-notes');
   const btnSendWhatsapp = document.getElementById('btn-send-whatsapp');
 
-  // --- INITIALIZE PICKUP DATE (10 DAYS NOTICE RULE) ---
+  // --- MINIMUM PICKUP DATE (10 DAYS NOTICE RULE) ---
   function initPickupDateConstraint() {
     const today = new Date();
     today.setDate(today.getDate() + 10);
@@ -654,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentRecheio = RECHEIOS[state.recheio];
     const currentTopper = TOPPERS[state.topper];
 
-    // 1. Update 3D Materials in Real-Time
+    // 1. Update 3D Materials
     spongeMat.color.setHex(currentMassa.color);
     spongeMat.roughness = currentMassa.roughness;
 
@@ -662,11 +739,11 @@ document.addEventListener('DOMContentLoaded', () => {
     fillingMat.roughness = currentRecheio.roughness;
     fillingMat.metalness = currentRecheio.metalness;
 
-    // Smoothly scale cake group according to size
+    // Scale cake group smoothly
     const targetScale = currentSize.scale;
     cakeMasterGroup.scale.set(targetScale, targetScale, targetScale);
 
-    // 2. Slider & Ticks
+    // 2. Slider & Controls
     dimRange.value = state.sizeIndex;
     dimLabelName.textContent = currentSize.name;
     dimServingsText.textContent = currentSize.slices;
@@ -698,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (radio) radio.checked = isSel;
     });
 
-    // 5. Labels & Sensory Gauges
+    // 5. Labels & Gauges
     if (guideLabelMassa) guideLabelMassa.textContent = `Massa: ${currentMassa.name}`;
     if (guideLabelRecheio) guideLabelRecheio.textContent = `Recheio: ${currentRecheio.name}`;
 
@@ -772,18 +849,16 @@ document.addEventListener('DOMContentLoaded', () => {
     updateApp();
   });
 
-  // Toggle Slice Button
   btnToggleSlice.addEventListener('click', () => {
     state.cutView = !state.cutView;
     triggerSliceAnimation(state.cutView);
     updateApp();
   });
 
-  // Toggle Continuous 3D Orbit Rotation
   btnRotate3d.addEventListener('click', () => {
     state.isRotating = !state.isRotating;
     controls.autoRotate = state.isRotating;
-    controls.autoRotateSpeed = 2.4;
+    controls.autoRotateSpeed = 2.2;
     btnRotate3d.classList.toggle('active', state.isRotating);
   });
 
@@ -845,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // WhatsApp Order Submission
+  // WhatsApp Checkout
   btnSendWhatsapp.addEventListener('click', () => {
     const name = customerNameInput.value.trim() || 'Cliente';
     const pickupDate = pickupDateInput.value;
@@ -895,7 +970,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   function animate() {
     requestAnimationFrame(animate);
 
-    // Smooth lerp animation for slice pull-out / in
+    // Smooth lerp for slice pull-out and in
     sliceCurrentPos.lerp(sliceTargetPos, 0.08);
     sliceGroup.position.copy(sliceCurrentPos);
 
@@ -903,7 +978,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     renderer.render(scene, camera);
   }
 
-  // Initial call
+  // Initial render
   updateApp();
   animate();
 });
