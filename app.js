@@ -426,7 +426,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
 ✅ _Estou ciente da antecedência de 10 dias e do pagamento do sinal via PIX/Mercado Pago para reserva na agenda._`;
 
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/5584994114341?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/5584987723897?text=${encodedMessage}`, '_blank');
   });
 
   // Initial call

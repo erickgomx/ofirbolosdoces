@@ -23,7 +23,7 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
   - **Cálculo de Harmonia & Métricas Sensoriais:**
     - Indicador de *Equilíbrio de Sabores* e *Complexidade*.
     - Escolha de *Topo Simples (Incluso)* ou *Topo Especial 3D (+ R$ 35,00)*.
-  - **Checkout Integrado ao WhatsApp da Lucieda `(84) 99411-4341`:**
+  - **Checkout Integrado ao WhatsApp da Lucieda `(84) 98772-3897`:**
     - Modal de finalização com validação de data mínima de 10 dias de antecedência.
     - Mensagem formatada com cálculo automático do valor total e do sinal de 50%.
   - **Central de Políticas de Encomenda:**
@@ -38,7 +38,7 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
 3. **Topo Incluso:** O preço já inclui o topo de bolo simples. Topos especiais 3D possuem acréscimo.
 4. **Alterações:** Permitidas até 7 dias antes da data combinada.
 5. **Retirada Exclusiva:** Não trabalhamos com delivery; retiradas apenas em **Praia de Pipa / RN**.
-6. **Contato:** Atendimento direto com **Lucieda: (84) 99411-4341**.
+6. **Contato:** Atendimento direto com **Lucieda: (84) 98772-3897**.
 
 ---
 
