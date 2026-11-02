@@ -27,6 +27,7 @@
         <a href="#galeria" class="nav-item">Galeria</a>
         <a href="#politicas" class="nav-item" id="open-policies-btn">Políticas</a>
         <a href="#sobre" class="nav-item" id="open-about-btn">Sobre</a>
+        <a href="#personalizado" class="nav-item nav-item-special" id="open-custom-cake-nav">✨ Casamentos & Festas</a>
         <a href="#monte-seu-bolo" class="nav-item active">Monte Seu Bolo</a>
       </nav>
 
@@ -93,6 +94,26 @@
               <button class="size-pill" data-index="3">ARO 25 <small>R$285</small></button>
               <button class="size-pill" data-index="4">ARO 28 <small>R$365</small></button>
               <button class="size-pill" data-index="5">ARO 30 <small>R$410</small></button>
+            </div>
+
+            <!-- Botão Destaque: Bolo Personalizado & Casamento -->
+            <div class="custom-cake-cta-wrap">
+              <button type="button" class="btn-custom-event-cake" id="btn-custom-event-cake" aria-label="Solicitar orçamento para bolo personalizado ou de casamento">
+                <div class="custom-cta-icon-pill">💍</div>
+                <div class="custom-cta-text">
+                  <div class="custom-cta-header">
+                    <span class="custom-cta-title">Bolo Personalizado & Casamento</span>
+                    <span class="custom-cta-badge">Sob Consulta</span>
+                  </div>
+                  <p class="custom-cta-subtitle">Projetos exclusivos para Casamentos, 15 Anos, 2+ andares e ocasiões especiais</p>
+                </div>
+                <div class="custom-cta-action">
+                  <span>Solicitar</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </button>
             </div>
           </div>
         </div>
@@ -347,6 +368,17 @@
           </div>
         </div>
 
+        <!-- Custom Event Cake Shortcut in Summary -->
+        <div class="custom-event-summary-box">
+          <div class="custom-event-summary-content">
+            <span class="custom-sum-tag">💍 Projetos Especiais</span>
+            <p>Casamentos, 15 anos ou bolos de 2+ andares sob encomenda.</p>
+          </div>
+          <button type="button" class="custom-sum-btn" id="btn-open-custom-from-summary">
+            Solicitar Projeto &rarr;
+          </button>
+        </div>
+
         <!-- Price Section -->
         <div class="price-checkout-block">
           <div class="price-display-wrapper">
@@ -535,6 +567,160 @@
           <span>🌊 Praia de Pipa - RN</span>
           <span>✨ 100% Artesanal</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Bolo Personalizado & Casamento -->
+  <div class="modal-overlay" id="custom-cake-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card custom-cake-modal-card">
+      <button class="modal-close-btn" id="close-custom-cake-modal" aria-label="Fechar modal de bolo personalizado">✕</button>
+
+      <div class="modal-header">
+        <span class="modal-pretitle">Atelier Exclusivo • Alta Pâtisserie</span>
+        <h3 class="modal-title">Bolo Personalizado & Casamento</h3>
+        <p class="modal-desc">Projetos sob medida para grandes ocasiões em <strong>Praia de Pipa / RN</strong>: Casamentos, Bodas, Aniversários de 15 Anos e Celebrações Especiais.</p>
+      </div>
+
+      <div class="custom-cake-modal-body">
+        
+        <!-- Highlights -->
+        <div class="custom-features-grid">
+          <div class="custom-feature-item">
+            <span class="feat-icon">🎂</span>
+            <div class="feat-text">
+              <strong>2 ou mais Andares</strong>
+              <small>Estrutura segura e proporção áurea</small>
+            </div>
+          </div>
+          <div class="custom-feature-item">
+            <span class="feat-icon">🌸</span>
+            <div class="feat-text">
+              <strong>Flores & Botânica</strong>
+              <small>Flores naturais ou secas selecionadas</small>
+            </div>
+          </div>
+          <div class="custom-feature-item">
+            <span class="feat-icon">✨</span>
+            <div class="feat-text">
+              <strong>Acabamentos Nobres</strong>
+              <small>Folha de ouro, texturas e topos autorais</small>
+            </div>
+          </div>
+        </div>
+
+        <form id="custom-cake-form" class="custom-cake-form" onsubmit="return false;">
+          
+          <!-- Tipo de Evento -->
+          <div class="input-group">
+            <label class="group-label">Ocasião do Evento:</label>
+            <div class="event-type-pills" id="event-type-group">
+              <label class="event-pill active">
+                <input type="radio" name="custom-event-type" value="Casamento / Noivado" checked>
+                <span>💍 Casamento / Noivado</span>
+              </label>
+              <label class="event-pill">
+                <input type="radio" name="custom-event-type" value="15 Anos / Debutante">
+                <span>👑 15 Anos</span>
+              </label>
+              <label class="event-pill">
+                <input type="radio" name="custom-event-type" value="Bodas / Celebração Familiar">
+                <span>🕊️ Bodas</span>
+              </label>
+              <label class="event-pill">
+                <input type="radio" name="custom-event-type" value="Aniversário Especial">
+                <span>🎂 Aniversário Especial</span>
+              </label>
+              <label class="event-pill">
+                <input type="radio" name="custom-event-type" value="Evento Corporativo / Outro">
+                <span>✨ Evento Corporativo</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Convidados e Data -->
+          <div class="form-row-grid">
+            <div class="input-group">
+              <label for="custom-guests">Estimativa de Convidados / Fatias:</label>
+              <select id="custom-guests" class="custom-select">
+                <option value="30 a 50 pessoas">30 a 50 pessoas</option>
+                <option value="50 a 80 pessoas" selected>50 a 80 pessoas</option>
+                <option value="80 a 120 pessoas">80 a 120 pessoas</option>
+                <option value="120 a 180 pessoas">120 a 180 pessoas</option>
+                <option value="Mais de 180 pessoas">Mais de 180 pessoas</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="custom-date">Data Prevista do Evento:</label>
+              <input type="date" id="custom-date" required>
+            </div>
+          </div>
+
+          <!-- Estilo & Detalhes -->
+          <div class="input-group">
+            <label class="group-label">Estrutura & Detalhes Desejados (marque as preferências):</label>
+            <div class="style-tags-group">
+              <label class="style-tag">
+                <input type="checkbox" name="custom-style-tag" value="2 Andares" checked>
+                <span>🎂 2 Andares</span>
+              </label>
+              <label class="style-tag">
+                <input type="checkbox" name="custom-style-tag" value="3+ Andares">
+                <span>🏰 3+ Andares</span>
+              </label>
+              <label class="style-tag">
+                <input type="checkbox" name="custom-style-tag" value="Flores Naturais" checked>
+                <span>🌸 Flores Naturais</span>
+              </label>
+              <label class="style-tag">
+                <input type="checkbox" name="custom-style-tag" value="Espatulado Rústico">
+                <span>🌾 Espatulado Rústico</span>
+              </label>
+              <label class="style-tag">
+                <input type="checkbox" name="custom-style-tag" value="Folha de Ouro">
+                <span>✨ Folha de Ouro</span>
+              </label>
+              <label class="style-tag">
+                <input type="checkbox" name="custom-style-tag" value="Topo Personalizado 3D">
+                <span>🏷️ Topo 3D</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Nome do Cliente -->
+          <div class="input-group">
+            <label for="custom-client-name">Seu Nome Completo:</label>
+            <input type="text" id="custom-client-name" placeholder="Ex: Maria Carolina" required>
+          </div>
+
+          <!-- Observações / Ideias -->
+          <div class="input-group">
+            <label for="custom-notes">Ideias, Paleta de Cores ou Sabores Preferidos (opcional):</label>
+            <textarea id="custom-notes" rows="2" placeholder="Ex: Casamento na praia em Pipa no final da tarde, tons de branco e bege, preferência por massa branca e recheio de avelã..."></textarea>
+          </div>
+
+          <!-- Aviso de Antecedência para Casamentos -->
+          <div class="custom-notice-box">
+            <span class="notice-icon">⏱️</span>
+            <p><strong>Antecedência recomendada:</strong> Para casamentos e projetos de múltiplos andares, recomendamos solicitar com a maior antecedência possível para reserva na agenda de Lucieda.</p>
+          </div>
+
+          <!-- Botões de Ação -->
+          <div class="modal-actions">
+            <button type="button" class="whatsapp-send-btn wedding-gold-btn" id="btn-send-custom-whatsapp">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.2.662.589 1.22.771 1.393.858.173.086.274.072.375-.044.101-.116.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564.289.13.332.203c.043.072.043.419-.101.824z"/>
+              </svg>
+              <span>Solicitar Orçamento no WhatsApp</span>
+            </button>
+            <a href="https://wa.me/5584987723897?text=Ol%C3%A1%20Lucieda!%20Gostaria%20de%20conversar%20sobre%20um%20bolo%20personalizado%20para%20casamento%20%2F%20evento%20especial." target="_blank" rel="noopener noreferrer" class="direct-chat-link">
+              Falar diretamente no WhatsApp sem preencher &rarr;
+            </a>
+          </div>
+
+        </form>
+
       </div>
     </div>
   </div>

@@ -97,15 +97,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutModal = document.getElementById('checkout-modal');
   const policyModal = document.getElementById('policy-modal');
   const aboutModal = document.getElementById('about-modal');
+  const customCakeModal = document.getElementById('custom-cake-modal');
 
   const btnConcluirCriacao = document.getElementById('btn-concluir-criacao');
   const closeCheckoutModal = document.getElementById('close-checkout-modal');
   const closePolicyModal = document.getElementById('close-policy-modal');
   const closeAboutModal = document.getElementById('close-about-modal');
+  const closeCustomCakeModal = document.getElementById('close-custom-cake-modal');
 
   const openPoliciesBtn = document.getElementById('open-policies-btn');
   const openAboutBtn = document.getElementById('open-about-btn');
   const openPolicyModalInline = document.getElementById('open-policy-modal-inline');
+  const btnCustomEventCake = document.getElementById('btn-custom-event-cake');
+  const openCustomCakeNav = document.getElementById('open-custom-cake-nav');
+  const btnOpenCustomFromSummary = document.getElementById('btn-open-custom-from-summary');
 
   const modalSumSize = document.getElementById('modal-sum-size');
   const modalSumMassa = document.getElementById('modal-sum-massa');
@@ -118,6 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const orderNotesInput = document.getElementById('order-notes');
   const btnSendWhatsapp = document.getElementById('btn-send-whatsapp');
 
+  // Custom Wedding / Special Event Cake Elements
+  const btnSendCustomWhatsapp = document.getElementById('btn-send-custom-whatsapp');
+  const customDateInput = document.getElementById('custom-date');
+  const customGuestsSelect = document.getElementById('custom-guests');
+  const customClientNameInput = document.getElementById('custom-client-name');
+  const customNotesInput = document.getElementById('custom-notes');
+  const eventPills = document.querySelectorAll('.event-pill');
+
   // --- INITIALIZE MINIMUM PICKUP DATE (10 DAYS NOTICE RULE) ---
   function initPickupDateConstraint() {
     const today = new Date();
@@ -128,6 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const minDateStr = `${yyyy}-${mm}-${dd}`;
     pickupDateInput.min = minDateStr;
     pickupDateInput.value = minDateStr;
+
+    // Custom Wedding Date: default to 15 days ahead for larger events
+    if (customDateInput) {
+      const weddingDefault = new Date();
+      weddingDefault.setDate(weddingDefault.getDate() + 15);
+      const wYyyy = weddingDefault.getFullYear();
+      const wMm = String(weddingDefault.getMonth() + 1).padStart(2, '0');
+      const wDd = String(weddingDefault.getDate()).padStart(2, '0');
+      customDateInput.min = minDateStr;
+      customDateInput.value = `${wYyyy}-${wMm}-${wDd}`;
+    }
   }
   initPickupDateConstraint();
 
@@ -368,6 +392,37 @@ document.addEventListener('DOMContentLoaded', () => {
   closeCheckoutModal.addEventListener('click', () => closeModal(checkoutModal));
   closePolicyModal.addEventListener('click', () => closeModal(policyModal));
   closeAboutModal.addEventListener('click', () => closeModal(aboutModal));
+  if (closeCustomCakeModal) {
+    closeCustomCakeModal.addEventListener('click', () => closeModal(customCakeModal));
+  }
+
+  // Open Custom Cake Modal triggers
+  if (btnCustomEventCake) {
+    btnCustomEventCake.addEventListener('click', () => {
+      openModal(customCakeModal);
+    });
+  }
+
+  if (openCustomCakeNav) {
+    openCustomCakeNav.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(customCakeModal);
+    });
+  }
+
+  if (btnOpenCustomFromSummary) {
+    btnOpenCustomFromSummary.addEventListener('click', () => {
+      openModal(customCakeModal);
+    });
+  }
+
+  // Event Type Pills active state handler
+  eventPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      eventPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
 
   openPoliciesBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -386,11 +441,58 @@ document.addEventListener('DOMContentLoaded', () => {
     openModal(aboutModal);
   });
 
-  [checkoutModal, policyModal, aboutModal].forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal(modal);
-    });
+  [checkoutModal, policyModal, aboutModal, customCakeModal].forEach(modal => {
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    }
   });
+
+  // --- WHATSAPP CUSTOM WEDDING / SPECIAL EVENT GENERATOR ---
+  if (btnSendCustomWhatsapp) {
+    btnSendCustomWhatsapp.addEventListener('click', () => {
+      const clientName = (customClientNameInput && customClientNameInput.value.trim()) || 'Cliente Especial';
+      const eventDate = (customDateInput && customDateInput.value) || '';
+      const guests = (customGuestsSelect && customGuestsSelect.value) || '50 a 80 pessoas';
+      const notes = (customNotesInput && customNotesInput.value.trim()) || '';
+
+      // Selected Event Type
+      const activeTypeRadio = document.querySelector('input[name="custom-event-type"]:checked');
+      const eventType = activeTypeRadio ? activeTypeRadio.value : 'Casamento / Noivado';
+
+      // Selected Styles
+      const selectedStyles = [];
+      document.querySelectorAll('input[name="custom-style-tag"]:checked').forEach(cb => {
+        selectedStyles.push(cb.value);
+      });
+      const stylesText = selectedStyles.length > 0 ? selectedStyles.join(', ') : 'A definir no atendimento';
+
+      let formattedDate = eventDate;
+      if (eventDate && eventDate.includes('-')) {
+        const parts = eventDate.split('-');
+        formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+      }
+
+      const customMessage = 
+`✨ *SOLICITAÇÃO DE PROJETO: BOLO PERSONALIZADO & EVENTOS*
+*Ofir Bolos & Doces — Praia de Pipa / RN*
+---------------------------------------------
+Olá Lucieda! Gostaria de solicitar um orçamento para um projeto exclusivo sob medida:
+
+💍 *Ocasião / Evento:* ${eventType}
+👥 *Estimativa de Convidados:* ${guests}
+📅 *Data Prevista do Evento:* ${formattedDate || 'A definir'}
+🎂 *Estrutura & Detalhes:* ${stylesText}
+
+👤 *Nome do Cliente:* ${clientName}
+${notes ? `📝 *Ideias, Paleta de Cores e Referências:*\n"${notes}"\n` : ''}
+Gostaria de consultar sua disponibilidade de agenda para realizarmos esse projeto em Praia de Pipa! ✨`;
+
+      const encoded = encodeURIComponent(customMessage);
+      window.open(`https://wa.me/5584987723897?text=${encoded}`, '_blank');
+    });
+  }
 
   // --- WHATSAPP ORDER GENERATOR ---
   btnSendWhatsapp.addEventListener('click', () => {

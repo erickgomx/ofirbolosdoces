@@ -141,6 +141,22 @@ body {
   border-radius: 2px;
 }
 
+.nav-item-special {
+  color: var(--gold-dark);
+  font-weight: 600;
+  background: rgba(184, 134, 11, 0.08);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 134, 11, 0.25);
+  transition: all 0.25s ease;
+}
+
+.nav-item-special:hover {
+  background: rgba(184, 134, 11, 0.16);
+  color: var(--obsidian);
+  transform: translateY(-1px);
+}
+
 .header-actions {
   display: flex;
   align-items: center;
@@ -415,6 +431,106 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 .size-pill.active small {
   color: var(--gold-dark);
   font-weight: 600;
+}
+
+/* ==========================================================================
+   ESPECIAL: BOLO PERSONALIZADO & CASAMENTO (SECTION 01)
+   ========================================================================== */
+.custom-cake-cta-wrap {
+  margin-top: 0.95rem;
+}
+
+.btn-custom-event-cake {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(250, 245, 237, 0.92));
+  border: 1.5px dashed rgba(184, 134, 11, 0.45);
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s var(--ease-smooth);
+  box-shadow: 0 4px 14px rgba(184, 134, 11, 0.08);
+}
+
+.btn-custom-event-cake:hover {
+  border-color: var(--gold-primary);
+  border-style: solid;
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(184, 134, 11, 0.18);
+}
+
+.custom-cta-icon-pill {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fdf8ee, #f3e6cf);
+  border: 1px solid rgba(184, 134, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.custom-cta-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.custom-cta-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.custom-cta-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.custom-cta-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(184, 134, 11, 0.14);
+  color: var(--gold-dark);
+}
+
+.custom-cta-subtitle {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.custom-cta-action {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.btn-custom-event-cake:hover .custom-cta-action {
+  transform: translateX(3px);
+  color: var(--obsidian);
 }
 
 /* 02. Massa Cards */
@@ -992,6 +1108,58 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   margin-top: 4px;
 }
 
+/* Custom Event Cake Shortcut in Summary */
+.custom-event-summary-box {
+  background: linear-gradient(135deg, rgba(253, 248, 238, 0.95), rgba(255, 255, 255, 0.9));
+  border: 1px solid rgba(184, 134, 11, 0.25);
+  border-radius: 14px;
+  padding: 0.75rem 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.custom-event-summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.custom-sum-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.custom-event-summary-content p {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.custom-sum-btn {
+  background: transparent;
+  border: 1px solid var(--gold-dark);
+  color: var(--gold-dark);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.custom-sum-btn:hover {
+  background: var(--gold-dark);
+  color: #ffffff;
+}
+
 /* Price & CTA Button */
 .price-checkout-block {
   display: flex;
@@ -1395,6 +1563,229 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 }
 
 /* ==========================================================================
+   MODAL: BOLO PERSONALIZADO & CASAMENTO
+   ========================================================================== */
+.custom-cake-modal-card {
+  max-width: 660px;
+}
+
+.custom-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.custom-feature-item {
+  background: #fbf9f5;
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 0.85rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+}
+
+.feat-icon {
+  font-size: 1.4rem;
+}
+
+.feat-text strong {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.feat-text small {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.25;
+}
+
+.custom-cake-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.group-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* Event Type Pills */
+.event-type-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.event-pill {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.event-pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.event-pill span {
+  display: inline-block;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.event-pill:hover span {
+  border-color: var(--gold-primary);
+  color: var(--text-main);
+}
+
+.event-pill.active span,
+.event-pill input:checked ~ span {
+  background: #1c1a18;
+  border-color: #1c1a18;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Row Grid */
+.form-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.custom-select {
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.75rem 0.95rem;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--text-main);
+  background: #ffffff;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.custom-select:focus {
+  border-color: var(--gold-primary);
+}
+
+/* Style Tags Group */
+.style-tags-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.style-tag {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.style-tag input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.style-tag span {
+  display: inline-block;
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.style-tag:hover span {
+  border-color: var(--gold-primary);
+}
+
+.style-tag input:checked ~ span {
+  background: rgba(184, 134, 11, 0.12);
+  border-color: var(--gold-primary);
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+/* Custom Notice Box */
+.custom-notice-box {
+  background: #fdf8ee;
+  border-left: 3px solid var(--gold-primary);
+  border-radius: 0 12px 12px 0;
+  padding: 0.75rem 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.notice-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.custom-notice-box p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.custom-notice-box strong {
+  color: var(--gold-dark);
+}
+
+/* Wedding Gold Button */
+.wedding-gold-btn {
+  background: linear-gradient(135deg, #1f1d1b, #332d27);
+  box-shadow: 0 10px 24px rgba(31, 29, 27, 0.25);
+  border: 1px solid rgba(184, 134, 11, 0.35);
+}
+
+.wedding-gold-btn:hover {
+  background: linear-gradient(135deg, #2b2723, #443c34);
+  box-shadow: 0 14px 28px rgba(31, 29, 27, 0.35);
+}
+
+.direct-chat-link {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gold-dark);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 0.65rem;
+  transition: color 0.2s ease;
+}
+
+.direct-chat-link:hover {
+  color: var(--obsidian);
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN (TABLET & MOBILE)
    ========================================================================== */
 @media (max-width: 1200px) {
@@ -1473,5 +1864,24 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 
   .modal-card {
     padding: 1.5rem;
+  }
+
+  .custom-features-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .form-row-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-custom-event-cake {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .custom-cta-icon-pill {
+    width: 36px;
+    height: 36px;
+    font-size: 1.15rem;
   }
 }
