@@ -218,7 +218,7 @@
 
       </section>
 
-      <!-- CENTER: Real High-Definition Layered Cake Showcase -->
+      <!-- CENTER: Real High-Definition Cake Showcase -->
       <section class="cake-showcase-stage" aria-label="Visualização fotográfica do bolo">
         <div class="cake-view-container" id="cake-interactive-box">
           
@@ -226,41 +226,18 @@
           <div class="ambient-glow"></div>
           <div class="table-shadow"></div>
 
-          <!-- Real Multi-Layer Cake Assembly -->
+          <!-- Real Cake Image -->
           <div class="real-cake-wrapper" id="real-cake-wrapper">
-            <!-- 1. Pedestal Stand Base (Base fixa: tamanho constante) -->
-            <div class="cake-base-fixed" id="cake-base-fixed">
-              <img src="assets/base.png" alt="Base do Bolo" id="layer-base" class="cake-layer layer-base">
-            </div>
-
-            <!-- 2. Scalable Cake Group (Bolo escalável: aumenta conforme o aro) -->
-            <div class="cake-scalable-group" id="cake-scalable-group">
-              <!-- Whole Cake (for "Bolo Inteiro" mode) -->
-              <img src="assets/bolo_completo.png" alt="Bolo Completo" id="layer-completo" class="cake-layer layer-completo">
-
-              <!-- Cut Cake Body (for "Ver Fatia" mode) -->
-              <img src="assets/bolo_cortado_branco.png" alt="Bolo Cortado" id="layer-cortado" class="cake-layer layer-cortado active">
-
-              <!-- Separate Slice Layer -->
-              <img src="assets/fatia_branco.png" alt="Fatia do Bolo" id="layer-fatia" class="cake-layer layer-fatia active">
-            </div>
+            <img src="assets/bolo.png" alt="Bolo Artesanal Ofir Doceria" id="main-cake-image" class="main-cake-image">
           </div>
 
-          <!-- Floating Interactive Pill Buttons -->
+          <!-- Floating Interactive Action Button -->
           <div class="floating-view-actions">
-            <button class="view-action-pill" id="btn-rotate-3d" title="Alternar visão / perspectiva suave">
+            <button class="view-action-pill" id="btn-rotate-3d" title="Alternar rotação suave">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
               </svg>
               <span id="rotate-btn-text">Girar Perspectiva</span>
-            </button>
-
-            <button class="view-action-pill active" id="btn-toggle-slice" title="Alternar fatia aberta / bolo inteiro">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2l10 6-10 6L2 8l10-6z"/>
-                <path d="M2 14l10 6 10-6"/>
-              </svg>
-              <span id="slice-toggle-text">Ver Fatia</span>
             </button>
           </div>
 

@@ -17,15 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const MASSAS = {
     'branco': {
       name: 'Branco (ovos)',
-      desc: 'Massa amanteigada fofa e delicada',
-      cortado: 'assets/bolo_cortado_branco.png',
-      fatia: 'assets/fatia_branco.png'
+      desc: 'Massa amanteigada fofa e delicada'
     },
     'chocolate': {
       name: 'Chocolate',
-      desc: 'Cacau nobre aveludado e intenso',
-      cortado: 'assets/bolo_cortado_chocolate.png',
-      fatia: 'assets/fatia_chocolate.png'
+      desc: 'Cacau nobre aveludado e intenso'
     }
   };
 
@@ -50,21 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
     massa: 'branco',
     recheio: 'avela',
     topper: 'simples',
-    cutView: true,
     isSwaying: false
   };
 
   // --- DOM ELEMENTS ---
   const cakeInteractiveBox = document.getElementById('cake-interactive-box');
   const realCakeWrapper = document.getElementById('real-cake-wrapper');
-  const cakeBaseFixed = document.getElementById('cake-base-fixed');
-  const cakeScalableGroup = document.getElementById('cake-scalable-group');
-  
-  // Layer Elements
-  const layerBase = document.getElementById('layer-base');
-  const layerCompleto = document.getElementById('layer-completo');
-  const layerCortado = document.getElementById('layer-cortado');
-  const layerFatia = document.getElementById('layer-fatia');
+  const mainCakeImage = document.getElementById('main-cake-image');
 
   const dimRange = document.getElementById('dimensions-range');
   const dimPrevBtn = document.getElementById('dim-prev');
@@ -92,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const btnRotate3d = document.getElementById('btn-rotate-3d');
   const rotateBtnText = document.getElementById('rotate-btn-text');
-  const btnToggleSlice = document.getElementById('btn-toggle-slice');
-  const sliceToggleText = document.getElementById('slice-toggle-text');
 
   // Modals
   const checkoutModal = document.getElementById('checkout-modal');
@@ -163,33 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentRecheio = RECHEIOS[state.recheio];
     const currentTopper = TOPPERS[state.topper];
 
-    // 1. Update Layer Images based on selected Massa
-    if (layerCortado.getAttribute('src') !== currentMassa.cortado) {
-      layerCortado.src = currentMassa.cortado;
-    }
-    if (layerFatia.getAttribute('src') !== currentMassa.fatia) {
-      layerFatia.src = currentMassa.fatia;
-    }
-
-    // 2. Toggle Layers based on Slice vs Whole Cake
-    if (state.cutView) {
-      // Cut View: Display cake body with cutaway + animated separate slice
-      layerCompleto.classList.remove('active');
-      layerCortado.classList.add('active');
-      layerFatia.classList.add('active');
-    } else {
-      // Whole Cake View: Display complete uncut cake, hide cut and slice
-      layerCompleto.classList.add('active');
-      layerCortado.classList.remove('active');
-      layerFatia.classList.remove('active');
-    }
-
-    // Smoothly scale cake according to selected size (base stays unchanged)
-    if (cakeScalableGroup) {
-      cakeScalableGroup.style.transform = `scale(${currentSize.scale})`;
-    }
-
-    // 3. Slider & Controls
+    // 1. Slider & Controls (imagem em exibicao fotografica fixa nesta fase)
     dimRange.value = state.sizeIndex;
     dimLabelName.textContent = currentSize.name;
     dimServingsText.textContent = currentSize.slices;
@@ -238,9 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     finalPriceValue.textContent = totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     depositNoteText.innerHTML = `Sinal de 50%: <strong>R$ ${depositPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong> (restante na entrega)`;
 
-    // 8. Toggle Slice Button State
-    btnToggleSlice.classList.toggle('active', state.cutView);
-    sliceToggleText.textContent = state.cutView ? 'Ver Fatia' : 'Bolo Inteiro';
+    
   }
 
   // --- SUBTLE 3D PARALLAX TILT ON MOUSE MOVE ---
@@ -353,10 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateApp();
   });
 
-  btnToggleSlice.addEventListener('click', () => {
-    state.cutView = !state.cutView;
-    updateApp();
-  });
+  
 
   // --- MODALS ---
   function openModal(modal) {
