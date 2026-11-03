@@ -89,12 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const policyModal = document.getElementById('policy-modal');
   const aboutModal = document.getElementById('about-modal');
   const customCakeModal = document.getElementById('custom-cake-modal');
+  const galeriaLightboxModal = document.getElementById('galeria-lightbox-modal');
+  const adminLoginModal = document.getElementById('admin-login-modal');
+  const adminPanelModal = document.getElementById('admin-panel-modal');
 
   const btnConcluirCriacao = document.getElementById('btn-concluir-criacao');
   const closeCheckoutModal = document.getElementById('close-checkout-modal');
   const closePolicyModal = document.getElementById('close-policy-modal');
   const closeAboutModal = document.getElementById('close-about-modal');
   const closeCustomCakeModal = document.getElementById('close-custom-cake-modal');
+  const closeLightboxModal = document.getElementById('close-lightbox-modal');
+  const closeAdminLoginModal = document.getElementById('close-admin-login-modal');
+  const closeAdminPanelModal = document.getElementById('close-admin-panel-modal');
 
   const openPoliciesBtn = document.getElementById('open-policies-btn');
   const openAboutBtn = document.getElementById('open-about-btn');
@@ -432,7 +438,17 @@ document.addEventListener('DOMContentLoaded', () => {
     openModal(aboutModal);
   });
 
-  [checkoutModal, policyModal, aboutModal, customCakeModal].forEach(modal => {
+  if (closeLightboxModal) {
+    closeLightboxModal.addEventListener('click', () => closeModal(galeriaLightboxModal));
+  }
+  if (closeAdminLoginModal) {
+    closeAdminLoginModal.addEventListener('click', () => closeModal(adminLoginModal));
+  }
+  if (closeAdminPanelModal) {
+    closeAdminPanelModal.addEventListener('click', () => closeModal(adminPanelModal));
+  }
+
+  [checkoutModal, policyModal, aboutModal, customCakeModal, galeriaLightboxModal, adminLoginModal, adminPanelModal].forEach(modal => {
     if (modal) {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal(modal);
@@ -518,6 +534,682 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/5584987723897?text=${encodedMessage}`, '_blank');
   });
+
+  // --- DYNAMIC SIZE PILLS LABEL UPDATE ---
+  function updateSizePillsLabels() {
+    sizePills.forEach((pill, idx) => {
+      if (SIZES[idx]) {
+        pill.innerHTML = `${SIZES[idx].name} <small>R$${SIZES[idx].price}</small>`;
+      }
+    });
+  }
+
+  // --- MOBILE DRAWER NAVIGATION (HAMBURGER MENU) ---
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileNavDrawer = document.getElementById('mobile-nav-drawer');
+  const mobileDrawerBackdrop = document.getElementById('mobile-drawer-backdrop');
+  const drawerCloseBtn = document.getElementById('drawer-close-btn');
+  const drawerCustomCakeBtn = document.getElementById('drawer-custom-cake-btn');
+  const drawerPoliciesBtn = document.getElementById('drawer-policies-btn');
+  const drawerAboutBtn = document.getElementById('drawer-about-btn');
+  const drawerAdminBtn = document.getElementById('drawer-admin-btn');
+
+  function openMobileDrawer() {
+    if (!mobileNavDrawer) return;
+    mobileNavDrawer.classList.add('active');
+    if (mobileDrawerBackdrop) mobileDrawerBackdrop.classList.add('active');
+    if (mobileMenuToggle) {
+      mobileMenuToggle.classList.add('active');
+      mobileMenuToggle.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileDrawer() {
+    if (!mobileNavDrawer) return;
+    mobileNavDrawer.classList.remove('active');
+    if (mobileDrawerBackdrop) mobileDrawerBackdrop.classList.remove('active');
+    if (mobileMenuToggle) {
+      mobileMenuToggle.classList.remove('active');
+      mobileMenuToggle.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+  }
+
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (mobileNavDrawer.classList.contains('active')) {
+        closeMobileDrawer();
+      } else {
+        openMobileDrawer();
+      }
+    });
+  }
+
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeMobileDrawer);
+  if (mobileDrawerBackdrop) mobileDrawerBackdrop.addEventListener('click', closeMobileDrawer);
+
+  document.querySelectorAll('.mobile-nav-drawer .drawer-item[data-action="close"]').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMobileDrawer();
+    });
+  });
+
+  if (drawerCustomCakeBtn) {
+    drawerCustomCakeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileDrawer();
+      openModal(customCakeModal);
+    });
+  }
+
+  if (drawerPoliciesBtn) {
+    drawerPoliciesBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileDrawer();
+      openModal(policyModal);
+    });
+  }
+
+  if (drawerAboutBtn) {
+    drawerAboutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileDrawer();
+      openModal(aboutModal);
+    });
+  }
+
+  // --- GALERIA DO ATELIER ---
+  const galeriaGrid = document.getElementById('galeria-grid');
+  const galeriaFilters = document.getElementById('galeria-filters');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCategory = document.getElementById('lightbox-category');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxWhatsappOrderBtn = document.getElementById('lightbox-whatsapp-order-btn');
+
+  const INITIAL_CURATED_PHOTOS = [
+    {
+      id: 'foto-1',
+      titulo: 'Bolo Casamento Clássico Floral',
+      categoria: 'Casamento',
+      imagem_url: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80',
+      descricao: 'Cobertura acetinada com flores naturais e recheio refinado de ninho e morangos frescos.'
+    },
+    {
+      id: 'foto-2',
+      titulo: 'Bolo Rústico Boho Chic 15 Anos',
+      categoria: '15 Anos',
+      imagem_url: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=800&q=80',
+      descricao: 'Massa cacau nobre aveludada com ganache meio amargo e flores desidratadas.'
+    },
+    {
+      id: 'foto-3',
+      titulo: 'Bolo Redução de Maracujá Pipa',
+      categoria: 'Aniversário',
+      imagem_url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80',
+      descricao: 'Textura acetinada em anéis artesanais com redução pura de maracujá e equilíbrio cítrico.'
+    },
+    {
+      id: 'foto-4',
+      titulo: 'Semi Naked Cake Pipa Beach',
+      categoria: 'Especiais',
+      imagem_url: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80',
+      descricao: 'Visual rústico refinado ideal para eventos e mini-weddings à beira-mar em Praia de Pipa.'
+    }
+  ];
+
+  let galeriaList = [...INITIAL_CURATED_PHOTOS];
+  let activeGaleriaFilter = 'all';
+
+  function renderGaleriaGrid() {
+    if (!galeriaGrid) return;
+
+    const filtered = activeGaleriaFilter === 'all'
+      ? galeriaList
+      : galeriaList.filter(item => item.categoria === activeGaleriaFilter);
+
+    if (filtered.length === 0) {
+      galeriaGrid.innerHTML = `
+        <div class="galeria-empty-state">
+          <p>Nenhuma criação cadastrada nesta categoria no momento.</p>
+        </div>
+      `;
+      return;
+    }
+
+    galeriaGrid.innerHTML = filtered.map(item => `
+      <article class="galeria-card" data-id="${item.id}">
+        <div class="galeria-img-container">
+          <img src="${item.imagem_url}" alt="${item.titulo}" class="galeria-card-img" loading="lazy">
+          <span class="galeria-category-tag">${item.categoria || 'Especial'}</span>
+        </div>
+        <div class="galeria-card-body">
+          <h3 class="galeria-card-title">${item.titulo}</h3>
+          <p class="galeria-card-desc">${item.descricao || ''}</p>
+          <div class="galeria-card-action">
+            <span>Ver detalhes</span>
+            <span>&rarr;</span>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    galeriaGrid.querySelectorAll('.galeria-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        const item = galeriaList.find(x => String(x.id) === String(id));
+        if (item) openGaleriaLightbox(item);
+      });
+    });
+  }
+
+  function openGaleriaLightbox(item) {
+    if (!galeriaLightboxModal) return;
+    lightboxImg.src = item.imagem_url;
+    lightboxCategory.textContent = item.categoria || 'Atelier';
+    lightboxTitle.textContent = item.titulo;
+    lightboxDesc.textContent = item.descricao || 'Criação artesanal exclusiva da Ofir Doceria sob encomenda em Praia de Pipa / RN.';
+
+    if (lightboxWhatsappOrderBtn) {
+      lightboxWhatsappOrderBtn.onclick = () => {
+        const msg = `Olá Lucieda! Vi a foto do bolo "*${item.titulo}*" na galeria do site e gostaria de saber sobre valores e disponibilidade para o meu evento em Praia de Pipa! ✨`;
+        window.open(`https://wa.me/5584987723897?text=${encodeURIComponent(msg)}`, '_blank');
+      };
+    }
+
+    openModal(galeriaLightboxModal);
+  }
+
+  if (galeriaFilters) {
+    galeriaFilters.querySelectorAll('.galeria-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        galeriaFilters.querySelectorAll('.galeria-filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeGaleriaFilter = pill.getAttribute('data-filter') || 'all';
+        renderGaleriaGrid();
+      });
+    });
+  }
+
+  async function loadGaleria() {
+    if (window.OfirSupabase) {
+      try {
+        const dbItems = await window.OfirSupabase.fetchGallery();
+        if (dbItems && Array.isArray(dbItems) && dbItems.length > 0) {
+          galeriaList = dbItems;
+        }
+      } catch (e) {
+        console.warn('[Galeria] Usando itens iniciais:', e);
+      }
+    }
+    renderGaleriaGrid();
+  }
+
+  // --- ADMIN SYSTEM & SUPABASE MODALS ---
+  const headerAdminBtn = document.getElementById('header-admin-btn');
+  const footerAdminBtn = document.getElementById('footer-admin-btn');
+  const adminTopBanner = document.getElementById('admin-top-banner');
+  const btnOpenAdminDashboard = document.getElementById('btn-open-admin-dashboard');
+  const btnAdminLogout = document.getElementById('btn-admin-logout');
+  const btnPanelLogout = document.getElementById('btn-panel-logout');
+
+  // Login
+  const adminLoginForm = document.getElementById('admin-login-form');
+  const adminLoginEmail = document.getElementById('admin-login-email');
+  const adminLoginPassword = document.getElementById('admin-login-password');
+  const adminLoginMsg = document.getElementById('admin-login-msg');
+  const btnAdminSubmitLogin = document.getElementById('btn-admin-submit-login');
+
+  // Tabs
+  const adminTabBtns = document.querySelectorAll('.admin-tab-btn');
+  const adminTabContents = document.querySelectorAll('.admin-tab-content');
+
+  // Preços
+  const pricesEditorGrid = document.getElementById('prices-editor-grid');
+  const adminPriceTopper = document.getElementById('admin-price-topper');
+  const btnSavePrices = document.getElementById('btn-save-prices');
+  const pricesSaveStatus = document.getElementById('prices-save-status');
+
+  // Upload Galeria
+  const uploadDropzone = document.getElementById('upload-dropzone');
+  const galeriaFileInput = document.getElementById('galeria-file-input');
+  const dropzoneEmpty = document.getElementById('dropzone-empty');
+  const dropzonePreview = document.getElementById('dropzone-preview');
+  const previewImg = document.getElementById('preview-img');
+  const previewFilename = document.getElementById('preview-filename');
+  const previewSizeBadge = document.getElementById('preview-size-badge');
+  const btnRemovePreview = document.getElementById('btn-remove-preview');
+  const uploadFotoTitulo = document.getElementById('upload-foto-titulo');
+  const uploadFotoCategoria = document.getElementById('upload-foto-categoria');
+  const uploadFotoDesc = document.getElementById('upload-foto-desc');
+  const btnSubmitUploadFoto = document.getElementById('btn-submit-upload-foto');
+  const uploadSaveStatus = document.getElementById('upload-save-status');
+  const adminGaleriaItems = document.getElementById('admin-galeria-items');
+
+  // Config Supabase
+  const cfgSupabaseUrl = document.getElementById('cfg-supabase-url');
+  const cfgSupabaseKey = document.getElementById('cfg-supabase-key');
+  const btnSaveSupabaseConfig = document.getElementById('btn-save-supabase-config');
+  const supabaseStatusIndicator = document.getElementById('supabase-status-indicator');
+  const supabaseStatusText = document.getElementById('supabase-status-text');
+
+  let currentAdminSession = null;
+  let stagedUploadFile = null;
+
+  function setAdminAuthState(session) {
+    currentAdminSession = session;
+    if (session) {
+      if (adminTopBanner) adminTopBanner.style.display = 'block';
+    } else {
+      if (adminTopBanner) adminTopBanner.style.display = 'none';
+    }
+  }
+
+  function handleAdminAccessClick() {
+    closeMobileDrawer();
+    if (currentAdminSession) {
+      openAdminPanel();
+    } else {
+      openModal(adminLoginModal);
+    }
+  }
+
+  if (headerAdminBtn) headerAdminBtn.addEventListener('click', handleAdminAccessClick);
+  if (drawerAdminBtn) {
+    drawerAdminBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleAdminAccessClick();
+    });
+  }
+  if (footerAdminBtn) footerAdminBtn.addEventListener('click', handleAdminAccessClick);
+  if (btnOpenAdminDashboard) btnOpenAdminDashboard.addEventListener('click', openAdminPanel);
+
+  function openAdminPanel() {
+    renderPricesEditor();
+    renderAdminGaleriaList();
+    setupSupabaseConfigFields();
+    openModal(adminPanelModal);
+  }
+
+  // Admin Login Handler
+  if (adminLoginForm) {
+    adminLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = adminLoginEmail.value.trim();
+      const password = adminLoginPassword.value;
+
+      btnAdminSubmitLogin.disabled = true;
+      btnAdminSubmitLogin.querySelector('span').textContent = 'Validando acesso...';
+      adminLoginMsg.style.display = 'none';
+      adminLoginMsg.className = 'admin-auth-msg';
+
+      try {
+        if (!window.OfirSupabase) throw new Error('Cliente Supabase não carregado.');
+        const res = await window.OfirSupabase.signInAdmin(email, password);
+        setAdminAuthState(res.session);
+
+        adminLoginMsg.textContent = '✓ Login efetuado com sucesso!';
+        adminLoginMsg.className = 'admin-auth-msg success';
+        adminLoginMsg.style.display = 'block';
+
+        setTimeout(() => {
+          closeModal(adminLoginModal);
+          openAdminPanel();
+        }, 600);
+      } catch (err) {
+        adminLoginMsg.textContent = err.message === 'Invalid login credentials' 
+          ? 'E-mail ou senha incorretos. Verifique suas credenciais no Supabase.'
+          : `Erro de login: ${err.message || 'Falha na autenticação'}`;
+        adminLoginMsg.className = 'admin-auth-msg error';
+        adminLoginMsg.style.display = 'block';
+      } finally {
+        btnAdminSubmitLogin.disabled = false;
+        btnAdminSubmitLogin.querySelector('span').textContent = 'Entrar no Painel';
+      }
+    });
+  }
+
+  async function handleAdminLogout() {
+    if (window.OfirSupabase) {
+      try {
+        await window.OfirSupabase.signOutAdmin();
+      } catch (e) {
+        console.warn('Erro ao sair:', e);
+      }
+    }
+    setAdminAuthState(null);
+    closeModal(adminPanelModal);
+  }
+
+  if (btnAdminLogout) btnAdminLogout.addEventListener('click', handleAdminLogout);
+  if (btnPanelLogout) btnPanelLogout.addEventListener('click', handleAdminLogout);
+
+  // Tab switching
+  adminTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      adminTabBtns.forEach(b => b.classList.remove('active'));
+      adminTabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      const tabId = btn.getAttribute('data-tab');
+      const targetContent = document.getElementById(tabId);
+      if (targetContent) targetContent.classList.add('active');
+
+      if (tabId === 'tab-galeria') {
+        renderAdminGaleriaList();
+      }
+    });
+  });
+
+  // Render Prices Editor
+  function renderPricesEditor() {
+    if (!pricesEditorGrid) return;
+    pricesEditorGrid.innerHTML = SIZES.map(size => `
+      <div class="price-edit-item">
+        <div class="price-edit-item-header">
+          <strong>${size.name}</strong>
+          <span>${size.slices} (${size.diameter})</span>
+        </div>
+        <div class="input-currency-wrap">
+          <span>R$</span>
+          <input type="number" min="10" step="1" id="input-price-${size.id}" value="${size.price}">
+        </div>
+      </div>
+    `).join('');
+
+    if (adminPriceTopper && TOPPERS['3d']) {
+      adminPriceTopper.value = TOPPERS['3d'].extra;
+    }
+  }
+
+  // Save Prices
+  if (btnSavePrices) {
+    btnSavePrices.addEventListener('click', async () => {
+      btnSavePrices.disabled = true;
+      btnSavePrices.querySelector('span').textContent = 'Salvando preços...';
+      pricesSaveStatus.textContent = '';
+      pricesSaveStatus.className = 'admin-save-status';
+
+      try {
+        SIZES.forEach(size => {
+          const inp = document.getElementById(`input-price-${size.id}`);
+          if (inp && inp.value) {
+            size.price = Number(inp.value);
+          }
+        });
+
+        if (adminPriceTopper && adminPriceTopper.value) {
+          TOPPERS['3d'].extra = Number(adminPriceTopper.value);
+          TOPPERS['3d'].name = `Especial 3D (+ R$ ${TOPPERS['3d'].extra.toFixed(2).replace('.', ',')})`;
+        }
+
+        if (window.OfirSupabase) {
+          await window.OfirSupabase.savePrices(SIZES);
+        }
+
+        updateSizePillsLabels();
+        updateApp();
+
+        pricesSaveStatus.textContent = '✓ Preços atualizados no site e no Supabase!';
+        pricesSaveStatus.className = 'admin-save-status success';
+      } catch (err) {
+        pricesSaveStatus.textContent = `Erro ao salvar: ${err.message || 'Falha na conexão'}`;
+        pricesSaveStatus.className = 'admin-save-status error';
+      } finally {
+        btnSavePrices.disabled = false;
+        btnSavePrices.querySelector('span').textContent = 'Salvar Alterações de Preço';
+      }
+    });
+  }
+
+  // Upload Dropzone & Automatic Client-side Compression
+  function setupUploadDropzone() {
+    if (!uploadDropzone || !galeriaFileInput) return;
+
+    uploadDropzone.addEventListener('click', () => {
+      galeriaFileInput.click();
+    });
+
+    uploadDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadDropzone.classList.add('dragover');
+    });
+
+    uploadDropzone.addEventListener('dragleave', () => {
+      uploadDropzone.classList.remove('dragover');
+    });
+
+    uploadDropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadDropzone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processSelectedPhoto(e.dataTransfer.files[0]);
+      }
+    });
+
+    galeriaFileInput.addEventListener('change', () => {
+      if (galeriaFileInput.files && galeriaFileInput.files[0]) {
+        processSelectedPhoto(galeriaFileInput.files[0]);
+      }
+    });
+
+    if (btnRemovePreview) {
+      btnRemovePreview.addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetUploadDropzone();
+      });
+    }
+  }
+
+  async function processSelectedPhoto(file) {
+    if (!file.type.startsWith('image/')) {
+      alert('Selecione um arquivo de foto (JPEG, PNG ou WEBP).');
+      return;
+    }
+
+    dropzoneEmpty.style.display = 'none';
+    dropzonePreview.style.display = 'flex';
+    previewFilename.textContent = file.name;
+    previewSizeBadge.textContent = 'Otimizando...';
+
+    // Show preview thumbnail
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImg.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Auto-compress in background
+    if (window.OfirSupabase && window.OfirSupabase.compressImage) {
+      try {
+        const compressed = await window.OfirSupabase.compressImage(file);
+        stagedUploadFile = compressed;
+        const origKb = (file.size / 1024).toFixed(0);
+        const optKb = (compressed.size / 1024).toFixed(0);
+        previewSizeBadge.textContent = `${origKb}KB ➔ ${optKb}KB (Otimizado)`;
+      } catch (err) {
+        stagedUploadFile = file;
+        previewSizeBadge.textContent = `${(file.size / 1024).toFixed(0)}KB`;
+      }
+    } else {
+      stagedUploadFile = file;
+      previewSizeBadge.textContent = `${(file.size / 1024).toFixed(0)}KB`;
+    }
+  }
+
+  function resetUploadDropzone() {
+    stagedUploadFile = null;
+    galeriaFileInput.value = '';
+    dropzoneEmpty.style.display = 'flex';
+    dropzonePreview.style.display = 'none';
+    previewImg.src = '';
+  }
+
+  // Upload Photo to Supabase
+  if (btnSubmitUploadFoto) {
+    btnSubmitUploadFoto.addEventListener('click', async () => {
+      if (!stagedUploadFile) {
+        alert('Por favor, selecione uma imagem para a foto do bolo.');
+        return;
+      }
+      const title = uploadFotoTitulo.value.trim();
+      if (!title) {
+        alert('Por favor, informe o título do bolo.');
+        uploadFotoTitulo.focus();
+        return;
+      }
+
+      btnSubmitUploadFoto.disabled = true;
+      btnSubmitUploadFoto.querySelector('span').textContent = 'Otimizando e enviando foto...';
+      uploadSaveStatus.textContent = '';
+      uploadSaveStatus.className = 'admin-save-status';
+
+      try {
+        if (!window.OfirSupabase) throw new Error('Cliente Supabase não carregado.');
+
+        await window.OfirSupabase.uploadGalleryPhoto(stagedUploadFile, {
+          title: title,
+          category: uploadFotoCategoria.value,
+          description: uploadFotoDesc.value
+        });
+
+        uploadSaveStatus.textContent = '✓ Foto publicada com sucesso no portfólio!';
+        uploadSaveStatus.className = 'admin-save-status success';
+
+        resetUploadDropzone();
+        uploadFotoTitulo.value = '';
+        uploadFotoDesc.value = '';
+
+        await loadGaleria();
+        renderAdminGaleriaList();
+      } catch (err) {
+        uploadSaveStatus.textContent = `Erro ao publicar foto: ${err.message || 'Falha no envio'}`;
+        uploadSaveStatus.className = 'admin-save-status error';
+      } finally {
+        btnSubmitUploadFoto.disabled = false;
+        btnSubmitUploadFoto.querySelector('span').textContent = 'Publicar Foto na Galeria';
+      }
+    });
+  }
+
+  // Render Admin Gallery List (with deletion)
+  function renderAdminGaleriaList() {
+    if (!adminGaleriaItems) return;
+    if (galeriaList.length === 0) {
+      adminGaleriaItems.innerHTML = '<p class="tab-subtext">Nenhuma foto no portfólio ainda.</p>';
+      return;
+    }
+
+    adminGaleriaItems.innerHTML = galeriaList.map(item => `
+      <div class="admin-photo-item" data-id="${item.id}">
+        <img src="${item.imagem_url}" alt="${item.titulo}" class="admin-photo-thumb" loading="lazy">
+        <div class="admin-photo-details">
+          <strong>${item.titulo}</strong>
+          <span>${item.categoria || 'Especial'}</span>
+        </div>
+        <button class="admin-photo-delete-btn" data-id="${item.id}" data-url="${item.imagem_url}" title="Excluir foto">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </button>
+      </div>
+    `).join('');
+
+    adminGaleriaItems.querySelectorAll('.admin-photo-delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const url = btn.getAttribute('data-url');
+        if (confirm('Tem certeza que deseja remover esta foto da galeria?')) {
+          try {
+            btn.disabled = true;
+            if (window.OfirSupabase) {
+              await window.OfirSupabase.deleteGalleryPhoto(id, url);
+            }
+            await loadGaleria();
+            renderAdminGaleriaList();
+          } catch (err) {
+            alert(`Erro ao excluir: ${err.message}`);
+          }
+        }
+      });
+    });
+  }
+
+  // Setup Supabase Config
+  function setupSupabaseConfigFields() {
+    if (!cfgSupabaseUrl || !cfgSupabaseKey || !window.OfirSupabase) return;
+    const creds = window.OfirSupabase.getCredentials();
+    cfgSupabaseUrl.value = creds.url;
+    cfgSupabaseKey.value = creds.key;
+
+    if (supabaseStatusIndicator) {
+      if (creds.isConnected) {
+        supabaseStatusIndicator.className = 'supabase-status-indicator connected';
+        supabaseStatusText.textContent = '✓ Conectado ao Supabase (Plano 500MB)';
+      } else {
+        supabaseStatusIndicator.className = 'supabase-status-indicator error';
+        supabaseStatusText.textContent = 'Não conectado (insira suas credenciais abaixo)';
+      }
+    }
+
+    if (btnSaveSupabaseConfig) {
+      btnSaveSupabaseConfig.onclick = () => {
+        try {
+          const url = cfgSupabaseUrl.value.trim();
+          const key = cfgSupabaseKey.value.trim();
+          window.OfirSupabase.setCredentials(url, key);
+          alert('Configurações Supabase salvas com sucesso!');
+          setupSupabaseConfigFields();
+          loadInitialPrices();
+          loadGaleria();
+        } catch (err) {
+          alert(`Erro: ${err.message}`);
+        }
+      };
+    }
+  }
+
+  // Initial Load of Prices from Supabase
+  async function loadInitialPrices() {
+    if (window.OfirSupabase) {
+      try {
+        const dbPrices = await window.OfirSupabase.fetchPrices();
+        if (dbPrices && Array.isArray(dbPrices) && dbPrices.length > 0) {
+          dbPrices.forEach(item => {
+            const sizeObj = SIZES.find(s => s.id === item.id);
+            if (sizeObj) {
+              sizeObj.price = Number(item.price);
+            }
+          });
+          updateSizePillsLabels();
+          updateApp();
+        }
+      } catch (err) {
+        console.warn('Usando tabela padrão de preços:', err);
+      }
+    }
+  }
+
+  // Check Existing Admin Session
+  async function checkAdminSessionOnBoot() {
+    if (window.OfirSupabase) {
+      try {
+        const session = await window.OfirSupabase.getAdminSession();
+        setAdminAuthState(session);
+
+        window.OfirSupabase.onAuthStateChange((event, session) => {
+          setAdminAuthState(session);
+        });
+      } catch (err) {
+        console.warn('Erro ao verificar sessão admin:', err);
+      }
+    }
+  }
+
+  // Initialize Modules
+  setupUploadDropzone();
+  loadInitialPrices();
+  loadGaleria();
+  checkAdminSessionOnBoot();
 
   // Initial render
   updateApp();

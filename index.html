@@ -16,6 +16,26 @@
 </head>
 <body>
 
+  <!-- Top Admin Status Banner (Visible only when Admin is logged in) -->
+  <div class="admin-top-banner" id="admin-top-banner" style="display: none;">
+    <div class="admin-banner-inner">
+      <div class="admin-status-badge">
+        <span class="admin-pulse-dot"></span>
+        <span>Modo Administradora Conectado (Lucieda)</span>
+      </div>
+      <div class="admin-banner-actions">
+        <button class="admin-btn-action" id="btn-open-admin-dashboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Painel Admin (Preços & Fotos)</span>
+        </button>
+        <button class="admin-btn-action admin-btn-logout" id="btn-admin-logout">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Navigation Bar -->
   <header class="atelier-header">
     <div class="header-inner">
@@ -24,11 +44,11 @@
       </a>
 
       <nav class="nav-links">
+        <a href="#monte-seu-bolo" class="nav-item active">Monte Seu Bolo</a>
         <a href="#galeria" class="nav-item">Galeria</a>
+        <a href="#personalizado" class="nav-item" id="open-custom-cake-nav">Personalizados</a>
         <a href="#politicas" class="nav-item" id="open-policies-btn">Políticas</a>
         <a href="#sobre" class="nav-item" id="open-about-btn">Sobre</a>
-        <a href="#personalizado" class="nav-item" id="open-custom-cake-nav">Personalizados</a>
-        <a href="#monte-seu-bolo" class="nav-item active">Monte Seu Bolo</a>
       </nav>
 
       <div class="header-actions">
@@ -38,7 +58,10 @@
           </svg>
           <span>(84) 98772-3897</span>
         </a>
-        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Abrir menu">
+        <button class="admin-quick-btn" id="header-admin-btn" title="Área da Administradora" aria-label="Painel Administrativo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </button>
+        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Abrir menu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
@@ -46,6 +69,31 @@
       </div>
     </div>
   </header>
+
+  <!-- Mobile Drawer Navigation -->
+  <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop" aria-hidden="true"></div>
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true" role="dialog" aria-label="Menu Principal">
+    <div class="drawer-header">
+      <img src="assets/logo_clean.png" alt="Ofir Doceria" class="drawer-logo">
+      <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Fechar menu">✕</button>
+    </div>
+    <nav class="drawer-links">
+      <a href="#monte-seu-bolo" class="drawer-item" data-action="close">🍰 Monte Seu Bolo</a>
+      <a href="#galeria" class="drawer-item" data-action="close">✨ Galeria de Criações</a>
+      <a href="#personalizado" class="drawer-item" id="drawer-custom-cake-btn">💍 Bolos Personalizados</a>
+      <a href="#politicas" class="drawer-item" id="drawer-policies-btn">📜 Políticas & Retirada</a>
+      <a href="#sobre" class="drawer-item" id="drawer-about-btn">🌿 Sobre o Atelier</a>
+      <a href="#admin" class="drawer-item drawer-admin-item" id="drawer-admin-btn">🔐 Área da Administradora</a>
+    </nav>
+    <div class="drawer-footer">
+      <a href="https://wa.me/5584987723897" target="_blank" rel="noopener noreferrer" class="whatsapp-pill-btn drawer-whatsapp-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/>
+        </svg>
+        <span>(84) 98772-3897</span>
+      </a>
+    </div>
+  </aside>
 
   <!-- Main Experience Stage -->
   <main class="experience-stage" id="monte-seu-bolo">
@@ -374,6 +422,54 @@
     </div>
   </main>
 
+  <!-- ==========================================================================
+       GALERIA DO ATELIER (FOTOS E PORTFÓLIO)
+       ========================================================================== -->
+  <section id="galeria" class="galeria-section">
+    <div class="galeria-inner-container">
+      <div class="galeria-section-header">
+        <span class="section-tag">PORTFÓLIO DE CRIAÇÕES</span>
+        <h2 class="galeria-section-title">Galeria do Atelier</h2>
+        <p class="galeria-section-subtitle">Momentos eternizados em bolos artesanais exclusivos para Casamentos, 15 Anos e celebrações em Praia de Pipa.</p>
+        
+        <!-- Filtros -->
+        <div class="galeria-filters" id="galeria-filters">
+          <button class="galeria-filter-pill active" data-filter="all">Todos</button>
+          <button class="galeria-filter-pill" data-filter="Casamento">Casamentos</button>
+          <button class="galeria-filter-pill" data-filter="15 Anos">15 Anos</button>
+          <button class="galeria-filter-pill" data-filter="Aniversário">Aniversários</button>
+          <button class="galeria-filter-pill" data-filter="Especiais">Especiais</button>
+        </div>
+      </div>
+
+      <!-- Grid de Fotos -->
+      <div class="galeria-grid" id="galeria-grid">
+        <!-- Inserido dinamicamente via JS (Supabase ou fallback inicial) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé Institucional -->
+  <footer class="atelier-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="assets/logo_clean.png" alt="Ofir Doceria" class="footer-logo">
+        <p>Doces e Bolos Gourmet sob encomenda com insumos nobres em Praia de Pipa / RN.</p>
+      </div>
+      <div class="footer-contact">
+        <span>Atendimento & Encomendas:</span>
+        <a href="https://wa.me/5584987723897" target="_blank" rel="noopener noreferrer" class="footer-phone-link">
+          <strong>(84) 98772-3897</strong> (Lucieda)
+        </a>
+        <small>Retiradas presenciais em Praia de Pipa / RN com antecedência mínima de 10 dias.</small>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Ofir Doceria • Atelier Praia de Pipa. Todos os direitos reservados.</span>
+      <button class="footer-admin-link" id="footer-admin-btn">Área da Administradora</button>
+    </div>
+  </footer>
+
   <!-- MODAL: Encomenda & Finalização (WhatsApp) -->
   <div class="modal-overlay" id="checkout-modal" aria-hidden="true" role="dialog">
     <div class="modal-card">
@@ -619,6 +715,230 @@
     </div>
   </div>
 
+  <!-- MODAL: Lightbox da Foto da Galeria -->
+  <div class="modal-overlay" id="galeria-lightbox-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card lightbox-modal-card">
+      <button class="modal-close-btn" id="close-lightbox-modal" aria-label="Fechar visualização">✕</button>
+      <div class="lightbox-img-wrapper">
+        <img id="lightbox-img" src="" alt="Bolo Artesanal Ofir Doceria">
+      </div>
+      <div class="lightbox-details">
+        <span class="lightbox-category" id="lightbox-category">Casamento</span>
+        <h3 class="lightbox-title" id="lightbox-title">Título do Bolo</h3>
+        <p class="lightbox-desc" id="lightbox-desc">Descrição dos detalhes...</p>
+        <button class="whatsapp-pill-btn lightbox-whatsapp-btn" id="lightbox-whatsapp-order-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/>
+          </svg>
+          <span>Quero um bolo parecido com este</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Login da Administradora -->
+  <div class="modal-overlay" id="admin-login-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card admin-auth-card">
+      <button class="modal-close-btn" id="close-admin-login-modal" aria-label="Fechar">✕</button>
+
+      <div class="modal-header modal-header-center">
+        <div class="admin-lock-badge">🔐</div>
+        <span class="modal-pretitle">Gestão do Atelier</span>
+        <h3 class="modal-title">Área da Administradora</h3>
+        <p class="modal-desc">Acesso restrito para atualização de preços e publicação de novas fotos na galeria.</p>
+      </div>
+
+      <form id="admin-login-form" class="admin-login-form" onsubmit="return false;">
+        <div class="input-group">
+          <label for="admin-login-email">E-mail da Administradora:</label>
+          <input type="email" id="admin-login-email" placeholder="admin@ofirdoceria.com.br" required autocomplete="email">
+        </div>
+
+        <div class="input-group">
+          <label for="admin-login-password">Senha de Acesso:</label>
+          <input type="password" id="admin-login-password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <div class="admin-auth-msg" id="admin-login-msg" style="display: none;"></div>
+
+        <button type="submit" class="primary-cta-btn admin-submit-btn" id="btn-admin-submit-login">
+          <span>Entrar no Painel</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+
+        <div class="admin-auth-hint">
+          <span>Dica: Configure sua conta no Supabase Auth ou use as credenciais cadastradas.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Painel de Controle da Administradora -->
+  <div class="modal-overlay" id="admin-panel-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card admin-panel-card">
+      <button class="modal-close-btn" id="close-admin-panel-modal" aria-label="Fechar painel">✕</button>
+
+      <div class="admin-panel-top">
+        <div>
+          <span class="modal-pretitle">Atelier Praia de Pipa</span>
+          <h2 class="modal-title">Painel de Controle da Administradora</h2>
+        </div>
+        <button class="admin-logout-link" id="btn-panel-logout">Encerrar Sessão</button>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="admin-tabs-nav">
+        <button class="admin-tab-btn active" data-tab="tab-precos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Tabela de Preços</span>
+        </button>
+        <button class="admin-tab-btn" data-tab="tab-galeria">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <span>Galeria de Fotos</span>
+        </button>
+        <button class="admin-tab-btn" data-tab="tab-supabase">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/><rect x="2" y="2" width="20" height="20" rx="5"/></svg>
+          <span>Conexão Supabase</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: PREÇOS -->
+      <div class="admin-tab-content active" id="tab-precos">
+        <p class="tab-explanation">Ajuste os preços dos bolos artesanais em tempo real. Os valores são sincronizados com o banco de dados Supabase e atualizados imediatamente no simulador para os clientes.</p>
+        
+        <form id="admin-prices-form" onsubmit="return false;">
+          <div class="prices-editor-grid" id="prices-editor-grid">
+            <!-- Gerado dinamicamente para ARO 10, 15, 20, 25, 28, 30 -->
+          </div>
+
+          <div class="price-extra-row">
+            <div class="input-group">
+              <label for="admin-price-topper">Topo Especial 3D (Acréscimo R$):</label>
+              <div class="input-currency-wrap">
+                <span>R$</span>
+                <input type="number" id="admin-price-topper" min="0" step="1" value="35">
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-actions-row">
+            <button type="button" class="primary-cta-btn admin-save-btn" id="btn-save-prices">
+              <span>Salvar Alterações de Preço</span>
+            </button>
+            <span class="admin-save-status" id="prices-save-status"></span>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 2: GALERIA -->
+      <div class="admin-tab-content" id="tab-galeria">
+        <div class="galeria-admin-layout">
+          
+          <!-- Formulário de Upload -->
+          <div class="galeria-upload-box">
+            <h4>Adicionar Nova Foto ao Portfólio</h4>
+            <p class="tab-subtext">Fotos têm limite de 2MB e contam com compressão inteligente automática para economizar espaço no plano gratuito de 500MB.</p>
+
+            <div class="upload-dropzone" id="upload-dropzone">
+              <input type="file" id="galeria-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;">
+              <div class="dropzone-empty" id="dropzone-empty">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p><strong>Clique aqui para escolher a foto</strong> ou arraste para cá</p>
+                <small>PNG, JPG ou WEBP (máx. 2MB - com redução automática)</small>
+              </div>
+              <div class="dropzone-preview" id="dropzone-preview" style="display: none;">
+                <img id="preview-img" src="" alt="Prévia">
+                <div class="preview-info-box">
+                  <span id="preview-filename">foto.jpg</span>
+                  <span class="preview-badge" id="preview-size-badge">Otimizando...</span>
+                </div>
+                <button type="button" class="dropzone-remove-btn" id="btn-remove-preview">Trocar foto</button>
+              </div>
+            </div>
+
+            <div class="galeria-upload-fields">
+              <div class="input-group">
+                <label for="upload-foto-titulo">Título / Nome da Criação:</label>
+                <input type="text" id="upload-foto-titulo" placeholder="Ex: Bolo Casamento Floral Pipa">
+              </div>
+
+              <div class="input-group">
+                <label for="upload-foto-categoria">Categoria:</label>
+                <select id="upload-foto-categoria" class="custom-select">
+                  <option value="Casamento">Casamento</option>
+                  <option value="15 Anos">15 Anos</option>
+                  <option value="Aniversário">Aniversário</option>
+                  <option value="Especiais">Especiais & Eventos</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label for="upload-foto-desc">Descrição / Detalhes (opcional):</label>
+                <textarea id="upload-foto-desc" rows="2" placeholder="Ex: Cobertura acetinada com flores frescas de Pipa e massa cacau nobre..."></textarea>
+              </div>
+
+              <button type="button" class="primary-cta-btn admin-upload-btn" id="btn-submit-upload-foto">
+                <span>Publicar Foto na Galeria</span>
+              </button>
+              <div class="admin-save-status" id="upload-save-status"></div>
+            </div>
+          </div>
+
+          <!-- Lista de Fotos Atuais -->
+          <div class="galeria-manage-list-box">
+            <h4>Fotos Atualmente Publicadas</h4>
+            <div class="admin-galeria-items" id="admin-galeria-items">
+              <!-- Renderizado dinamicamente -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 3: CONFIGURAÇÃO SUPABASE -->
+      <div class="admin-tab-content" id="tab-supabase">
+        <p class="tab-explanation">Configure o projeto Supabase que receberá as fotos e os dados de preços. Conecte diretamente seu banco na Vercel com o plano gratuito de 500MB.</p>
+
+        <form id="supabase-config-form" onsubmit="return false;">
+          <div class="input-group">
+            <label for="cfg-supabase-url">Supabase Project URL:</label>
+            <input type="text" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co">
+          </div>
+
+          <div class="input-group">
+            <label for="cfg-supabase-key">Supabase Anon Public Key:</label>
+            <input type="password" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+          </div>
+
+          <div class="supabase-status-indicator" id="supabase-status-indicator">
+            <span class="status-dot"></span>
+            <span id="supabase-status-text">Verificando status de conexão...</span>
+          </div>
+
+          <div class="tab-actions-row">
+            <button type="button" class="primary-cta-btn" id="btn-save-supabase-config">
+              <span>Salvar Configuração</span>
+            </button>
+          </div>
+
+          <div class="supabase-guide-box">
+            <strong>Como conectar no Supabase (Plano Gratuito 500MB):</strong>
+            <ol>
+              <li>Acesse <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> e crie seu projeto.</li>
+              <li>No menu <strong>SQL Editor</strong>, copie e execute o script <code>supabase_schema.sql</code>.</li>
+              <li>No menu <strong>Project Settings &gt; API</strong>, copie a <em>Project URL</em> e a chave <em>anon public</em> e cole acima.</li>
+              <li>No menu <strong>Authentication &gt; Users</strong>, crie o usuário da administradora com e-mail e senha.</li>
+            </ol>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts: Supabase JS CDN, Supabase Client & App Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabaseClient.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
