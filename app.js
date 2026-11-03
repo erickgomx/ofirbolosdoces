@@ -6,12 +6,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --- DATA DEFINITIONS ---
   const SIZES = [
-    { id: 'aro-10', name: 'ARO 10', diameter: '10 cm', slices: '(6-8 fatias)', price: 70, scale: 0.85 },
-    { id: 'aro-15', name: 'ARO 15', diameter: '15 cm', slices: '(12-15 fatias)', price: 135, scale: 0.92 },
-    { id: 'aro-20', name: 'ARO 20', diameter: '20 cm', slices: '(20-25 fatias)', price: 195, scale: 1.00 },
-    { id: 'aro-25', name: 'ARO 25', diameter: '25 cm', slices: '(30-35 fatias)', price: 285, scale: 1.08 },
-    { id: 'aro-28', name: 'ARO 28', diameter: '28 cm', slices: '(40-45 fatias)', price: 365, scale: 1.14 },
-    { id: 'aro-30', name: 'ARO 30', diameter: '30 cm', slices: '(50-55 fatias)', price: 410, scale: 1.20 }
+    { id: 'aro-10', name: 'ARO 10', diameter: '10 cm', slices: '(6-8 fatias)', price: 70, scale: 0.58 },
+    { id: 'aro-15', name: 'ARO 15', diameter: '15 cm', slices: '(12-15 fatias)', price: 135, scale: 0.67 },
+    { id: 'aro-20', name: 'ARO 20', diameter: '20 cm', slices: '(20-25 fatias)', price: 195, scale: 0.76 },
+    { id: 'aro-25', name: 'ARO 25', diameter: '25 cm', slices: '(30-35 fatias)', price: 285, scale: 0.86 },
+    { id: 'aro-28', name: 'ARO 28', diameter: '28 cm', slices: '(40-45 fatias)', price: 365, scale: 0.94 },
+    { id: 'aro-30', name: 'ARO 30', diameter: '30 cm', slices: '(50-55 fatias)', price: 410, scale: 1.00 }
   ];
 
   const MASSAS = {
@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- DOM ELEMENTS ---
   const cakeInteractiveBox = document.getElementById('cake-interactive-box');
   const realCakeWrapper = document.getElementById('real-cake-wrapper');
+  const cakeBaseFixed = document.getElementById('cake-base-fixed');
+  const cakeScalableGroup = document.getElementById('cake-scalable-group');
   
   // Layer Elements
   const layerBase = document.getElementById('layer-base');
@@ -183,8 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
       layerFatia.classList.remove('active');
     }
 
-    // Smoothly scale cake according to selected size
-    realCakeWrapper.style.transform = `scale(${currentSize.scale})`;
+    // Smoothly scale cake according to selected size (base stays unchanged)
+    if (cakeScalableGroup) {
+      cakeScalableGroup.style.transform = `scale(${currentSize.scale})`;
+    }
 
     // 3. Slider & Controls
     dimRange.value = state.sizeIndex;
@@ -268,8 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!state.isSwaying) {
       currentTiltX += (targetTiltX - currentTiltX) * 0.1;
       currentTiltY += (targetTiltY - currentTiltY) * 0.1;
-      const s = SIZES[state.sizeIndex].scale;
-      realCakeWrapper.style.transform = `scale(${s}) rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+      realCakeWrapper.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
     }
     requestAnimationFrame(tiltLoop);
   }
@@ -287,16 +290,14 @@ document.addEventListener('DOMContentLoaded', () => {
       rotateBtnText.textContent = 'Parar Giro';
       swayInterval = setInterval(() => {
         swayAngle += 0.035;
-        const s = SIZES[state.sizeIndex].scale;
         const tiltY = Math.sin(swayAngle) * 9.5;
         const tiltX = Math.cos(swayAngle * 0.6) * 4.0;
-        realCakeWrapper.style.transform = `scale(${s}) rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
+        realCakeWrapper.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
       }, 25);
     } else {
       rotateBtnText.textContent = 'Girar Perspectiva';
       clearInterval(swayInterval);
-      const s = SIZES[state.sizeIndex].scale;
-      realCakeWrapper.style.transform = `scale(${s}) rotateY(0deg) rotateX(0deg)`;
+      realCakeWrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
       currentTiltX = 0;
       currentTiltY = 0;
       targetTiltX = 0;

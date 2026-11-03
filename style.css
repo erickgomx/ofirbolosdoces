@@ -779,6 +779,31 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* 1. Base Fixa: Pedestal & Prato de Mármore (Tamanho constante e imutável) */
+.cake-base-fixed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 2. Grupo do Bolo Escalável: Escala conforme o ARO (ARO 10 a ARO 30 no tamanho máximo) */
+.cake-scalable-group {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: 50% 54%;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1);
+  will-change: transform;
+}
+
 .cake-layer {
   position: absolute;
   top: 0;
@@ -820,14 +845,14 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 .layer-fatia {
   z-index: 3;
   opacity: 0;
-  transform: translate(0, 0);
+  transform: translate(-14px, 8px) scale(0.98);
 }
 
 .layer-fatia.active {
   opacity: 1;
-  /* Smoothly pulls the slice out in 3D perspective */
-  transform: translate(24px, -10px) scale(1.02);
-  filter: drop-shadow(-10px 14px 22px rgba(45, 34, 25, 0.28));
+  /* Posicionamento real da fatia destacada sobre o prato de mármore */
+  transform: translate(0, 0) scale(1);
+  filter: drop-shadow(-8px 12px 18px rgba(45, 34, 25, 0.22));
 }
 
 /* Floating Action Pills on Showcase */

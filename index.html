@@ -240,17 +240,22 @@
 
           <!-- Real Multi-Layer Cake Assembly -->
           <div class="real-cake-wrapper" id="real-cake-wrapper">
-            <!-- 1. Pedestal Stand Base -->
-            <img src="assets/base.png" alt="Base do Bolo" id="layer-base" class="cake-layer layer-base">
-            
-            <!-- 2. Whole Cake (for "Bolo Inteiro" mode) -->
-            <img src="assets/bolo_completo.png" alt="Bolo Completo" id="layer-completo" class="cake-layer layer-completo">
+            <!-- 1. Pedestal Stand Base (Base fixa: tamanho constante) -->
+            <div class="cake-base-fixed" id="cake-base-fixed">
+              <img src="assets/base.png" alt="Base do Bolo" id="layer-base" class="cake-layer layer-base">
+            </div>
 
-            <!-- 3. Cut Cake Body (for "Ver Fatia" mode) -->
-            <img src="assets/bolo_cortado_branco.png" alt="Bolo Cortado" id="layer-cortado" class="cake-layer layer-cortado active">
+            <!-- 2. Scalable Cake Group (Bolo escalável: aumenta conforme o aro) -->
+            <div class="cake-scalable-group" id="cake-scalable-group">
+              <!-- Whole Cake (for "Bolo Inteiro" mode) -->
+              <img src="assets/bolo_completo.png" alt="Bolo Completo" id="layer-completo" class="cake-layer layer-completo">
 
-            <!-- 4. Separate Slice Layer (slides/pulls out smoothly) -->
-            <img src="assets/fatia_branco.png" alt="Fatia do Bolo" id="layer-fatia" class="cake-layer layer-fatia active">
+              <!-- Cut Cake Body (for "Ver Fatia" mode) -->
+              <img src="assets/bolo_cortado_branco.png" alt="Bolo Cortado" id="layer-cortado" class="cake-layer layer-cortado active">
+
+              <!-- Separate Slice Layer -->
+              <img src="assets/fatia_branco.png" alt="Fatia do Bolo" id="layer-fatia" class="cake-layer layer-fatia active">
+            </div>
           </div>
 
           <!-- Floating Interactive Pill Buttons -->

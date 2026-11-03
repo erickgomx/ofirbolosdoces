@@ -17,7 +17,7 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
   - **Massas Nobres:** Amostras visuais dinâmicas de *Branco (ovos)* e *Chocolate*.
   - **Recheios Exclusivos:** 7 sabores artesanais (*Morango, Ninho, Chocolate, Avelã, Côco, Maracujá e Abacaxi*).
   - **Montagem em Camadas Transparentes (PNG sem fundo):**
-    - **Base:** Pedestal artesanal em mármore e latão dourado.
+    - **Base Fixa:** Pedestal em mármore e latão que permanece com tamanho constante e imutável enquanto o bolo cresce na proporção do aro selecionado (tamanho máximo no ARO 30).
     - **Bolo Completo:** Visão integral e fechada do bolo.
     - **Bolo Cortado & Fatia:** Camadas independentes com animação suave de destaque da fatia (*cutaway pull-out*) ao alternar entre *Ver Fatia* e *Bolo Inteiro*.
     - **Massa Dinâmica:** Alternância imediata entre *Massa Branca (ovos)* e *Chocolate*.
