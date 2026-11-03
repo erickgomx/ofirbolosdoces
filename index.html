@@ -78,7 +78,7 @@
       <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Fechar menu">✕</button>
     </div>
     <nav class="drawer-links">
-      <a href="#monte-seu-bolo" class="drawer-item" data-action="close">🍰 Monte Seu Bolo</a>
+      <a href="#monte-seu-bolo" class="drawer-item active" data-action="close">🍰 Monte Seu Bolo</a>
       <a href="#galeria" class="drawer-item" data-action="close">✨ Galeria de Criações</a>
       <a href="#personalizado" class="drawer-item" id="drawer-custom-cake-btn">💍 Bolos Personalizados</a>
       <a href="#politicas" class="drawer-item" id="drawer-policies-btn">📜 Políticas & Retirada</a>
@@ -96,7 +96,7 @@
   </aside>
 
   <!-- Main Experience Stage -->
-  <main class="experience-stage" id="monte-seu-bolo">
+  <main class="experience-stage view-section" id="monte-seu-bolo">
     <div class="stage-container">
 
       <!-- LEFT COLUMN: Customizer Controls -->
@@ -416,7 +416,7 @@
   <!-- ==========================================================================
        GALERIA DO ATELIER (FOTOS E PORTFÓLIO)
        ========================================================================== -->
-  <section id="galeria" class="galeria-section">
+  <section id="galeria" class="galeria-section view-section view-hidden">
     <div class="galeria-inner-container">
       <div class="galeria-section-header">
         <span class="section-tag">PORTFÓLIO DE CRIAÇÕES</span>
@@ -436,6 +436,22 @@
       <!-- Grid de Fotos -->
       <div class="galeria-grid" id="galeria-grid">
         <!-- Inserido dinamicamente via JS (Supabase ou fallback inicial) -->
+      </div>
+
+      <!-- Banner CTA: Retornar para Monte Seu Bolo -->
+      <div class="galeria-cta-banner">
+        <div class="galeria-cta-text">
+          <span class="galeria-cta-tag">PERSONALIZAÇÃO EXCLUSIVA</span>
+          <h3>Deseja criar seu próprio bolo sob medida?</h3>
+          <p>Escolha tamanho, massa fofinha e recheios artesanais com cálculo de preço e sinal em tempo real.</p>
+        </div>
+        <a href="#monte-seu-bolo" class="primary-cta-btn galeria-cta-action">
+          <span>Monte Seu Bolo Agora</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
     </div>
   </section>

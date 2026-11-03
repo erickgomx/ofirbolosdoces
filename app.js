@@ -738,6 +738,98 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     renderGaleriaGrid();
   }
 
+  // --- VIEW SWITCHING: MONTE SEU BOLO vs GALERIA ---
+  const viewMonteSeuBolo = document.getElementById('monte-seu-bolo');
+  const viewGaleria = document.getElementById('galeria');
+  const navMonteSeuBoloLinks = document.querySelectorAll('a[href="#monte-seu-bolo"]');
+  const navGaleriaLinks = document.querySelectorAll('a[href="#galeria"]');
+  const brandLogos = document.querySelectorAll('.brand-logo');
+
+  function switchView(viewName, updateHistory = true) {
+    const isGaleria = (viewName === 'galeria');
+
+    if (isGaleria) {
+      if (viewMonteSeuBolo) viewMonteSeuBolo.classList.add('view-hidden');
+      if (viewGaleria) {
+        viewGaleria.classList.remove('view-hidden');
+        renderGaleriaGrid();
+      }
+
+      navMonteSeuBoloLinks.forEach(el => el.classList.remove('active'));
+      navGaleriaLinks.forEach(el => el.classList.add('active'));
+
+      if (updateHistory) {
+        try {
+          history.pushState({ view: 'galeria' }, '', '#galeria');
+        } catch (_) {}
+      }
+    } else {
+      if (viewGaleria) viewGaleria.classList.add('view-hidden');
+      if (viewMonteSeuBolo) viewMonteSeuBolo.classList.remove('view-hidden');
+
+      navMonteSeuBoloLinks.forEach(el => el.classList.add('active'));
+      navGaleriaLinks.forEach(el => el.classList.remove('active'));
+
+      if (updateHistory) {
+        try {
+          history.pushState({ view: 'monte-seu-bolo' }, '', '#monte-seu-bolo');
+        } catch (_) {}
+      }
+    }
+
+    // Smooth scroll to top of page when changing view
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Bind click events on all Monte Seu Bolo & Galeria links (Header, Mobile Drawer, CTA banner)
+  navGaleriaLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileDrawer();
+      switchView('galeria');
+    });
+  });
+
+  navMonteSeuBoloLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileDrawer();
+      switchView('monte-seu-bolo');
+    });
+  });
+
+  brandLogos.forEach(logo => {
+    logo.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileDrawer();
+      switchView('monte-seu-bolo');
+    });
+  });
+
+  // Handle browser back/forward buttons or hash change
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash;
+    if (hash === '#galeria') {
+      switchView('galeria', false);
+    } else {
+      switchView('monte-seu-bolo', false);
+    }
+  });
+
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash;
+    if (hash === '#galeria') {
+      switchView('galeria', false);
+    } else {
+      switchView('monte-seu-bolo', false);
+    }
+  });
+
+  // Check initial hash on load
+  if (window.location.hash === '#galeria') {
+    switchView('galeria', false);
+  }
+
   // --- ADMIN SYSTEM & SUPABASE MODALS ---
   const headerAdminBtn = document.getElementById('header-admin-btn');
   const footerAdminBtn = document.getElementById('footer-admin-btn');

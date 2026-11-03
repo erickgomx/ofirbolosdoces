@@ -235,6 +235,30 @@ body {
 }
 
 /* ==========================================================================
+   VIEW SECTIONS (MONTE SEU BOLO vs GALERIA)
+   ========================================================================== */
+.view-section {
+  display: block;
+  opacity: 1;
+  animation: fadeInView 0.3s ease-out;
+}
+
+.view-section.view-hidden {
+  display: none !important;
+}
+
+@keyframes fadeInView {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
    MAIN EXPERIENCE CONTAINER (3-COLUMN PANORAMA)
    ========================================================================== */
 .experience-stage {
@@ -1868,9 +1892,10 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
    GALERIA DO ATELIER (PORTFÓLIO)
    ========================================================================== */
 .galeria-section {
-  padding: 5rem 2rem 6rem;
-  background: linear-gradient(180deg, transparent 0%, rgba(240, 234, 224, 0.5) 100%);
-  border-top: 1px solid var(--border-subtle);
+  min-height: calc(100vh - 120px);
+  padding: 4rem 2rem 5rem;
+  background: linear-gradient(180deg, #fbf8f3 0%, rgba(240, 234, 224, 0.5) 100%);
+  border-top: none;
 }
 
 .galeria-inner-container {
@@ -2041,6 +2066,70 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   background: var(--bg-card);
   border-radius: 20px;
   border: 1px dashed var(--border-subtle);
+}
+
+/* Galeria Bottom CTA Banner */
+.galeria-cta-banner {
+  margin-top: 4.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(247, 238, 219, 0.85) 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: 24px;
+  padding: 2.75rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.galeria-cta-text {
+  max-width: 650px;
+}
+
+.galeria-cta-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.galeria-cta-text h3 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.galeria-cta-text p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.galeria-cta-action {
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 1.1rem 2rem;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .galeria-cta-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 2.25rem 1.5rem;
+    margin-top: 3rem;
+  }
+  .galeria-cta-action {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ==========================================================================
