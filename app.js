@@ -663,6 +663,27 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   let galeriaList = [...INITIAL_CURATED_PHOTOS];
   let activeGaleriaFilter = 'all';
 
+  // --- SEGURANÇA: SANITIZAÇÃO DE ENTRADAS & PREVENÇÃO DE XSS (OWASP A03 / CWE-79) ---
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeImageUrl(url) {
+    if (!url) return 'assets/favicon.png';
+    const cleanUrl = String(url).trim();
+    // Permite apenas esquemas seguros contra ataques javascript: e data: maliciosos
+    if (/^(https?:\/\/|\/|assets\/|data:image\/(png|jpe?g|webp);base64,)/i.test(cleanUrl)) {
+      return cleanUrl;
+    }
+    return 'assets/favicon.png';
+  }
+
   function renderGaleriaGrid() {
     if (!galeriaGrid) return;
 
@@ -680,14 +701,14 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     }
 
     galeriaGrid.innerHTML = filtered.map(item => `
-      <article class="galeria-card" data-id="${item.id}">
+      <article class="galeria-card" data-id="${escapeHTML(item.id)}">
         <div class="galeria-img-container">
-          <img src="${item.imagem_url}" alt="${item.titulo}" class="galeria-card-img" loading="lazy">
-          <span class="galeria-category-tag">${item.categoria || 'Especial'}</span>
+          <img src="${sanitizeImageUrl(item.imagem_url)}" alt="${escapeHTML(item.titulo)}" class="galeria-card-img" loading="lazy">
+          <span class="galeria-category-tag">${escapeHTML(item.categoria || 'Especial')}</span>
         </div>
         <div class="galeria-card-body">
-          <h3 class="galeria-card-title">${item.titulo}</h3>
-          <p class="galeria-card-desc">${item.descricao || ''}</p>
+          <h3 class="galeria-card-title">${escapeHTML(item.titulo)}</h3>
+          <p class="galeria-card-desc">${escapeHTML(item.descricao || '')}</p>
           <div class="galeria-card-action">
             <span>Ver detalhes</span>
             <span>&rarr;</span>
@@ -707,7 +728,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
 
   function openGaleriaLightbox(item) {
     if (!galeriaLightboxModal) return;
-    lightboxImg.src = item.imagem_url;
+    lightboxImg.src = sanitizeImageUrl(item.imagem_url);
     lightboxCategory.textContent = item.categoria || 'Atelier';
     lightboxTitle.textContent = item.titulo;
     lightboxDesc.textContent = item.descricao || 'Criação artesanal exclusiva da Ofir Doceria sob encomenda em Praia de Pipa / RN.';
@@ -908,12 +929,12 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     pricesEditorGrid.innerHTML = SIZES.map(size => `
       <div class="price-edit-item">
         <div class="price-edit-item-header">
-          <strong>${size.name}</strong>
-          <span>${size.slices} (${size.diameter})</span>
+          <strong>${escapeHTML(size.name)}</strong>
+          <span>${escapeHTML(size.slices)} (${escapeHTML(size.diameter)})</span>
         </div>
         <div class="input-currency-wrap">
           <span>R$</span>
-          <input type="number" min="10" step="1" id="input-price-${size.id}" value="${size.price}">
+          <input type="number" min="10" step="1" id="input-price-${escapeHTML(size.id)}" value="${escapeHTML(size.price)}">
         </div>
       </div>
     `).join('');
@@ -1102,13 +1123,13 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     }
 
     adminGaleriaItems.innerHTML = galeriaList.map(item => `
-      <div class="admin-photo-item" data-id="${item.id}">
-        <img src="${item.imagem_url}" alt="${item.titulo}" class="admin-photo-thumb" loading="lazy">
+      <div class="admin-photo-item" data-id="${escapeHTML(item.id)}">
+        <img src="${sanitizeImageUrl(item.imagem_url)}" alt="${escapeHTML(item.titulo)}" class="admin-photo-thumb" loading="lazy">
         <div class="admin-photo-details">
-          <strong>${item.titulo}</strong>
-          <span>${item.categoria || 'Especial'}</span>
+          <strong>${escapeHTML(item.titulo)}</strong>
+          <span>${escapeHTML(item.categoria || 'Especial')}</span>
         </div>
-        <button class="admin-photo-delete-btn" data-id="${item.id}" data-url="${item.imagem_url}" title="Excluir foto">
+        <button class="admin-photo-delete-btn" data-id="${escapeHTML(item.id)}" data-url="${escapeHTML(item.imagem_url)}" title="Excluir foto">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
         </button>
       </div>

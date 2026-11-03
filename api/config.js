@@ -15,8 +15,25 @@ module.exports = (req, res) => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
     '';
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin || '';
+  const host = req.headers.host || '';
+
+  // Validação segura de CORS: permite mesma origem, deploys na vercel e localhost
+  const isAllowedOrigin = 
+    !origin || 
+    origin.endsWith('.vercel.app') || 
+    origin.includes('localhost') || 
+    origin.includes('127.0.0.1') ||
+    (host && origin.includes(host));
+
+  if (isAllowedOrigin && origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
 
   if (req.method === 'OPTIONS') {
