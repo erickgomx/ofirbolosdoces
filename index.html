@@ -531,84 +531,44 @@
     </div>
   </div>
 
-  <!-- MODAL: Bolo Personalizado & Casamento -->
+  <!-- MODAL: Bolo Personalizado -->
   <div class="modal-overlay" id="custom-cake-modal" aria-hidden="true" role="dialog">
     <div class="modal-card custom-cake-modal-card">
       <button class="modal-close-btn" id="close-custom-cake-modal" aria-label="Fechar modal de bolo personalizado">✕</button>
 
       <div class="modal-header">
         <span class="modal-pretitle">Atelier Exclusivo • Alta Pâtisserie</span>
-        <h3 class="modal-title">Bolo Personalizado & Casamento</h3>
-        <p class="modal-desc">Projetos sob medida para grandes ocasiões em <strong>Praia de Pipa / RN</strong>: Casamentos, Bodas, Aniversários de 15 Anos e Celebrações Especiais.</p>
+        <h3 class="modal-title">Bolo Personalizado</h3>
+        <p class="modal-desc">Informe a quantidade de pessoas e andares desejados para receber um orçamento sob medida de Lucieda em <strong>Praia de Pipa / RN</strong>.</p>
       </div>
 
       <div class="custom-cake-modal-body">
         
-        <!-- Highlights -->
-        <div class="custom-features-grid">
-          <div class="custom-feature-item">
-            <span class="feat-icon">🎂</span>
-            <div class="feat-text">
-              <strong>2 ou mais Andares</strong>
-              <small>Estrutura segura e proporção áurea</small>
-            </div>
-          </div>
-          <div class="custom-feature-item">
-            <span class="feat-icon">🌸</span>
-            <div class="feat-text">
-              <strong>Flores & Botânica</strong>
-              <small>Flores naturais ou secas selecionadas</small>
-            </div>
-          </div>
-          <div class="custom-feature-item">
-            <span class="feat-icon">✨</span>
-            <div class="feat-text">
-              <strong>Acabamentos Nobres</strong>
-              <small>Folha de ouro, texturas e topos autorais</small>
-            </div>
-          </div>
-        </div>
-
         <form id="custom-cake-form" class="custom-cake-form" onsubmit="return false;">
           
-          <!-- Tipo de Evento -->
-          <div class="input-group">
-            <label class="group-label">Ocasião do Evento:</label>
-            <div class="event-type-pills" id="event-type-group">
-              <label class="event-pill active">
-                <input type="radio" name="custom-event-type" value="Casamento / Noivado" checked>
-                <span>💍 Casamento / Noivado</span>
-              </label>
-              <label class="event-pill">
-                <input type="radio" name="custom-event-type" value="15 Anos / Debutante">
-                <span>👑 15 Anos</span>
-              </label>
-              <label class="event-pill">
-                <input type="radio" name="custom-event-type" value="Bodas / Celebração Familiar">
-                <span>🕊️ Bodas</span>
-              </label>
-              <label class="event-pill">
-                <input type="radio" name="custom-event-type" value="Aniversário Especial">
-                <span>🎂 Aniversário Especial</span>
-              </label>
-              <label class="event-pill">
-                <input type="radio" name="custom-event-type" value="Evento Corporativo / Outro">
-                <span>✨ Evento Corporativo</span>
-              </label>
+          <!-- Quantidade de Pessoas e Quantidade de Andares -->
+          <div class="form-row-grid">
+            <div class="input-group">
+              <label for="custom-guests">Quantas pessoas são?</label>
+              <input type="text" id="custom-guests" placeholder="Ex: 60 pessoas (ou fatias)" required>
+            </div>
+
+            <div class="input-group">
+              <label for="custom-andares">Quantidade de andares desejada:</label>
+              <select id="custom-andares" class="custom-select">
+                <option value="1 andar">1 andar</option>
+                <option value="2 andares" selected>2 andares</option>
+                <option value="3 andares">3 andares</option>
+                <option value="4 ou mais andares">4 ou mais andares</option>
+              </select>
             </div>
           </div>
 
-          <!-- Convidados e Data -->
+          <!-- Nome e Data do Evento -->
           <div class="form-row-grid">
             <div class="input-group">
-              <label for="custom-guests">Estimativa de Convidados / Fatias:</label>
-              <select id="custom-guests" class="custom-select">
-                <option value="30 a 50 pessoas">30 a 50 pessoas</option>
-                <option value="50 a 80 pessoas" selected>50 a 80 pessoas</option>
-                <option value="80 a 120 pessoas">80 a 120 pessoas</option>
-                <option value="120 a 180 pessoas">120 a 180 pessoas</option>
-                <option value="Mais de 180 pessoas">Mais de 180 pessoas</option>
-              </select>
+              <label for="custom-client-name">Seu Nome Completo:</label>
+              <input type="text" id="custom-client-name" placeholder="Ex: Maria Carolina" required>
             </div>
 
             <div class="input-group">
@@ -617,53 +577,16 @@
             </div>
           </div>
 
-          <!-- Estilo & Detalhes -->
-          <div class="input-group">
-            <label class="group-label">Estrutura & Detalhes Desejados (marque as preferências):</label>
-            <div class="style-tags-group">
-              <label class="style-tag">
-                <input type="checkbox" name="custom-style-tag" value="2 Andares" checked>
-                <span>🎂 2 Andares</span>
-              </label>
-              <label class="style-tag">
-                <input type="checkbox" name="custom-style-tag" value="3+ Andares">
-                <span>🏰 3+ Andares</span>
-              </label>
-              <label class="style-tag">
-                <input type="checkbox" name="custom-style-tag" value="Flores Naturais" checked>
-                <span>🌸 Flores Naturais</span>
-              </label>
-              <label class="style-tag">
-                <input type="checkbox" name="custom-style-tag" value="Espatulado Rústico">
-                <span>🌾 Espatulado Rústico</span>
-              </label>
-              <label class="style-tag">
-                <input type="checkbox" name="custom-style-tag" value="Folha de Ouro">
-                <span>✨ Folha de Ouro</span>
-              </label>
-              <label class="style-tag">
-                <input type="checkbox" name="custom-style-tag" value="Topo Personalizado 3D">
-                <span>🏷️ Topo 3D</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Nome do Cliente -->
-          <div class="input-group">
-            <label for="custom-client-name">Seu Nome Completo:</label>
-            <input type="text" id="custom-client-name" placeholder="Ex: Maria Carolina" required>
-          </div>
-
           <!-- Observações / Ideias -->
           <div class="input-group">
-            <label for="custom-notes">Ideias, Paleta de Cores ou Sabores Preferidos (opcional):</label>
-            <textarea id="custom-notes" rows="2" placeholder="Ex: Casamento na praia em Pipa no final da tarde, tons de branco e bege, preferência por massa branca e recheio de avelã..."></textarea>
+            <label for="custom-notes">Observações ou preferências (opcional):</label>
+            <textarea id="custom-notes" rows="2" placeholder="Ex: Casamento, 15 anos, tema, paleta de cores ou recheios preferidos..."></textarea>
           </div>
 
-          <!-- Aviso de Antecedência para Casamentos -->
+          <!-- Aviso de Antecedência -->
           <div class="custom-notice-box">
             <span class="notice-icon">⏱️</span>
-            <p><strong>Antecedência recomendada:</strong> Para casamentos e projetos de múltiplos andares, recomendamos solicitar com a maior antecedência possível para reserva na agenda de Lucieda.</p>
+            <p><strong>Atendimento exclusivo:</strong> Projetos com múltiplos andares têm vagas limitadas na agenda. Recomendamos confirmar com antecedência.</p>
           </div>
 
           <!-- Botões de Ação -->
@@ -674,7 +597,7 @@
               </svg>
               <span>Solicitar Orçamento no WhatsApp</span>
             </button>
-            <a href="https://wa.me/5584987723897?text=Ol%C3%A1%20Lucieda!%20Gostaria%20de%20conversar%20sobre%20um%20bolo%20personalizado%20para%20casamento%20%2F%20evento%20especial." target="_blank" rel="noopener noreferrer" class="direct-chat-link">
+            <a href="https://wa.me/5584987723897?text=Ol%C3%A1%20Lucieda!%20Gostaria%20de%20conversar%20sobre%20um%20bolo%20personalizado." target="_blank" rel="noopener noreferrer" class="direct-chat-link">
               Falar diretamente no WhatsApp sem preencher &rarr;
             </a>
           </div>

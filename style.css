@@ -1405,105 +1405,16 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 }
 
 /* ==========================================================================
-   MODAL: BOLO PERSONALIZADO & CASAMENTO
+   MODAL: BOLO PERSONALIZADO
    ========================================================================== */
 .custom-cake-modal-card {
-  max-width: 660px;
-}
-
-.custom-features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
-  margin-bottom: 1.5rem;
-}
-
-.custom-feature-item {
-  background: #fbf9f5;
-  border: 1px solid var(--border-subtle);
-  border-radius: 14px;
-  padding: 0.85rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.35rem;
-}
-
-.feat-icon {
-  font-size: 1.4rem;
-}
-
-.feat-text strong {
-  display: block;
-  font-size: 0.78rem;
-  color: var(--text-main);
-  font-weight: 700;
-}
-
-.feat-text small {
-  display: block;
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  line-height: 1.25;
+  max-width: 520px;
 }
 
 .custom-cake-form {
   display: flex;
   flex-direction: column;
   gap: 1.15rem;
-}
-
-.group-label {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-main);
-  display: block;
-  margin-bottom: 0.4rem;
-}
-
-/* Event Type Pills */
-.event-type-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.event-pill {
-  position: relative;
-  display: inline-flex;
-  cursor: pointer;
-}
-
-.event-pill input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.event-pill span {
-  display: inline-block;
-  padding: 0.5rem 0.95rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
-}
-
-.event-pill:hover span {
-  border-color: var(--gold-primary);
-  color: var(--text-main);
-}
-
-.event-pill.active span,
-.event-pill input:checked ~ span {
-  background: #1c1a18;
-  border-color: #1c1a18;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Form Row Grid */
@@ -1528,48 +1439,6 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 
 .custom-select:focus {
   border-color: var(--gold-primary);
-}
-
-/* Style Tags Group */
-.style-tags-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.style-tag {
-  position: relative;
-  cursor: pointer;
-  display: inline-flex;
-}
-
-.style-tag input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.style-tag span {
-  display: inline-block;
-  padding: 0.45rem 0.85rem;
-  border-radius: 10px;
-  border: 1px solid var(--border-subtle);
-  background: #ffffff;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
-}
-
-.style-tag:hover span {
-  border-color: var(--gold-primary);
-}
-
-.style-tag input:checked ~ span {
-  background: rgba(184, 134, 11, 0.12);
-  border-color: var(--gold-primary);
-  color: var(--gold-dark);
-  font-weight: 700;
 }
 
 /* Custom Notice Box */

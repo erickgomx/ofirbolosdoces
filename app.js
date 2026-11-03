@@ -110,13 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const orderNotesInput = document.getElementById('order-notes');
   const btnSendWhatsapp = document.getElementById('btn-send-whatsapp');
 
-  // Custom Wedding / Special Event Cake Elements
+  // Custom Cake Elements
   const btnSendCustomWhatsapp = document.getElementById('btn-send-custom-whatsapp');
   const customDateInput = document.getElementById('custom-date');
-  const customGuestsSelect = document.getElementById('custom-guests');
+  const customGuestsInput = document.getElementById('custom-guests');
+  const customAndaresSelect = document.getElementById('custom-andares');
   const customClientNameInput = document.getElementById('custom-client-name');
   const customNotesInput = document.getElementById('custom-notes');
-  const eventPills = document.querySelectorAll('.event-pill');
 
   // --- INITIALIZE MINIMUM PICKUP DATE (10 DAYS NOTICE RULE) ---
   function initPickupDateConstraint() {
@@ -365,13 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Event Type Pills active state handler
-  eventPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      eventPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-    });
-  });
+
 
   openPoliciesBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -398,24 +392,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- WHATSAPP CUSTOM WEDDING / SPECIAL EVENT GENERATOR ---
+  // --- WHATSAPP CUSTOM CAKE GENERATOR ---
   if (btnSendCustomWhatsapp) {
     btnSendCustomWhatsapp.addEventListener('click', () => {
-      const clientName = (customClientNameInput && customClientNameInput.value.trim()) || 'Cliente Especial';
+      const clientName = (customClientNameInput && customClientNameInput.value.trim()) || 'Cliente';
       const eventDate = (customDateInput && customDateInput.value) || '';
-      const guests = (customGuestsSelect && customGuestsSelect.value) || '50 a 80 pessoas';
+      const guests = (customGuestsInput && customGuestsInput.value.trim()) || 'A definir';
+      const andares = (customAndaresSelect && customAndaresSelect.value) || '2 andares';
       const notes = (customNotesInput && customNotesInput.value.trim()) || '';
-
-      // Selected Event Type
-      const activeTypeRadio = document.querySelector('input[name="custom-event-type"]:checked');
-      const eventType = activeTypeRadio ? activeTypeRadio.value : 'Casamento / Noivado';
-
-      // Selected Styles
-      const selectedStyles = [];
-      document.querySelectorAll('input[name="custom-style-tag"]:checked').forEach(cb => {
-        selectedStyles.push(cb.value);
-      });
-      const stylesText = selectedStyles.length > 0 ? selectedStyles.join(', ') : 'A definir no atendimento';
 
       let formattedDate = eventDate;
       if (eventDate && eventDate.includes('-')) {
@@ -424,19 +408,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const customMessage = 
-`✨ *SOLICITAÇÃO DE PROJETO: BOLO PERSONALIZADO & EVENTOS*
+`🎂 *SOLICITAÇÃO DE PROJETO: BOLO PERSONALIZADO*
 *Ofir Bolos & Doces — Praia de Pipa / RN*
 ---------------------------------------------
-Olá Lucieda! Gostaria de solicitar um orçamento para um projeto exclusivo sob medida:
+Olá Lucieda! Gostaria de solicitar um orçamento para um bolo personalizado sob medida:
 
-💍 *Ocasião / Evento:* ${eventType}
-👥 *Estimativa de Convidados:* ${guests}
-📅 *Data Prevista do Evento:* ${formattedDate || 'A definir'}
-🎂 *Estrutura & Detalhes:* ${stylesText}
-
+👥 *Quantidade de Pessoas:* ${guests}
+🏛️ *Quantidade de Andares:* ${andares}
+📅 *Data Prevista:* ${formattedDate || 'A definir'}
 👤 *Nome do Cliente:* ${clientName}
-${notes ? `📝 *Ideias, Paleta de Cores e Referências:*\n"${notes}"\n` : ''}
-Gostaria de consultar sua disponibilidade de agenda para realizarmos esse projeto em Praia de Pipa! ✨`;
+${notes ? `📝 *Observações / Ideias:*\n"${notes}"\n` : ''}
+Gostaria de consultar sua disponibilidade para realizarmos esse projeto em Praia de Pipa! ✨`;
 
       const encoded = encodeURIComponent(customMessage);
       window.open(`https://wa.me/5584987723897?text=${encoded}`, '_blank');
