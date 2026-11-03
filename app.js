@@ -46,8 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     massa: 'branco',
     recheio: 'avela',
     topper: 'simples',
-    viewMode: 'inteiro', // 'inteiro' or 'cortado'
-    isSwaying: false
+    viewMode: 'inteiro' // 'inteiro' or 'cortado'
   };
 
   // --- DOM ELEMENTS ---
@@ -80,9 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const metricEquilibrioFill = document.getElementById('metric-equilibrio-fill');
   const metricComplexVal = document.getElementById('metric-complex-val');
   const metricComplexFill = document.getElementById('metric-complex-fill');
-
-  const btnRotate3d = document.getElementById('btn-rotate-3d');
-  const rotateBtnText = document.getElementById('rotate-btn-text');
 
   // Modals
   const checkoutModal = document.getElementById('checkout-modal');
@@ -242,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnToggleView) {
       btnToggleView.classList.toggle('active', isCut);
       if (toggleViewText) {
-        toggleViewText.textContent = isCut ? 'Bolo Inteiro' : 'Bolo Cortado';
+        toggleViewText.textContent = isCut ? 'Ver Bolo Inteiro' : 'Ver Bolo Cortado';
       }
     }
   }
@@ -253,60 +249,34 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentTiltX = 0;
   let currentTiltY = 0;
 
-  cakeInteractiveBox.addEventListener('mousemove', (e) => {
-    if (state.isSwaying) return;
-    const rect = cakeInteractiveBox.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const normX = (x / rect.width) * 2 - 1; // -1 to 1
-    const normY = (y / rect.height) * 2 - 1; // -1 to 1
+  if (cakeInteractiveBox) {
+    cakeInteractiveBox.addEventListener('mousemove', (e) => {
+      const rect = cakeInteractiveBox.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const normX = (x / rect.width) * 2 - 1; // -1 to 1
+      const normY = (y / rect.height) * 2 - 1; // -1 to 1
 
-    targetTiltX = -normY * 6.5; // deg
-    targetTiltY = normX * 8.0;  // deg
-  });
+      targetTiltX = -normY * 6.5; // deg
+      targetTiltY = normX * 8.0;  // deg
+    });
 
-  cakeInteractiveBox.addEventListener('mouseleave', () => {
-    targetTiltX = 0;
-    targetTiltY = 0;
-  });
+    cakeInteractiveBox.addEventListener('mouseleave', () => {
+      targetTiltX = 0;
+      targetTiltY = 0;
+    });
+  }
 
   // Smooth Parallax Lerp Loop
   function tiltLoop() {
-    if (!state.isSwaying) {
-      currentTiltX += (targetTiltX - currentTiltX) * 0.1;
-      currentTiltY += (targetTiltY - currentTiltY) * 0.1;
-      if (cakeShowcaseWrapper) cakeShowcaseWrapper.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+    currentTiltX += (targetTiltX - currentTiltX) * 0.1;
+    currentTiltY += (targetTiltY - currentTiltY) * 0.1;
+    if (cakeShowcaseWrapper) {
+      cakeShowcaseWrapper.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
     }
     requestAnimationFrame(tiltLoop);
   }
   requestAnimationFrame(tiltLoop);
-
-  // --- PERSPECTIVE SWAY ANIMATION ---
-  let swayAngle = 0;
-  let swayInterval = null;
-
-  btnRotate3d.addEventListener('click', () => {
-    state.isSwaying = !state.isSwaying;
-    btnRotate3d.classList.toggle('active', state.isSwaying);
-
-    if (state.isSwaying) {
-      rotateBtnText.textContent = 'Parar Giro';
-      swayInterval = setInterval(() => {
-        swayAngle += 0.035;
-        const tiltY = Math.sin(swayAngle) * 9.5;
-        const tiltX = Math.cos(swayAngle * 0.6) * 4.0;
-        if (cakeShowcaseWrapper) cakeShowcaseWrapper.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
-      }, 25);
-    } else {
-      rotateBtnText.textContent = 'Girar Perspectiva';
-      clearInterval(swayInterval);
-      if (cakeShowcaseWrapper) cakeShowcaseWrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
-      currentTiltX = 0;
-      currentTiltY = 0;
-      targetTiltX = 0;
-      targetTiltY = 0;
-    }
-  });
 
   // --- VIEW TOGGLE: BOLO INTEIRO vs BOLO CORTADO ---
   if (btnToggleView) {
