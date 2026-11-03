@@ -61,6 +61,26 @@
   }
 
   /**
+   * Tenta detectar credenciais do Supabase injetadas pela Vercel via /api/config
+   */
+  async function autoDetectVercelConfig() {
+    try {
+      const res = await fetch('/api/config');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.supabaseUrl && data.supabaseAnonKey) {
+          console.log('[Supabase] Credenciais detectadas automaticamente via Vercel Storage!');
+          setCredentials(data.supabaseUrl, data.supabaseAnonKey);
+          return true;
+        }
+      }
+    } catch (e) {
+      // Ignora erro em ambiente local/estático
+    }
+    return false;
+  }
+
+  /**
    * Compressão automática de imagem via Canvas HTML5 (mantém < 2MB e excelente qualidade)
    */
   async function compressImage(file, maxDimension = 1600, quality = 0.82) {
@@ -349,6 +369,7 @@
     initClient,
     setCredentials,
     getCredentials,
+    autoDetectVercelConfig,
     compressImage,
     signInAdmin,
     signOutAdmin,

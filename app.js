@@ -1206,10 +1206,16 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   }
 
   // Initialize Modules
-  setupUploadDropzone();
-  loadInitialPrices();
-  loadGaleria();
-  checkAdminSessionOnBoot();
+  async function initAppIntegrations() {
+    setupUploadDropzone();
+    if (window.OfirSupabase && window.OfirSupabase.autoDetectVercelConfig) {
+      await window.OfirSupabase.autoDetectVercelConfig();
+    }
+    await loadInitialPrices();
+    await loadGaleria();
+    await checkAdminSessionOnBoot();
+  }
+  initAppIntegrations();
 
   // Initial render
   updateApp();
