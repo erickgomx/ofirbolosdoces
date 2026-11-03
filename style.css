@@ -152,22 +152,6 @@ body {
   border-radius: 2px;
 }
 
-.nav-item-special {
-  color: var(--gold-dark);
-  font-weight: 600;
-  background: rgba(184, 134, 11, 0.08);
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid rgba(184, 134, 11, 0.25);
-  transition: all 0.25s ease;
-}
-
-.nav-item-special:hover {
-  background: rgba(184, 134, 11, 0.16);
-  color: var(--obsidian);
-  transform: translateY(-1px);
-}
-
 .header-actions {
   display: flex;
   align-items: center;
@@ -445,103 +429,42 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 }
 
 /* ==========================================================================
-   ESPECIAL: BOLO PERSONALIZADO & CASAMENTO (SECTION 01)
+   BOLO PERSONALIZADO SUTIL (ESTILO DISCRETO IGUAL AOS AROS)
    ========================================================================== */
-.custom-cake-cta-wrap {
-  margin-top: 0.95rem;
+.custom-pill-subtle-wrap {
+  margin-top: 0.45rem;
 }
 
-.btn-custom-event-cake {
+.size-pill.size-pill-custom {
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.85rem 1rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(250, 245, 237, 0.92));
-  border: 1.5px dashed rgba(184, 134, 11, 0.45);
-  border-radius: 16px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.25s var(--ease-smooth);
-  box-shadow: 0 4px 14px rgba(184, 134, 11, 0.08);
-}
-
-.btn-custom-event-cake:hover {
-  border-color: var(--gold-primary);
-  border-style: solid;
-  background: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(184, 134, 11, 0.18);
-}
-
-.custom-cta-icon-pill {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #fdf8ee, #f3e6cf);
-  border: 1px solid rgba(184, 134, 11, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.custom-cta-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
-
-.custom-cta-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.custom-cta-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-main);
-  letter-spacing: -0.01em;
-}
-
-.custom-cta-badge {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: rgba(184, 134, 11, 0.14);
-  color: var(--gold-dark);
-}
-
-.custom-cta-subtitle {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  line-height: 1.35;
-  margin: 0;
-}
-
-.custom-cta-action {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  padding: 0.52rem 0.75rem;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.8);
   font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--gold-dark);
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.btn-custom-event-cake:hover .custom-cta-action {
-  transform: translateX(3px);
-  color: var(--obsidian);
+.size-pill.size-pill-custom:hover {
+  border-color: var(--gold-primary);
+  background: #ffffff;
+  color: var(--text-main);
+  box-shadow: 0 2px 8px rgba(191, 161, 99, 0.12);
+}
+
+.size-pill.size-pill-custom small {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.size-pill.size-pill-custom:hover small {
+  color: var(--gold-dark);
 }
 
 /* 02. Massa Cards */
@@ -1142,58 +1065,6 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   text-decoration: underline;
   padding: 0;
   margin-top: 4px;
-}
-
-/* Custom Event Cake Shortcut in Summary */
-.custom-event-summary-box {
-  background: linear-gradient(135deg, rgba(253, 248, 238, 0.95), rgba(255, 255, 255, 0.9));
-  border: 1px solid rgba(184, 134, 11, 0.25);
-  border-radius: 14px;
-  padding: 0.75rem 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.custom-event-summary-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.custom-sum-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--gold-dark);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.custom-event-summary-content p {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  line-height: 1.3;
-  margin: 0;
-}
-
-.custom-sum-btn {
-  background: transparent;
-  border: 1px solid var(--gold-dark);
-  color: var(--gold-dark);
-  padding: 0.4rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.custom-sum-btn:hover {
-  background: var(--gold-dark);
-  color: #ffffff;
 }
 
 /* Price & CTA Button */
@@ -1909,16 +1780,6 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 
   .form-row-grid {
     grid-template-columns: 1fr;
-  }
-
-  .btn-custom-event-cake {
-    padding: 0.75rem 0.85rem;
-  }
-
-  .custom-cta-icon-pill {
-    width: 36px;
-    height: 36px;
-    font-size: 1.15rem;
   }
 
   .brand-logo-img {

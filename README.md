@@ -26,7 +26,7 @@ Interface interativa e minimalista de alta confeitaria para encomenda personaliz
     - Indicador de *Equilíbrio de Sabores* e *Complexidade*.
     - Escolha de *Topo Simples (Incluso)* ou *Topo Especial 3D (+ R$ 35,00)*.
   - **Bolo Personalizado & Casamentos (Clientes Especiais):**
-    - Botão exclusivo em destaque na seção de *Dimensões* e atalhos na navegação e resumo.
+    - Botão sutil e discreto integrado junto às opções de aros na seção de *Dimensões*.
     - Modal dedicado para projetos de alta confeitaria: casamentos, 15 anos, bodas e eventos corporativos.
     - Seleção de ocasiões, estimativa de convidados/fatias, estrutura (2 ou mais andares), flores naturais/botânicas e folha de ouro.
     - Integração direta com WhatsApp para solicitação detalhada de orçamento com Lucieda.

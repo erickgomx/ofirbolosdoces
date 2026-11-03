@@ -112,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const openPolicyModalInline = document.getElementById('open-policy-modal-inline');
   const btnCustomEventCake = document.getElementById('btn-custom-event-cake');
   const openCustomCakeNav = document.getElementById('open-custom-cake-nav');
-  const btnOpenCustomFromSummary = document.getElementById('btn-open-custom-from-summary');
 
   const modalSumSize = document.getElementById('modal-sum-size');
   const modalSumMassa = document.getElementById('modal-sum-massa');
@@ -407,12 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (openCustomCakeNav) {
     openCustomCakeNav.addEventListener('click', (e) => {
       e.preventDefault();
-      openModal(customCakeModal);
-    });
-  }
-
-  if (btnOpenCustomFromSummary) {
-    btnOpenCustomFromSummary.addEventListener('click', () => {
       openModal(customCakeModal);
     });
   }
