@@ -226,14 +226,41 @@
           <div class="ambient-glow"></div>
           <div class="table-shadow"></div>
 
-          <!-- Real Cake Image -->
-          <div class="real-cake-wrapper" id="real-cake-wrapper">
-            <img src="assets/bolo.png" alt="Bolo Artesanal Ofir Doceria" id="main-cake-image" class="main-cake-image">
+          <div class="cake-composite-stage" id="cake-composite-stage">
+            <!-- 1. Static Pedestal Base (Always fixed size) -->
+            <img src="assets/base_stand.png" alt="Base de Mármore e Bronze" id="stage-base-stand" class="stage-base-stand">
+
+            <!-- 2. Scalable Cake Container (Scales with Aro) -->
+            <div class="stage-cake-scalable" id="stage-cake-scalable">
+              <!-- Whole Cake View -->
+              <img src="assets/cake_whole.png" alt="Bolo Inteiro Artesanal" id="cake-layer-whole" class="cake-layer-img active">
+
+              <!-- Cut Cake View Container -->
+              <div class="cake-cut-container" id="cake-cut-container">
+                <!-- White Sponge Cut Cake -->
+                <img src="assets/cake_cut_white.png" alt="Bolo Cortado Massa Branca" id="cake-layer-cut-white" class="cake-layer-img">
+                <!-- Chocolate Sponge Cut Cake -->
+                <img src="assets/cake_cut_chocolate.png" alt="Bolo Cortado Massa Chocolate" id="cake-layer-cut-chocolate" class="cake-layer-img">
+                <!-- Dynamic Filling Color Tint Canvas -->
+                <canvas id="cake-filling-canvas" class="cake-filling-canvas" width="490" height="560"></canvas>
+              </div>
+            </div>
           </div>
 
-          <!-- Floating Interactive Action Button -->
+          <!-- Floating Interactive Action Buttons -->
           <div class="floating-view-actions">
-            <button class="view-action-pill" id="btn-rotate-3d" title="Alternar rotação suave">
+            <!-- Toggle View: Bolo Inteiro vs Bolo Cortado -->
+            <button type="button" class="view-action-pill" id="btn-toggle-view" title="Alternar visão Inteiro/Cortado">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span id="toggle-view-text">Bolo Cortado</span>
+            </button>
+
+            <!-- 3D Rotation Toggle -->
+            <button type="button" class="view-action-pill" id="btn-rotate-3d" title="Alternar rotação suave">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
               </svg>
@@ -243,7 +270,7 @@
 
           <!-- Interaction Hint -->
           <div class="interaction-hint">
-            <span class="hint-icon">✦</span> Mova o cursor sobre o bolo para inclinação tridimensional suave
+            <span class="hint-icon">✦</span> A base permanece estática • O bolo ajusta ao aro selecionado
           </div>
 
         </div>

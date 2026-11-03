@@ -6,11 +6,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --- DATA DEFINITIONS ---
   const SIZES = [
-    { id: 'aro-10', name: 'ARO 10', diameter: '10 cm', slices: '(6-8 fatias)', price: 70, scale: 0.65 },
-    { id: 'aro-15', name: 'ARO 15', diameter: '15 cm', slices: '(12-15 fatias)', price: 135, scale: 0.72 },
-    { id: 'aro-20', name: 'ARO 20', diameter: '20 cm', slices: '(20-25 fatias)', price: 195, scale: 0.80 },
-    { id: 'aro-25', name: 'ARO 25', diameter: '25 cm', slices: '(30-35 fatias)', price: 285, scale: 0.88 },
-    { id: 'aro-28', name: 'ARO 28', diameter: '28 cm', slices: '(40-45 fatias)', price: 365, scale: 0.94 },
+    { id: 'aro-10', name: 'ARO 10', diameter: '10 cm', slices: '(6-8 fatias)', price: 70, scale: 0.52 },
+    { id: 'aro-15', name: 'ARO 15', diameter: '15 cm', slices: '(12-15 fatias)', price: 135, scale: 0.63 },
+    { id: 'aro-20', name: 'ARO 20', diameter: '20 cm', slices: '(20-25 fatias)', price: 195, scale: 0.74 },
+    { id: 'aro-25', name: 'ARO 25', diameter: '25 cm', slices: '(30-35 fatias)', price: 285, scale: 0.84 },
+    { id: 'aro-28', name: 'ARO 28', diameter: '28 cm', slices: '(40-45 fatias)', price: 365, scale: 0.93 },
     { id: 'aro-30', name: 'ARO 30', diameter: '30 cm', slices: '(50-55 fatias)', price: 410, scale: 1.00 }
   ];
 
@@ -26,13 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const RECHEIOS = {
-    'morango': { name: 'Morango', desc: 'Geleia artesanal de morangos selecionados', eq: 93, comp: 82 },
-    'ninho': { name: 'Ninho', desc: 'Brigadeiro cremoso de puro Leite Ninho', eq: 96, comp: 70 },
-    'chocolate': { name: 'Chocolate', desc: 'Ganache encorpada de chocolate meio amargo', eq: 89, comp: 89 },
-    'avela': { name: 'Avelã', desc: 'Creme gianduja com pedacinhos crocantes', eq: 97, comp: 86 },
-    'coco': { name: 'Côco', desc: 'Beijinho suave com lascas de coco fresco', eq: 92, comp: 74 },
-    'maracuja': { name: 'Maracujá', desc: 'Creme aveludado com redução de maracujá', eq: 95, comp: 91 },
-    'abacaxi': { name: 'Abacaxi', desc: 'Compota dourada artesanal com toque cítrico', eq: 94, comp: 84 }
+    'morango': { name: 'Morango', desc: 'Geleia artesanal de morangos selecionados', eq: 93, comp: 82, color: { r: 214, g: 40, b: 57 } },
+    'ninho': { name: 'Ninho', desc: 'Brigadeiro cremoso de puro Leite Ninho', eq: 96, comp: 70, color: { r: 255, g: 246, b: 229 } },
+    'chocolate': { name: 'Chocolate', desc: 'Ganache encorpada de chocolate meio amargo', eq: 89, comp: 89, color: { r: 64, g: 34, b: 24 } },
+    'avela': { name: 'Avelã', desc: 'Creme gianduja com pedacinhos crocantes', eq: 97, comp: 86, color: { r: 140, g: 89, b: 53 } },
+    'coco': { name: 'Côco', desc: 'Beijinho suave com lascas de coco fresco', eq: 92, comp: 74, color: { r: 250, g: 248, b: 245 } },
+    'maracuja': { name: 'Maracujá', desc: 'Creme aveludado com redução de maracujá', eq: 95, comp: 91, color: { r: 255, g: 184, b: 0 } },
+    'abacaxi': { name: 'Abacaxi', desc: 'Compota dourada artesanal com toque cítrico', eq: 94, comp: 84, color: { r: 255, g: 174, b: 25 } }
   };
 
   const TOPPERS = {
@@ -46,13 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
     massa: 'branco',
     recheio: 'avela',
     topper: 'simples',
+    viewMode: 'whole', // 'whole' or 'cut'
     isSwaying: false
   };
 
   // --- DOM ELEMENTS ---
   const cakeInteractiveBox = document.getElementById('cake-interactive-box');
-  const realCakeWrapper = document.getElementById('real-cake-wrapper');
-  const mainCakeImage = document.getElementById('main-cake-image');
+  const cakeCompositeStage = document.getElementById('cake-composite-stage');
+  const stageBaseStand = document.getElementById('stage-base-stand');
+  const stageCakeScalable = document.getElementById('stage-cake-scalable');
+  const cakeLayerWhole = document.getElementById('cake-layer-whole');
+  const cakeCutContainer = document.getElementById('cake-cut-container');
+  const cakeLayerCutWhite = document.getElementById('cake-layer-cut-white');
+  const cakeLayerCutChocolate = document.getElementById('cake-layer-cut-chocolate');
+  const cakeFillingCanvas = document.getElementById('cake-filling-canvas');
+  const btnToggleView = document.getElementById('btn-toggle-view');
+  const toggleViewText = document.getElementById('toggle-view-text');
 
   const dimRange = document.getElementById('dimensions-range');
   const dimPrevBtn = document.getElementById('dim-prev');
@@ -142,6 +151,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initPickupDateConstraint();
 
+  // --- DYNAMIC FILLING TINT ENGINE ---
+  const fillingMaskImg = new Image();
+  fillingMaskImg.src = 'assets/cake_filling_mask.png';
+  let maskLoaded = false;
+  fillingMaskImg.onload = () => {
+    maskLoaded = true;
+    if (state.viewMode === 'cut') {
+      const currentRecheio = RECHEIOS[state.recheio];
+      renderFillingTint(currentRecheio ? currentRecheio.color : null);
+    }
+  };
+
+  function renderFillingTint(color) {
+    if (!cakeFillingCanvas) return;
+    const ctx = cakeFillingCanvas.getContext('2d');
+    ctx.clearRect(0, 0, cakeFillingCanvas.width, cakeFillingCanvas.height);
+    if (!maskLoaded || !color) return;
+
+    ctx.drawImage(fillingMaskImg, 0, 0, cakeFillingCanvas.width, cakeFillingCanvas.height);
+    ctx.globalCompositeOperation = 'source-in';
+    ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+    ctx.fillRect(0, 0, cakeFillingCanvas.width, cakeFillingCanvas.height);
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
   // --- UPDATE APP UI & CAKE LAYERS ---
   function updateApp() {
     const currentSize = SIZES[state.sizeIndex];
@@ -198,7 +232,39 @@ document.addEventListener('DOMContentLoaded', () => {
     finalPriceValue.textContent = totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     depositNoteText.innerHTML = `Sinal de 50%: <strong>R$ ${depositPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong> (restante na entrega)`;
 
-    
+    // 8. Scale Cake dynamically while Stand stays static
+    if (stageCakeScalable) {
+      stageCakeScalable.style.transform = `scale(${currentSize.scale})`;
+    }
+
+    // 9. View Mode Toggle (Whole vs Cut)
+    const isCut = (state.viewMode === 'cut');
+    if (btnToggleView) {
+      btnToggleView.classList.toggle('active', isCut);
+      if (toggleViewText) {
+        toggleViewText.textContent = isCut ? 'Bolo Inteiro' : 'Bolo Cortado';
+      }
+    }
+
+    if (cakeLayerWhole) {
+      cakeLayerWhole.classList.toggle('active', !isCut);
+    }
+    if (cakeCutContainer) {
+      cakeCutContainer.classList.toggle('active', isCut);
+    }
+
+    // 10. Massa Selection (when cut view active)
+    if (cakeLayerCutWhite) {
+      cakeLayerCutWhite.classList.toggle('active', isCut && state.massa === 'branco');
+    }
+    if (cakeLayerCutChocolate) {
+      cakeLayerCutChocolate.classList.toggle('active', isCut && state.massa === 'chocolate');
+    }
+
+    // 11. Dynamic Filling Tint
+    if (isCut && currentRecheio && currentRecheio.color) {
+      renderFillingTint(currentRecheio.color);
+    }
   }
 
   // --- SUBTLE 3D PARALLAX TILT ON MOUSE MOVE ---
@@ -229,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!state.isSwaying) {
       currentTiltX += (targetTiltX - currentTiltX) * 0.1;
       currentTiltY += (targetTiltY - currentTiltY) * 0.1;
-      realCakeWrapper.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+      if (cakeCompositeStage) cakeCompositeStage.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
     }
     requestAnimationFrame(tiltLoop);
   }
@@ -249,18 +315,26 @@ document.addEventListener('DOMContentLoaded', () => {
         swayAngle += 0.035;
         const tiltY = Math.sin(swayAngle) * 9.5;
         const tiltX = Math.cos(swayAngle * 0.6) * 4.0;
-        realCakeWrapper.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
+        if (cakeCompositeStage) cakeCompositeStage.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
       }, 25);
     } else {
       rotateBtnText.textContent = 'Girar Perspectiva';
       clearInterval(swayInterval);
-      realCakeWrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
+      if (cakeCompositeStage) cakeCompositeStage.style.transform = `rotateY(0deg) rotateX(0deg)`;
       currentTiltX = 0;
       currentTiltY = 0;
       targetTiltX = 0;
       targetTiltY = 0;
     }
   });
+
+  // --- VIEW TOGGLE: BOLO INTEIRO vs BOLO CORTADO ---
+  if (btnToggleView) {
+    btnToggleView.addEventListener('click', () => {
+      state.viewMode = (state.viewMode === 'whole') ? 'cut' : 'whole';
+      updateApp();
+    });
+  }
 
   // --- EVENT LISTENERS: CONTROLS ---
   dimRange.addEventListener('input', (e) => {
