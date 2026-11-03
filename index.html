@@ -226,25 +226,9 @@
           <div class="ambient-glow"></div>
           <div class="table-shadow"></div>
 
-          <div class="cake-composite-stage" id="cake-composite-stage">
-            <!-- 1. Static Pedestal Base (Always fixed size) -->
-            <img src="assets/base_stand.png" alt="Base de Mármore e Bronze" id="stage-base-stand" class="stage-base-stand">
-
-            <!-- 2. Scalable Cake Container (Scales with Aro) -->
-            <div class="stage-cake-scalable" id="stage-cake-scalable">
-              <!-- Whole Cake View -->
-              <img src="assets/cake_whole.png" alt="Bolo Inteiro Artesanal" id="cake-layer-whole" class="cake-layer-img active">
-
-              <!-- Cut Cake View Container -->
-              <div class="cake-cut-container" id="cake-cut-container">
-                <!-- White Sponge Cut Cake -->
-                <img src="assets/cake_cut_white.png" alt="Bolo Cortado Massa Branca" id="cake-layer-cut-white" class="cake-layer-img">
-                <!-- Chocolate Sponge Cut Cake -->
-                <img src="assets/cake_cut_chocolate.png" alt="Bolo Cortado Massa Chocolate" id="cake-layer-cut-chocolate" class="cake-layer-img">
-                <!-- Dynamic Filling Color Tint Canvas -->
-                <canvas id="cake-filling-canvas" class="cake-filling-canvas" width="490" height="560"></canvas>
-              </div>
-            </div>
+          <div class="cake-showcase-wrapper" id="cake-showcase-wrapper">
+            <!-- Active Cake Image (100% fotográfico nos 18 estados nativos) -->
+            <img src="assets/bolo_inteiro_aro20.png" alt="Bolo Artesanal Ofir Doceria" id="main-cake-image" class="main-cake-image">
           </div>
 
           <!-- Floating Interactive Action Buttons -->
@@ -270,7 +254,7 @@
 
           <!-- Interaction Hint -->
           <div class="interaction-hint">
-            <span class="hint-icon">✦</span> A base permanece estática • O bolo ajusta ao aro selecionado
+            <span class="hint-icon">✦</span> Mova o cursor sobre o bolo para inclinação suave
           </div>
 
         </div>

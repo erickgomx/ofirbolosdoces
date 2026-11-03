@@ -46,20 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
     massa: 'branco',
     recheio: 'avela',
     topper: 'simples',
-    viewMode: 'whole', // 'whole' or 'cut'
+    viewMode: 'inteiro', // 'inteiro' or 'cortado'
     isSwaying: false
   };
 
   // --- DOM ELEMENTS ---
   const cakeInteractiveBox = document.getElementById('cake-interactive-box');
-  const cakeCompositeStage = document.getElementById('cake-composite-stage');
-  const stageBaseStand = document.getElementById('stage-base-stand');
-  const stageCakeScalable = document.getElementById('stage-cake-scalable');
-  const cakeLayerWhole = document.getElementById('cake-layer-whole');
-  const cakeCutContainer = document.getElementById('cake-cut-container');
-  const cakeLayerCutWhite = document.getElementById('cake-layer-cut-white');
-  const cakeLayerCutChocolate = document.getElementById('cake-layer-cut-chocolate');
-  const cakeFillingCanvas = document.getElementById('cake-filling-canvas');
+  const cakeShowcaseWrapper = document.getElementById('cake-showcase-wrapper');
+  const mainCakeImage = document.getElementById('main-cake-image');
   const btnToggleView = document.getElementById('btn-toggle-view');
   const toggleViewText = document.getElementById('toggle-view-text');
 
@@ -151,29 +145,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initPickupDateConstraint();
 
-  // --- DYNAMIC FILLING TINT ENGINE ---
-  const fillingMaskImg = new Image();
-  fillingMaskImg.src = 'assets/cake_filling_mask.png';
-  let maskLoaded = false;
-  fillingMaskImg.onload = () => {
-    maskLoaded = true;
-    if (state.viewMode === 'cut') {
-      const currentRecheio = RECHEIOS[state.recheio];
-      renderFillingTint(currentRecheio ? currentRecheio.color : null);
+  // --- PRELOAD ALL 18 NATIVE HIGH-RES CAKE RENDERS ---
+  const CAKE_ASSETS = [
+    'assets/bolo_inteiro_aro10.png', 'assets/bolo_inteiro_aro15.png', 'assets/bolo_inteiro_aro20.png',
+    'assets/bolo_inteiro_aro25.png', 'assets/bolo_inteiro_aro28.png', 'assets/bolo_inteiro_aro30.png',
+    'assets/bolo_cortado_branco_aro10.png', 'assets/bolo_cortado_branco_aro15.png', 'assets/bolo_cortado_branco_aro20.png',
+    'assets/bolo_cortado_branco_aro25.png', 'assets/bolo_cortado_branco_aro28.png', 'assets/bolo_cortado_branco_aro30.png',
+    'assets/bolo_cortado_chocolate_aro10.png', 'assets/bolo_cortado_chocolate_aro15.png', 'assets/bolo_cortado_chocolate_aro20.png',
+    'assets/bolo_cortado_chocolate_aro25.png', 'assets/bolo_cortado_chocolate_aro28.png', 'assets/bolo_cortado_chocolate_aro30.png'
+  ];
+  CAKE_ASSETS.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+
+  function getCakeImagePath() {
+    const currentSize = SIZES[state.sizeIndex];
+    const aroNum = currentSize.id.replace('aro-', '');
+    if (state.viewMode === 'cortado') {
+      const massaType = (state.massa === 'chocolate') ? 'chocolate' : 'branco';
+      return `assets/bolo_cortado_${massaType}_aro${aroNum}.png`;
     }
-  };
-
-  function renderFillingTint(color) {
-    if (!cakeFillingCanvas) return;
-    const ctx = cakeFillingCanvas.getContext('2d');
-    ctx.clearRect(0, 0, cakeFillingCanvas.width, cakeFillingCanvas.height);
-    if (!maskLoaded || !color) return;
-
-    ctx.drawImage(fillingMaskImg, 0, 0, cakeFillingCanvas.width, cakeFillingCanvas.height);
-    ctx.globalCompositeOperation = 'source-in';
-    ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
-    ctx.fillRect(0, 0, cakeFillingCanvas.width, cakeFillingCanvas.height);
-    ctx.globalCompositeOperation = 'source-over';
+    return `assets/bolo_inteiro_aro${aroNum}.png`;
   }
 
   // --- UPDATE APP UI & CAKE LAYERS ---
@@ -232,38 +225,19 @@ document.addEventListener('DOMContentLoaded', () => {
     finalPriceValue.textContent = totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     depositNoteText.innerHTML = `Sinal de 50%: <strong>R$ ${depositPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong> (restante na entrega)`;
 
-    // 8. Scale Cake dynamically while Stand stays static
-    if (stageCakeScalable) {
-      stageCakeScalable.style.transform = `scale(${currentSize.scale})`;
+    // 8. Photorealistic Cake Showcase (Bolo Inteiro vs Cortado por Massa e Aro)
+    const targetSrc = getCakeImagePath();
+    if (mainCakeImage && mainCakeImage.getAttribute('src') !== targetSrc) {
+      mainCakeImage.src = targetSrc;
     }
 
-    // 9. View Mode Toggle (Whole vs Cut)
-    const isCut = (state.viewMode === 'cut');
+    // 9. View Mode Button State
+    const isCut = (state.viewMode === 'cortado');
     if (btnToggleView) {
       btnToggleView.classList.toggle('active', isCut);
       if (toggleViewText) {
         toggleViewText.textContent = isCut ? 'Bolo Inteiro' : 'Bolo Cortado';
       }
-    }
-
-    if (cakeLayerWhole) {
-      cakeLayerWhole.classList.toggle('active', !isCut);
-    }
-    if (cakeCutContainer) {
-      cakeCutContainer.classList.toggle('active', isCut);
-    }
-
-    // 10. Massa Selection (when cut view active)
-    if (cakeLayerCutWhite) {
-      cakeLayerCutWhite.classList.toggle('active', isCut && state.massa === 'branco');
-    }
-    if (cakeLayerCutChocolate) {
-      cakeLayerCutChocolate.classList.toggle('active', isCut && state.massa === 'chocolate');
-    }
-
-    // 11. Dynamic Filling Tint
-    if (isCut && currentRecheio && currentRecheio.color) {
-      renderFillingTint(currentRecheio.color);
     }
   }
 
@@ -295,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!state.isSwaying) {
       currentTiltX += (targetTiltX - currentTiltX) * 0.1;
       currentTiltY += (targetTiltY - currentTiltY) * 0.1;
-      if (cakeCompositeStage) cakeCompositeStage.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+      if (cakeShowcaseWrapper) cakeShowcaseWrapper.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
     }
     requestAnimationFrame(tiltLoop);
   }
@@ -315,12 +289,12 @@ document.addEventListener('DOMContentLoaded', () => {
         swayAngle += 0.035;
         const tiltY = Math.sin(swayAngle) * 9.5;
         const tiltX = Math.cos(swayAngle * 0.6) * 4.0;
-        if (cakeCompositeStage) cakeCompositeStage.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
+        if (cakeShowcaseWrapper) cakeShowcaseWrapper.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
       }, 25);
     } else {
       rotateBtnText.textContent = 'Girar Perspectiva';
       clearInterval(swayInterval);
-      if (cakeCompositeStage) cakeCompositeStage.style.transform = `rotateY(0deg) rotateX(0deg)`;
+      if (cakeShowcaseWrapper) cakeShowcaseWrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
       currentTiltX = 0;
       currentTiltY = 0;
       targetTiltX = 0;
@@ -331,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- VIEW TOGGLE: BOLO INTEIRO vs BOLO CORTADO ---
   if (btnToggleView) {
     btnToggleView.addEventListener('click', () => {
-      state.viewMode = (state.viewMode === 'whole') ? 'cut' : 'whole';
+      state.viewMode = (state.viewMode === 'inteiro') ? 'cortado' : 'inteiro';
       updateApp();
     });
   }
