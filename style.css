@@ -2271,7 +2271,8 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   margin: 2rem auto 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   font-size: 0.85rem;
   color: rgba(247, 238, 219, 0.5);
   flex-wrap: wrap;
@@ -2842,7 +2843,32 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 
   .footer-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    gap: 2.25rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .footer-logo {
+    margin: 0 auto 1rem;
+    display: block;
+  }
+
+  .footer-contact {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    justify-content: center;
   }
 
   .lightbox-img-wrapper {
