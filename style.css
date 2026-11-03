@@ -171,6 +171,7 @@ body {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--border-subtle);
   transition: all 0.25s var(--ease-smooth);
+  white-space: nowrap;
 }
 
 .whatsapp-quick-link:hover {
@@ -1611,15 +1612,58 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 
 @media (max-width: 640px) {
   .atelier-header {
-    padding: 1rem 1.25rem;
+    padding: 0.75rem 1rem;
   }
 
   .nav-links {
     display: none;
   }
 
+  .brand-logo-img {
+    height: 38px;
+    max-width: 140px;
+  }
+
+  .header-actions {
+    gap: 0.45rem;
+  }
+
+  .whatsapp-quick-link {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    height: 33px;
+    gap: 0.35rem;
+    white-space: nowrap;
+    border-radius: 999px;
+    letter-spacing: -0.2px;
+  }
+
+  .whatsapp-quick-link svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+  }
+
+  .admin-quick-btn {
+    width: 33px;
+    height: 33px;
+    padding: 0;
+  }
+
+  .admin-quick-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
   .mobile-menu-btn {
     display: flex;
+    padding: 0.35rem;
+  }
+
+  .mobile-menu-btn span {
+    width: 20px;
+    height: 2px;
   }
 
   .experience-stage {
@@ -1664,10 +1708,31 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   .form-row-grid {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 380px) {
+  .atelier-header {
+    padding: 0.65rem 0.75rem;
+  }
 
   .brand-logo-img {
-    height: 44px;
-    max-width: 175px;
+    height: 34px;
+    max-width: 120px;
+  }
+
+  .header-actions {
+    gap: 0.35rem;
+  }
+
+  .whatsapp-quick-link {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.45rem;
+    height: 30px;
+  }
+
+  .admin-quick-btn {
+    width: 30px;
+    height: 30px;
   }
 }
 
