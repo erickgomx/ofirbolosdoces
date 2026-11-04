@@ -1646,14 +1646,7 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   }
 
   .admin-quick-btn {
-    width: 33px;
-    height: 33px;
-    padding: 0;
-  }
-
-  .admin-quick-btn svg {
-    width: 14px;
-    height: 14px;
+    display: none !important;
   }
 
   .mobile-menu-btn {
@@ -1731,8 +1724,7 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   }
 
   .admin-quick-btn {
-    width: 30px;
-    height: 30px;
+    display: none !important;
   }
 }
 
