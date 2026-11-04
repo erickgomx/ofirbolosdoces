@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dimLabelName = document.getElementById('dim-label-name');
   const dimServingsText = document.getElementById('dim-servings-text');
   const dimDiameterText = document.getElementById('dim-diameter-text');
-  const sizePills = document.querySelectorAll('.size-pill');
+  const sizePills = document.querySelectorAll('.size-pills-row .size-pill');
   const sliderTicks = document.querySelectorAll('.tick');
 
   const massaCards = document.querySelectorAll('.massa-card');
@@ -180,10 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- UPDATE APP UI & CAKE LAYERS ---
   function updateApp() {
-    const currentSize = SIZES[state.sizeIndex];
-    const currentMassa = MASSAS[state.massa];
+    if (isNaN(state.sizeIndex) || state.sizeIndex < 0 || state.sizeIndex >= SIZES.length) {
+      state.sizeIndex = 2;
+    }
+    const currentSize = SIZES[state.sizeIndex] || SIZES[2] || SIZES[0];
+    const currentMassa = MASSAS[state.massa] || MASSAS['branco'];
     const currentRecheio = getRecheioItem(state.recheio);
-    const currentTopper = TOPPERS[state.topper];
+    const currentTopper = TOPPERS[state.topper] || TOPPERS['simples'];
 
     // 1. Slider & Controls (imagem em exibicao fotografica fixa nesta fase)
     dimRange.value = state.sizeIndex;
@@ -318,8 +321,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sizePills.forEach(pill => {
     pill.addEventListener('click', () => {
-      state.sizeIndex = parseInt(pill.dataset.index, 10);
-      updateApp();
+      const idx = parseInt(pill.dataset.index, 10);
+      if (!isNaN(idx)) {
+        state.sizeIndex = idx;
+        updateApp();
+      }
     });
   });
 
@@ -339,34 +345,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- MODALS ---
   function openModal(modal) {
+    if (!modal) return;
+    modal.dataset.openedAt = String(Date.now());
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
   function closeModal(modal) {
+    if (!modal) return;
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 
-  btnConcluirCriacao.addEventListener('click', () => {
-    const currentSize = SIZES[state.sizeIndex];
-    const currentMassa = MASSAS[state.massa];
-    const currentRecheio = getRecheioItem(state.recheio);
-    const currentTopper = TOPPERS[state.topper];
-    const totalPrice = currentSize.price + currentTopper.extra;
-    const depositPrice = totalPrice / 2;
+  if (btnConcluirCriacao) {
+    const handleConcluirClick = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
 
-    modalSumSize.textContent = `${currentSize.name} ${currentSize.slices}`;
-    modalSumMassa.textContent = currentMassa.name;
-    modalSumRecheio.textContent = currentRecheio.name;
-    modalSumTopo.textContent = currentTopper.name;
-    modalSumTotal.textContent = `R$ ${totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    modalSumDeposit.textContent = `R$ ${depositPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      if (isNaN(state.sizeIndex) || state.sizeIndex < 0 || state.sizeIndex >= SIZES.length) {
+        state.sizeIndex = 2;
+      }
+      if (!MASSAS[state.massa]) {
+        state.massa = 'branco';
+      }
+      if (!TOPPERS[state.topper]) {
+        state.topper = 'simples';
+      }
 
-    openModal(checkoutModal);
-  });
+      try {
+        const currentSize = (SIZES && SIZES[state.sizeIndex]) || SIZES[2] || SIZES[0];
+        const currentMassa = (MASSAS && MASSAS[state.massa]) || { name: 'Branco (ovos)' };
+        const currentRecheio = getRecheioItem(state.recheio);
+        const currentTopper = (TOPPERS && TOPPERS[state.topper]) || { name: 'Simples (Incluso)', extra: 0 };
+        const totalPrice = (Number(currentSize.price) || 195) + (Number(currentTopper.extra) || 0);
+        const depositPrice = totalPrice / 2;
+
+        if (modalSumSize && currentSize) modalSumSize.textContent = `${currentSize.name} ${currentSize.slices || ''}`;
+        if (modalSumMassa && currentMassa) modalSumMassa.textContent = currentMassa.name;
+        if (modalSumRecheio && currentRecheio) modalSumRecheio.textContent = currentRecheio.name;
+        if (modalSumTopo && currentTopper) modalSumTopo.textContent = currentTopper.name;
+        if (modalSumTotal) modalSumTotal.textContent = `R$ ${totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        if (modalSumDeposit) modalSumDeposit.textContent = `R$ ${depositPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      } catch (err) {
+        console.error('[Checkout] Erro seguro ao preencher modal:', err);
+      }
+
+      openModal(checkoutModal);
+    };
+
+    btnConcluirCriacao.addEventListener('click', handleConcluirClick);
+  }
 
   closeCheckoutModal.addEventListener('click', () => closeModal(checkoutModal));
   closePolicyModal.addEventListener('click', () => closeModal(policyModal));
@@ -421,7 +453,14 @@ document.addEventListener('DOMContentLoaded', () => {
   [checkoutModal, policyModal, aboutModal, customCakeModal, galeriaLightboxModal, adminLoginModal, adminPanelModal].forEach(modal => {
     if (modal) {
       modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal(modal);
+        if (e.target === modal) {
+          const openedAt = Number(modal.dataset.openedAt || 0);
+          // Previne fechamento imediato por synthetic click de toque no celular (< 450ms)
+          if (Date.now() - openedAt < 450) {
+            return;
+          }
+          closeModal(modal);
+        }
       });
     }
   });
