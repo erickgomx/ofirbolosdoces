@@ -802,10 +802,6 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
           <span>Galeria de Fotos</span>
         </button>
-        <button class="admin-tab-btn" data-tab="tab-supabase">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/><rect x="2" y="2" width="20" height="20" rx="5"/></svg>
-          <span>Conexão Supabase</span>
-        </button>
       </div>
 
       <!-- TAB 1: PREÇOS -->
@@ -899,44 +895,6 @@
           </div>
 
         </div>
-      </div>
-
-      <!-- TAB 3: CONFIGURAÇÃO SUPABASE -->
-      <div class="admin-tab-content" id="tab-supabase">
-        <p class="tab-explanation">Configure o projeto Supabase que receberá as fotos e os dados de preços. Conecte diretamente seu banco na Vercel com o plano gratuito de 500MB.</p>
-
-        <form id="supabase-config-form" onsubmit="return false;">
-          <div class="input-group">
-            <label for="cfg-supabase-url">Supabase Project URL:</label>
-            <input type="text" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co">
-          </div>
-
-          <div class="input-group">
-            <label for="cfg-supabase-key">Supabase Anon Public Key:</label>
-            <input type="password" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-          </div>
-
-          <div class="supabase-status-indicator" id="supabase-status-indicator">
-            <span class="status-dot"></span>
-            <span id="supabase-status-text">Verificando status de conexão...</span>
-          </div>
-
-          <div class="tab-actions-row">
-            <button type="button" class="primary-cta-btn" id="btn-save-supabase-config">
-              <span>Salvar Configuração</span>
-            </button>
-          </div>
-
-          <div class="supabase-guide-box">
-            <strong>Como conectar no Supabase (Plano Gratuito 500MB):</strong>
-            <ol>
-              <li>Acesse <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> e crie seu projeto.</li>
-              <li>No menu <strong>SQL Editor</strong>, copie e execute o script <code>supabase_schema.sql</code>.</li>
-              <li>No menu <strong>Project Settings &gt; API</strong>, copie a <em>Project URL</em> e a chave <em>anon public</em> e cole acima.</li>
-              <li>No menu <strong>Authentication &gt; Users</strong>, crie o usuário da administradora com e-mail e senha.</li>
-            </ol>
-          </div>
-        </form>
       </div>
 
     </div>

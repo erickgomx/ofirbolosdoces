@@ -871,13 +871,6 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   const uploadSaveStatus = document.getElementById('upload-save-status');
   const adminGaleriaItems = document.getElementById('admin-galeria-items');
 
-  // Config Supabase
-  const cfgSupabaseUrl = document.getElementById('cfg-supabase-url');
-  const cfgSupabaseKey = document.getElementById('cfg-supabase-key');
-  const btnSaveSupabaseConfig = document.getElementById('btn-save-supabase-config');
-  const supabaseStatusIndicator = document.getElementById('supabase-status-indicator');
-  const supabaseStatusText = document.getElementById('supabase-status-text');
-
   let currentAdminSession = null;
   let stagedUploadFile = null;
 
@@ -912,7 +905,6 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   function openAdminPanel() {
     renderPricesEditor();
     renderAdminGaleriaList();
-    setupSupabaseConfigFields();
     openModal(adminPanelModal);
   }
 
@@ -1215,40 +1207,6 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
         }
       });
     });
-  }
-
-  // Setup Supabase Config
-  function setupSupabaseConfigFields() {
-    if (!cfgSupabaseUrl || !cfgSupabaseKey || !window.OfirSupabase) return;
-    const creds = window.OfirSupabase.getCredentials();
-    cfgSupabaseUrl.value = creds.url;
-    cfgSupabaseKey.value = creds.key;
-
-    if (supabaseStatusIndicator) {
-      if (creds.isConnected) {
-        supabaseStatusIndicator.className = 'supabase-status-indicator connected';
-        supabaseStatusText.textContent = '✓ Conectado ao Supabase (Plano 500MB)';
-      } else {
-        supabaseStatusIndicator.className = 'supabase-status-indicator error';
-        supabaseStatusText.textContent = 'Não conectado (insira suas credenciais abaixo)';
-      }
-    }
-
-    if (btnSaveSupabaseConfig) {
-      btnSaveSupabaseConfig.onclick = () => {
-        try {
-          const url = cfgSupabaseUrl.value.trim();
-          const key = cfgSupabaseKey.value.trim();
-          window.OfirSupabase.setCredentials(url, key);
-          alert('Configurações Supabase salvas com sucesso!');
-          setupSupabaseConfigFields();
-          loadInitialPrices();
-          loadGaleria();
-        } catch (err) {
-          alert(`Erro: ${err.message}`);
-        }
-      };
-    }
   }
 
   // Initial Load of Prices from Supabase
