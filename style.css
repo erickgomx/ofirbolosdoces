@@ -1233,11 +1233,242 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   color: var(--text-muted);
 }
 
-/* Modal Summary Box */
+/* ==========================================================================
+   ELEGANT CHECKOUT MODAL (LUXURY ATELIER AESTHETIC)
+   ========================================================================== */
 .modal-checkout-card {
-  max-width: 520px;
+  max-width: 490px;
+  background: #FCFAF7;
+  border: 1px solid rgba(191, 161, 99, 0.35);
+  border-radius: 26px;
+  box-shadow: 0 30px 80px rgba(28, 26, 24, 0.3);
+  padding: 1.85rem 1.85rem 1.65rem;
 }
 
+.checkout-modal-header {
+  text-align: center;
+  margin-bottom: 1.15rem;
+}
+
+.checkout-brand-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gold-dark);
+  margin-bottom: 0.35rem;
+}
+
+.checkout-gem {
+  color: var(--gold-primary);
+  font-size: 0.55rem;
+}
+
+.checkout-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 0.3rem 0;
+  line-height: 1.2;
+}
+
+.checkout-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Order Ticket Card */
+.checkout-ticket-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(191, 161, 99, 0.28);
+  border-radius: 16px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.15rem;
+  box-shadow: 0 4px 16px rgba(191, 161, 99, 0.08);
+}
+
+.checkout-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 1rem;
+}
+
+.checkout-spec-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-dark);
+  margin-bottom: 2px;
+}
+
+.spec-val {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.checkout-pricing-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed rgba(191, 161, 99, 0.35);
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.pricing-total-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-lbl {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.pricing-val-total {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.pricing-deposit-pill {
+  background: rgba(191, 161, 99, 0.14);
+  border: 1px solid rgba(191, 161, 99, 0.4);
+  border-radius: 20px;
+  padding: 0.35rem 0.75rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.deposit-lbl {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-dark);
+}
+
+.deposit-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+
+/* Inputs Wrap */
+.checkout-inputs-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.checkout-inputs-wrap .modal-inputs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.checkout-input-lbl {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-dark);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkout-input-lbl small {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-light);
+}
+
+.checkout-input {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid rgba(191, 161, 99, 0.3);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--text-main);
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.checkout-input:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 3px rgba(191, 161, 99, 0.16);
+}
+
+.checkout-policy-agree {
+  margin-bottom: 1.15rem;
+}
+
+.checkout-policy-agree .custom-checkbox {
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.checkout-action-wrap {
+  width: 100%;
+}
+
+.checkout-whatsapp-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1fa855 0%, #15823f 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 16px;
+  padding: 0.95rem 1.5rem;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  box-shadow: 0 10px 25px rgba(21, 130, 63, 0.28);
+  transition: all 0.25s ease;
+}
+
+.checkout-whatsapp-btn:hover {
+  background: linear-gradient(135deg, #24b85e 0%, #189147 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(21, 130, 63, 0.35);
+}
+
+/* Modal Summary Box */
 .modal-summary-box {
   background: #f8f5ee;
   border: 1px solid var(--border-subtle);
@@ -2926,120 +3157,119 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
     align-items: center;
   }
 
-  /* Checkout Modal Ultra-compact Zero-Scroll on Mobile */
+  /* Checkout Modal Elegant & Compact on Mobile */
   .modal-card.modal-checkout-card {
-    padding: 0.95rem 0.9rem 0.85rem !important;
-    max-width: 440px;
-    max-height: 96vh;
-    border-radius: 18px;
+    padding: 1.25rem 1.15rem 1.1rem !important;
+    max-width: 430px;
+    max-height: 94vh;
+    border-radius: 20px !important;
     box-sizing: border-box;
     overflow-y: auto;
   }
 
   .modal-checkout-card .modal-close-btn {
-    top: 0.65rem;
-    right: 0.65rem;
-    width: 26px;
-    height: 26px;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 28px;
+    height: 28px;
     font-size: 0.85rem;
   }
 
-  .modal-checkout-card .modal-header {
-    margin-bottom: 0.4rem;
-    padding-right: 1.8rem;
+  .modal-checkout-card .checkout-modal-header {
+    margin-bottom: 0.75rem;
+    padding-right: 1.25rem;
   }
 
-  .modal-checkout-card .modal-pretitle {
-    display: none;
+  .modal-checkout-card .checkout-brand-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.2rem;
   }
 
-  .modal-checkout-card .modal-title {
-    font-size: 1.15rem;
+  .modal-checkout-card .checkout-title {
+    font-size: 1.35rem;
     margin: 0 0 0.15rem 0;
     line-height: 1.2;
   }
 
-  .modal-checkout-card .modal-desc {
-    font-size: 0.72rem;
+  .modal-checkout-card .checkout-desc {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .modal-checkout-card .checkout-ticket-card {
+    padding: 0.75rem 0.85rem;
+    margin-bottom: 0.75rem;
+    border-radius: 12px;
+  }
+
+  .modal-checkout-card .checkout-specs-grid {
+    gap: 0.45rem 0.75rem;
+  }
+
+  .modal-checkout-card .spec-label {
+    font-size: 0.58rem;
+    margin-bottom: 1px;
+  }
+
+  .modal-checkout-card .spec-val {
+    font-size: 0.82rem;
     line-height: 1.25;
-    margin: 0;
   }
 
-  .modal-checkout-card .modal-summary-box {
-    padding: 0.45rem 0.65rem;
-    margin-bottom: 0.45rem;
-    border-radius: 10px;
-    gap: 0.2rem;
-    background: #fbf9f4;
+  .modal-checkout-card .checkout-pricing-bar {
+    margin-top: 0.55rem;
+    padding-top: 0.55rem;
   }
 
-  .modal-checkout-card .modal-sum-specs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.15rem 0.5rem;
+  .modal-checkout-card .pricing-lbl {
+    font-size: 0.58rem;
   }
 
-  .modal-checkout-card .modal-sum-row {
-    font-size: 0.72rem;
-    line-height: 1.2;
+  .modal-checkout-card .pricing-val-total {
+    font-size: 1.18rem;
   }
 
-  .modal-checkout-card .modal-sum-divider {
-    margin: 0.25rem 0;
-    background: rgba(191, 161, 99, 0.25);
+  .modal-checkout-card .pricing-deposit-pill {
+    padding: 0.22rem 0.55rem;
+    border-radius: 12px;
+    gap: 0.3rem;
   }
 
-  .modal-checkout-card .modal-sum-pricing {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  .modal-checkout-card .deposit-lbl {
+    font-size: 0.6rem;
+  }
+
+  .modal-checkout-card .deposit-val {
+    font-size: 0.86rem;
+  }
+
+  .modal-checkout-card .checkout-inputs-wrap {
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .modal-checkout-card .checkout-inputs-wrap .modal-inputs-row {
     gap: 0.5rem;
   }
 
-  .modal-checkout-card .modal-sum-row.total,
-  .modal-checkout-card .modal-sum-row.deposit {
-    font-size: 0.78rem;
-    display: flex;
-    gap: 0.35rem;
-    align-items: baseline;
-    margin: 0;
+  .modal-checkout-card .checkout-input-lbl {
+    font-size: 0.62rem;
+    margin-bottom: 2px;
   }
 
-  .modal-checkout-card .modal-inputs {
-    gap: 0.35rem;
-    margin-bottom: 0.45rem;
+  .modal-checkout-card .checkout-input {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.82rem;
+    height: 36px;
+    border-radius: 9px;
   }
 
-  .modal-checkout-card .modal-inputs-row {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 0.45rem;
+  .modal-checkout-card .checkout-policy-agree {
+    margin-bottom: 0.75rem;
   }
 
-  .modal-checkout-card .input-group {
-    gap: 0.15rem;
-  }
-
-  .modal-checkout-card .input-group label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--text-main);
-  }
-
-  .modal-checkout-card .input-group input {
-    padding: 0.38rem 0.55rem;
-    font-size: 0.8rem;
-    border-radius: 8px;
-    height: 33px;
-    box-sizing: border-box;
-  }
-
-  .modal-checkout-card .modal-policy-agree {
-    margin-bottom: 0.45rem;
-  }
-
-  .modal-checkout-card .custom-checkbox {
+  .modal-checkout-card .checkout-policy-agree .custom-checkbox {
     font-size: 0.68rem;
     line-height: 1.25;
     gap: 0.45rem;
@@ -3054,18 +3284,18 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
     flex-shrink: 0;
   }
 
-  .modal-checkout-card .whatsapp-send-btn {
-    padding: 0.6rem 0.85rem;
-    font-size: 0.84rem;
+  .modal-checkout-card .checkout-whatsapp-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
     font-weight: 700;
-    border-radius: 12px;
-    height: 40px;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+    border-radius: 13px;
+    height: 44px;
+    box-shadow: 0 6px 18px rgba(21, 130, 63, 0.25);
   }
 
-  .modal-checkout-card .whatsapp-send-btn svg {
-    width: 16px;
-    height: 16px;
+  .modal-checkout-card .checkout-whatsapp-btn svg {
+    width: 17px;
+    height: 17px;
     flex-shrink: 0;
   }
 
