@@ -244,6 +244,64 @@
   }
 
   /**
+   * --- MÓDULO DE RECHEIOS ---
+   */
+  async function fetchRecheios() {
+    if (!client) {
+      const local = localStorage.getItem('ofir_cached_recheios');
+      return local ? JSON.parse(local) : null;
+    }
+
+    try {
+      const { data, error } = await client
+        .from('configuracoes')
+        .select('value')
+        .eq('key', 'recheios_list')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.warn('[Supabase] Erro ao buscar recheios:', error);
+      }
+
+      if (data && data.value && Array.isArray(data.value) && data.value.length > 0) {
+        localStorage.setItem('ofir_cached_recheios', JSON.stringify(data.value));
+        return data.value;
+      }
+
+      const local = localStorage.getItem('ofir_cached_recheios');
+      return local ? JSON.parse(local) : null;
+    } catch (err) {
+      console.warn('[Supabase] Erro ao consultar recheios, usando cache local:', err);
+      const local = localStorage.getItem('ofir_cached_recheios');
+      return local ? JSON.parse(local) : null;
+    }
+  }
+
+  async function saveRecheios(recheiosList) {
+    localStorage.setItem('ofir_cached_recheios', JSON.stringify(recheiosList));
+
+    if (client) {
+      try {
+        const { data, error } = await client
+          .from('configuracoes')
+          .upsert({
+            key: 'recheios_list',
+            value: recheiosList,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'key' });
+
+        if (error) {
+          console.warn('[Supabase] Aviso ao persistir recheios:', error);
+        }
+        return { success: true, data };
+      } catch (e) {
+        console.warn('[Supabase] Falha ao salvar recheios na nuvem:', e);
+      }
+    }
+    return { success: true, data: recheiosList };
+  }
+
+  /**
    * --- MÓDULO DE GALERIA ---
    */
   async function fetchGallery() {
@@ -377,6 +435,8 @@
     onAuthStateChange,
     fetchPrices,
     savePrices,
+    fetchRecheios,
+    saveRecheios,
     fetchGallery,
     uploadGalleryPhoto,
     deleteGalleryPhoto

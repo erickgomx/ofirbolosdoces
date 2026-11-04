@@ -25,15 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const RECHEIOS = {
-    'morango': { name: 'Morango', desc: 'Geleia artesanal de morangos selecionados', eq: 93, comp: 82, color: { r: 214, g: 40, b: 57 } },
-    'ninho': { name: 'Ninho', desc: 'Brigadeiro cremoso de puro Leite Ninho', eq: 96, comp: 70, color: { r: 255, g: 246, b: 229 } },
-    'chocolate': { name: 'Chocolate', desc: 'Ganache encorpada de chocolate meio amargo', eq: 89, comp: 89, color: { r: 64, g: 34, b: 24 } },
-    'avela': { name: 'Avelã', desc: 'Creme gianduja com pedacinhos crocantes', eq: 97, comp: 86, color: { r: 140, g: 89, b: 53 } },
-    'coco': { name: 'Côco', desc: 'Beijinho suave com lascas de coco fresco', eq: 92, comp: 74, color: { r: 250, g: 248, b: 245 } },
-    'maracuja': { name: 'Maracujá', desc: 'Creme aveludado com redução de maracujá', eq: 95, comp: 91, color: { r: 255, g: 184, b: 0 } },
-    'abacaxi': { name: 'Abacaxi', desc: 'Compota dourada artesanal com toque cítrico', eq: 94, comp: 84, color: { r: 255, g: 174, b: 25 } }
-  };
+  const DEFAULT_RECHEIOS = [
+    { id: 'morango', name: 'Morango', desc: 'Geleia artesanal de morangos selecionados', icon: '🍓', eq: 93, comp: 82, color: { r: 214, g: 40, b: 57 } },
+    { id: 'ninho', name: 'Ninho', desc: 'Brigadeiro cremoso de puro Leite Ninho', icon: '🥛', eq: 96, comp: 70, color: { r: 255, g: 246, b: 229 } },
+    { id: 'chocolate', name: 'Chocolate', desc: 'Ganache encorpada de chocolate meio amargo', icon: '🍫', eq: 89, comp: 89, color: { r: 64, g: 34, b: 24 } },
+    { id: 'avela', name: 'Avelã', desc: 'Creme gianduja com pedacinhos crocantes', icon: '🌰', eq: 97, comp: 86, color: { r: 140, g: 89, b: 53 } },
+    { id: 'coco', name: 'Côco', desc: 'Beijinho suave com lascas de coco fresco', icon: '🥥', eq: 92, comp: 74, color: { r: 250, g: 248, b: 245 } },
+    { id: 'maracuja', name: 'Maracujá', desc: 'Creme aveludado com redução de maracujá', icon: '🌟', eq: 95, comp: 91, color: { r: 255, g: 184, b: 0 } },
+    { id: 'abacaxi', name: 'Abacaxi', desc: 'Compota dourada artesanal com toque cítrico', icon: '🍍', eq: 94, comp: 84, color: { r: 255, g: 174, b: 25 } }
+  ];
+
+  let recheiosList = [...DEFAULT_RECHEIOS];
+
+  function getRecheioItem(id) {
+    return recheiosList.find(r => r.id === id) || recheiosList[0] || { name: 'Artesanal', desc: '', icon: '🍰', eq: 95, comp: 85 };
+  }
 
   const TOPPERS = {
     'simples': { name: 'Simples (Incluso)', extra: 0 },
@@ -66,7 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const sliderTicks = document.querySelectorAll('.tick');
 
   const massaCards = document.querySelectorAll('.massa-card');
-  const recheioItems = document.querySelectorAll('.recheio-item');
+  const recheioListContainer = document.getElementById('recheio-list-container');
+  const recheiosCountBadge = document.getElementById('recheios-count-badge');
   const topperSelect = document.getElementById('topper-select');
 
   const summaryAro = document.getElementById('summary-aro');
@@ -175,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateApp() {
     const currentSize = SIZES[state.sizeIndex];
     const currentMassa = MASSAS[state.massa];
-    const currentRecheio = RECHEIOS[state.recheio];
+    const currentRecheio = getRecheioItem(state.recheio);
     const currentTopper = TOPPERS[state.topper];
 
     // 1. Slider & Controls (imagem em exibicao fotografica fixa nesta fase)
@@ -203,22 +210,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 5. Recheio Items
-    recheioItems.forEach(item => {
-      const radio = item.querySelector('input[type="radio"]');
-      const isSel = (radio && radio.value === state.recheio);
-      item.classList.toggle('active', isSel);
-      if (radio) radio.checked = isSel;
-    });
+    if (recheioListContainer) {
+      recheioListContainer.querySelectorAll('.recheio-item').forEach(item => {
+        const val = item.getAttribute('data-recheio');
+        const isSel = (val === state.recheio);
+        item.classList.toggle('active', isSel);
+        const radio = item.querySelector('input[type="radio"]');
+        if (radio) radio.checked = isSel;
+      });
+    }
 
     // 6. Summary & Sensory Metrics
     summaryAro.textContent = `${currentSize.name} ${currentSize.slices}`;
     summaryMassa.textContent = currentMassa.name;
     summaryRecheio.textContent = currentRecheio.name;
 
-    metricEquilibrioVal.textContent = `${currentRecheio.eq}%`;
-    metricEquilibrioFill.style.width = `${currentRecheio.eq}%`;
-    metricComplexVal.textContent = `${currentRecheio.comp}%`;
-    metricComplexFill.style.width = `${currentRecheio.comp}%`;
+    metricEquilibrioVal.textContent = `${currentRecheio.eq || 95}%`;
+    metricEquilibrioFill.style.width = `${currentRecheio.eq || 95}%`;
+    metricComplexVal.textContent = `${currentRecheio.comp || 85}%`;
+    metricComplexFill.style.width = `${currentRecheio.comp || 85}%`;
 
     // 7. Pricing Calculation
     const totalPrice = currentSize.price + currentTopper.extra;
@@ -320,16 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  recheioItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const radio = item.querySelector('input[type="radio"]');
-      if (radio) {
-        state.recheio = radio.value;
-        updateApp();
-      }
-    });
-  });
-
   topperSelect.addEventListener('change', (e) => {
     state.topper = e.target.value;
     updateApp();
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnConcluirCriacao.addEventListener('click', () => {
     const currentSize = SIZES[state.sizeIndex];
     const currentMassa = MASSAS[state.massa];
-    const currentRecheio = RECHEIOS[state.recheio];
+    const currentRecheio = getRecheioItem(state.recheio);
     const currentTopper = TOPPERS[state.topper];
     const totalPrice = currentSize.price + currentTopper.extra;
     const depositPrice = totalPrice / 2;
@@ -467,7 +467,7 @@ Gostaria de consultar sua disponibilidade para realizarmos esse projeto em Praia
 
     const currentSize = SIZES[state.sizeIndex];
     const currentMassa = MASSAS[state.massa];
-    const currentRecheio = RECHEIOS[state.recheio];
+    const currentRecheio = getRecheioItem(state.recheio);
     const currentTopper = TOPPERS[state.topper];
     const totalPrice = currentSize.price + currentTopper.extra;
     const depositPrice = totalPrice / 2;
@@ -871,6 +871,14 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   const uploadSaveStatus = document.getElementById('upload-save-status');
   const adminGaleriaItems = document.getElementById('admin-galeria-items');
 
+  // Recheios Admin
+  const newRecheioName = document.getElementById('new-recheio-name');
+  const newRecheioDesc = document.getElementById('new-recheio-desc');
+  const newRecheioIcon = document.getElementById('new-recheio-icon');
+  const btnAddRecheio = document.getElementById('btn-add-recheio');
+  const recheiosSaveStatus = document.getElementById('recheios-save-status');
+  const adminRecheiosItems = document.getElementById('admin-recheios-items');
+
   let currentAdminSession = null;
   let stagedUploadFile = null;
 
@@ -904,6 +912,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
 
   function openAdminPanel() {
     renderPricesEditor();
+    renderAdminRecheiosList();
     renderAdminGaleriaList();
     openModal(adminPanelModal);
   }
@@ -973,6 +982,8 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
 
       if (tabId === 'tab-galeria') {
         renderAdminGaleriaList();
+      } else if (tabId === 'tab-recheios') {
+        renderAdminRecheiosList();
       }
     });
   });
@@ -1036,6 +1047,210 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
         btnSavePrices.querySelector('span').textContent = 'Salvar Alterações de Preço';
       }
     });
+  }
+
+  // --- RECHEIOS: DYNAMIC RENDERER IN CUSTOMIZER ---
+  function renderCustomizerRecheios() {
+    if (!recheioListContainer) return;
+
+    if (recheiosCountBadge) {
+      recheiosCountBadge.textContent = `${recheiosList.length} Opções`;
+    }
+
+    // Verify if state.recheio exists in recheiosList; if not, fallback to first
+    if (!recheiosList.some(r => r.id === state.recheio)) {
+      if (recheiosList.length > 0) {
+        state.recheio = recheiosList[0].id;
+      }
+    }
+
+    recheioListContainer.innerHTML = recheiosList.map(recheio => {
+      const isChecked = state.recheio === recheio.id;
+      const iconDisplay = recheio.icon || '🍰';
+      return `
+        <label class="recheio-item ${isChecked ? 'active' : ''}" data-recheio="${escapeHTML(recheio.id)}">
+          <input type="radio" name="recheio" value="${escapeHTML(recheio.id)}" ${isChecked ? 'checked' : ''}>
+          <div class="recheio-custom-radio"></div>
+          <div class="recheio-content">
+            <div class="recheio-name">
+              <span class="recheio-emoji" aria-hidden="true">${escapeHTML(iconDisplay)}</span>
+              <strong>${escapeHTML(recheio.name)}</strong>
+            </div>
+            <div class="recheio-desc">${escapeHTML(recheio.desc || '')}</div>
+          </div>
+        </label>
+      `;
+    }).join('');
+
+    recheioListContainer.querySelectorAll('.recheio-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const val = item.getAttribute('data-recheio');
+        if (val && state.recheio !== val) {
+          state.recheio = val;
+          updateApp();
+        }
+      });
+    });
+  }
+
+  // --- RECHEIOS: ADMIN MANAGEMENT ---
+  function renderAdminRecheiosList() {
+    if (!adminRecheiosItems) return;
+
+    if (recheiosList.length === 0) {
+      adminRecheiosItems.innerHTML = '<p class="tab-subtext">Nenhum recheio cadastrado no momento.</p>';
+      return;
+    }
+
+    adminRecheiosItems.innerHTML = recheiosList.map(item => `
+      <div class="admin-recheio-item" data-id="${escapeHTML(item.id)}">
+        <span class="admin-recheio-icon">${escapeHTML(item.icon || '🍰')}</span>
+        <div class="admin-recheio-details">
+          <strong>${escapeHTML(item.name)}</strong>
+          <span>${escapeHTML(item.desc || 'Sem descrição')}</span>
+        </div>
+        <button class="admin-recheio-delete-btn" data-id="${escapeHTML(item.id)}" title="Excluir recheio" ${recheiosList.length <= 1 ? 'disabled title="Mínimo de 1 recheio necessário"' : ''}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </button>
+      </div>
+    `).join('');
+
+    adminRecheiosItems.querySelectorAll('.admin-recheio-delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const recheio = recheiosList.find(r => r.id === id);
+        const name = recheio ? recheio.name : id;
+
+        if (recheiosList.length <= 1) {
+          alert('É necessário manter pelo menos 1 recheio cadastrado para o simulador.');
+          return;
+        }
+
+        if (confirm(`Tem certeza que deseja remover o recheio "${name}"?`)) {
+          btn.disabled = true;
+          recheiosList = recheiosList.filter(r => r.id !== id);
+          if (state.recheio === id && recheiosList.length > 0) {
+            state.recheio = recheiosList[0].id;
+          }
+
+          renderCustomizerRecheios();
+          renderAdminRecheiosList();
+          updateApp();
+
+          if (recheiosSaveStatus) {
+            recheiosSaveStatus.textContent = 'Salvando alterações...';
+            recheiosSaveStatus.className = 'admin-save-status';
+          }
+
+          if (window.OfirSupabase && window.OfirSupabase.saveRecheios) {
+            try {
+              await window.OfirSupabase.saveRecheios(recheiosList);
+              if (recheiosSaveStatus) {
+                recheiosSaveStatus.textContent = '✓ Recheio removido com sucesso!';
+                recheiosSaveStatus.className = 'admin-save-status success';
+              }
+            } catch (err) {
+              if (recheiosSaveStatus) {
+                recheiosSaveStatus.textContent = `Aviso: salvo localmente (${err.message || 'offline'})`;
+                recheiosSaveStatus.className = 'admin-save-status error';
+              }
+            }
+          }
+        }
+      });
+    });
+  }
+
+  function setupAdminRecheios() {
+    if (!btnAddRecheio) return;
+
+    btnAddRecheio.addEventListener('click', async () => {
+      const name = (newRecheioName && newRecheioName.value.trim()) || '';
+      const desc = (newRecheioDesc && newRecheioDesc.value.trim()) || '';
+      const icon = (newRecheioIcon && newRecheioIcon.value) || '🍰';
+
+      if (!name) {
+        alert('Por favor, informe o nome do recheio.');
+        if (newRecheioName) newRecheioName.focus();
+        return;
+      }
+
+      // Generate a slug ID
+      const baseSlug = name
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '');
+
+      let id = baseSlug || 'recheio';
+      let counter = 1;
+      while (recheiosList.some(r => r.id === id)) {
+        id = `${baseSlug}_${counter++}`;
+      }
+
+      const newRecheio = {
+        id: id,
+        name: name,
+        desc: desc,
+        icon: icon,
+        eq: Math.floor(Math.random() * 8) + 90, // 90-97
+        comp: Math.floor(Math.random() * 15) + 75 // 75-90
+      };
+
+      btnAddRecheio.disabled = true;
+      btnAddRecheio.querySelector('span').textContent = 'Cadastrando...';
+      if (recheiosSaveStatus) {
+        recheiosSaveStatus.textContent = '';
+        recheiosSaveStatus.className = 'admin-save-status';
+      }
+
+      try {
+        recheiosList.push(newRecheio);
+
+        renderCustomizerRecheios();
+        renderAdminRecheiosList();
+        updateApp();
+
+        if (window.OfirSupabase && window.OfirSupabase.saveRecheios) {
+          await window.OfirSupabase.saveRecheios(recheiosList);
+        }
+
+        // Clear input form
+        if (newRecheioName) newRecheioName.value = '';
+        if (newRecheioDesc) newRecheioDesc.value = '';
+        if (newRecheioIcon) newRecheioIcon.value = '🍰';
+
+        if (recheiosSaveStatus) {
+          recheiosSaveStatus.textContent = '✓ Novo recheio cadastrado com sucesso!';
+          recheiosSaveStatus.className = 'admin-save-status success';
+        }
+      } catch (err) {
+        if (recheiosSaveStatus) {
+          recheiosSaveStatus.textContent = `Aviso: salvo localmente (${err.message || 'offline'})`;
+          recheiosSaveStatus.className = 'admin-save-status error';
+        }
+      } finally {
+        btnAddRecheio.disabled = false;
+        btnAddRecheio.querySelector('span').textContent = 'Cadastrar Novo Recheio';
+      }
+    });
+  }
+
+  async function loadInitialRecheios() {
+    if (window.OfirSupabase && window.OfirSupabase.fetchRecheios) {
+      try {
+        const dbRecheios = await window.OfirSupabase.fetchRecheios();
+        if (dbRecheios && Array.isArray(dbRecheios) && dbRecheios.length > 0) {
+          recheiosList = dbRecheios;
+        }
+      } catch (err) {
+        console.warn('Usando lista padrão de recheios:', err);
+      }
+    }
+    renderCustomizerRecheios();
+    updateApp();
   }
 
   // Upload Dropzone & Automatic Client-side Compression
@@ -1249,15 +1464,18 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   // Initialize Modules
   async function initAppIntegrations() {
     setupUploadDropzone();
+    setupAdminRecheios();
     if (window.OfirSupabase && window.OfirSupabase.autoDetectVercelConfig) {
       await window.OfirSupabase.autoDetectVercelConfig();
     }
     await loadInitialPrices();
+    await loadInitialRecheios();
     await loadGaleria();
     await checkAdminSessionOnBoot();
   }
   initAppIntegrations();
 
   // Initial render
+  renderCustomizerRecheios();
   updateApp();
 });

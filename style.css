@@ -2602,6 +2602,86 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   color: #dc2626;
 }
 
+/* Recheios Tab Layout */
+.recheios-admin-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.recheio-add-box, .recheios-manage-list-box {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.recheio-add-box h4, .recheios-manage-list-box h4 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
+}
+
+.admin-recheios-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.admin-recheio-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.admin-recheio-item:hover {
+  border-color: var(--gold-primary);
+  transform: translateY(-1px);
+}
+
+.admin-recheio-icon {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(191, 161, 99, 0.1);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.admin-recheio-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-recheio-details strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.admin-recheio-details span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: block;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Galeria Tab Layout */
 .galeria-admin-layout {
   display: grid;
@@ -2773,6 +2853,7 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
 
 /* Responsive adjustments for admin panel and gallery */
 @media (max-width: 900px) {
+  .recheios-admin-layout,
   .galeria-admin-layout {
     grid-template-columns: 1fr;
   }
@@ -3020,6 +3101,58 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   .admin-save-status {
     text-align: center;
     font-size: 0.8rem;
+  }
+
+  /* Recheios tab mobile */
+  .recheios-admin-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
+  .recheio-add-box,
+  .recheios-manage-list-box {
+    padding: 1rem 0.75rem;
+    border-radius: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .recheio-add-box h4,
+  .recheios-manage-list-box h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .admin-recheios-items {
+    max-height: 320px;
+    gap: 0.55rem;
+    padding-right: 0.15rem;
+    width: 100%;
+  }
+
+  .admin-recheio-item {
+    padding: 0.5rem 0.65rem;
+    gap: 0.65rem;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .admin-recheio-icon {
+    font-size: 1.35rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+  }
+
+  .admin-recheio-details strong {
+    font-size: 0.85rem;
+  }
+
+  .admin-recheio-details span {
+    font-size: 0.7rem;
   }
 
   /* Gallery tab */

@@ -186,81 +186,11 @@
         <div class="panel-section" id="section-recheio">
           <div class="section-header">
             <span class="section-tag">03. O RECHEIO</span>
-            <span class="section-info-badge">7 sabores exclusivos</span>
+            <span class="section-info-badge" id="recheios-count-badge">7 opções artesanais</span>
           </div>
 
-          <div class="recheio-list" role="radiogroup" aria-label="Escolha do Recheio">
-            
-            <label class="recheio-item">
-              <input type="radio" name="cake-recheio" value="morango">
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-morango">🍓</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Morango</span>
-                <span class="recheio-desc">Geleia artesanal de morangos selecionados</span>
-              </div>
-            </label>
-
-            <label class="recheio-item">
-              <input type="radio" name="cake-recheio" value="ninho">
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-ninho">🥛</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Ninho</span>
-                <span class="recheio-desc">Brigadeiro cremoso de puro Leite Ninho</span>
-              </div>
-            </label>
-
-            <label class="recheio-item">
-              <input type="radio" name="cake-recheio" value="chocolate">
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-chocolate">🍫</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Chocolate</span>
-                <span class="recheio-desc">Ganache encorpada de chocolate meio amargo</span>
-              </div>
-            </label>
-
-            <label class="recheio-item active">
-              <input type="radio" name="cake-recheio" value="avela" checked>
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-avela">🌰</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Avelã</span>
-                <span class="recheio-desc">Creme gianduja com pedacinhos crocantes</span>
-              </div>
-            </label>
-
-            <label class="recheio-item">
-              <input type="radio" name="cake-recheio" value="coco">
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-coco">🥥</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Côco</span>
-                <span class="recheio-desc">Beijinho suave com lascas de coco fresco</span>
-              </div>
-            </label>
-
-            <label class="recheio-item">
-              <input type="radio" name="cake-recheio" value="maracuja">
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-maracuja">🌟</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Maracujá</span>
-                <span class="recheio-desc">Creme aveludado com redução de maracujá</span>
-              </div>
-            </label>
-
-            <label class="recheio-item">
-              <input type="radio" name="cake-recheio" value="abacaxi">
-              <span class="recheio-indicator"></span>
-              <span class="recheio-avatar recheio-icon-abacaxi">🍍</span>
-              <div class="recheio-info">
-                <span class="recheio-name">Abacaxi</span>
-                <span class="recheio-desc">Compota dourada artesanal com toque cítrico</span>
-              </div>
-            </label>
-
+          <div class="recheio-list" id="recheio-list-container" role="radiogroup" aria-label="Escolha do Recheio">
+            <!-- Gerado dinamicamente via JS a partir de recheiosList -->
           </div>
         </div>
 
@@ -795,12 +725,16 @@
       <!-- Tabs Navigation -->
       <div class="admin-tabs-nav">
         <button class="admin-tab-btn active" data-tab="tab-precos">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <span>Tabela de Preços</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Preços</span>
+        </button>
+        <button class="admin-tab-btn" data-tab="tab-recheios">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          <span>Recheios</span>
         </button>
         <button class="admin-tab-btn" data-tab="tab-galeria">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-          <span>Galeria de Fotos</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <span>Galeria</span>
         </button>
       </div>
 
@@ -830,6 +764,59 @@
             <span class="admin-save-status" id="prices-save-status"></span>
           </div>
         </form>
+      </div>
+
+      <!-- TAB 2: RECHEIOS -->
+      <div class="admin-tab-content" id="tab-recheios">
+        <p class="tab-explanation">Gerencie os sabores de recheios disponíveis no simulador. Adicione novas criações da confeitaria ou remova sabores fora de temporada.</p>
+
+        <div class="recheios-admin-layout">
+          <!-- Formulário: Adicionar Novo Recheio -->
+          <div class="recheio-add-box">
+            <h4>Adicionar Novo Recheio</h4>
+            
+            <div class="input-group">
+              <label for="new-recheio-name">Nome do Sabor:</label>
+              <input type="text" id="new-recheio-name" placeholder="Ex: Pistache Italiano, Doce de Leite...">
+            </div>
+
+            <div class="input-group">
+              <label for="new-recheio-desc">Descrição dos ingredientes:</label>
+              <input type="text" id="new-recheio-desc" placeholder="Ex: Brigadeiro nobre de pistache e pedacinhos crocantes...">
+            </div>
+
+            <div class="input-group">
+              <label for="new-recheio-icon">Ícone / Emoji do Sabor:</label>
+              <select id="new-recheio-icon" class="custom-select">
+                <option value="🍓">🍓 Morango / Frutas Vermelhas</option>
+                <option value="🍫">🍫 Chocolate / Brigadeiro</option>
+                <option value="🥛">🥛 Ninho / Leite / Branco</option>
+                <option value="🌰">🌰 Avelã / Castanhas / Nozes</option>
+                <option value="🥥">🥥 Côco / Beijinho</option>
+                <option value="🌟">🌟 Maracujá / Cítrico</option>
+                <option value="🍍">🍍 Abacaxi / Frutas Tropicais</option>
+                <option value="🍯">🍯 Doce de Leite / Caramelo</option>
+                <option value="🍨">🍨 Pistache / Baunilha</option>
+                <option value="🍋">🍋 Limão Siciliano</option>
+                <option value="🍒">🍒 Cereja / Frutas Silvestres</option>
+                <option value="🍰">🍰 Tradicional / Outro</option>
+              </select>
+            </div>
+
+            <button type="button" class="primary-cta-btn admin-upload-btn" id="btn-add-recheio">
+              <span>Cadastrar Novo Recheio</span>
+            </button>
+            <div class="admin-save-status" id="recheios-save-status"></div>
+          </div>
+
+          <!-- Lista de Recheios Atuais -->
+          <div class="recheios-manage-list-box">
+            <h4>Sabores Disponíveis no Simulador</h4>
+            <div class="admin-recheios-items" id="admin-recheios-items">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- TAB 2: GALERIA -->
