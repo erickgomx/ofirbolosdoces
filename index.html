@@ -408,56 +408,61 @@
 
   <!-- MODAL: Encomenda & Finalização (WhatsApp) -->
   <div class="modal-overlay" id="checkout-modal" aria-hidden="true" role="dialog">
-    <div class="modal-card">
+    <div class="modal-card modal-checkout-card">
       <button class="modal-close-btn" id="close-checkout-modal" aria-label="Fechar">✕</button>
       
       <div class="modal-header">
         <span class="modal-pretitle">Quase lá!</span>
-        <h3 class="modal-title">Finalizar Encomenda no WhatsApp</h3>
-        <p class="modal-desc">Confirme os detalhes do seu bolo e envie a mensagem pré-formatada diretamente para a <strong>Lucieda</strong>.</p>
+        <h3 class="modal-title">Finalizar Encomenda</h3>
+        <p class="modal-desc">Confirme os detalhes e envie seu pedido diretamente para a <strong>Lucieda</strong>.</p>
       </div>
 
       <div class="modal-summary-box">
-        <div class="modal-sum-row">
-          <span>Tamanho:</span>
-          <strong id="modal-sum-size">ARO 20 (20-25 fatias)</strong>
-        </div>
-        <div class="modal-sum-row">
-          <span>Massa:</span>
-          <strong id="modal-sum-massa">Branco (ovos)</strong>
-        </div>
-        <div class="modal-sum-row">
-          <span>Recheio:</span>
-          <strong id="modal-sum-recheio">Avelã</strong>
-        </div>
-        <div class="modal-sum-row">
-          <span>Topo:</span>
-          <strong id="modal-sum-topo">Simples (Incluso)</strong>
+        <div class="modal-sum-specs">
+          <div class="modal-sum-row">
+            <span>Tamanho:</span>
+            <strong id="modal-sum-size">ARO 20 (20-25 fatias)</strong>
+          </div>
+          <div class="modal-sum-row">
+            <span>Massa:</span>
+            <strong id="modal-sum-massa">Branco (ovos)</strong>
+          </div>
+          <div class="modal-sum-row">
+            <span>Recheio:</span>
+            <strong id="modal-sum-recheio">Avelã</strong>
+          </div>
+          <div class="modal-sum-row">
+            <span>Topo:</span>
+            <strong id="modal-sum-topo">Simples (Incluso)</strong>
+          </div>
         </div>
         <div class="modal-sum-divider"></div>
-        <div class="modal-sum-row total">
-          <span>Valor Total:</span>
-          <strong id="modal-sum-total">R$ 195,00</strong>
-        </div>
-        <div class="modal-sum-row deposit">
-          <span>Sinal 50% (PIX / Mercado Pago):</span>
-          <strong id="modal-sum-deposit">R$ 97,50</strong>
+        <div class="modal-sum-pricing">
+          <div class="modal-sum-row total">
+            <span>Valor Total:</span>
+            <strong id="modal-sum-total">R$ 195,00</strong>
+          </div>
+          <div class="modal-sum-row deposit">
+            <span>Sinal 50%:</span>
+            <strong id="modal-sum-deposit">R$ 97,50</strong>
+          </div>
         </div>
       </div>
 
       <div class="modal-inputs">
-        <div class="input-group">
-          <label for="customer-name">Seu Nome Completo:</label>
-          <input type="text" id="customer-name" placeholder="Ex: Maria Clara" required>
-        </div>
-        <div class="input-group">
-          <label for="pickup-date">Data Desejada para Retirada (mín. 10 dias):</label>
-          <input type="date" id="pickup-date" required>
-          <small class="input-hint" id="date-helper-text">Agendamento com antecedência de segurança.</small>
+        <div class="modal-inputs-row">
+          <div class="input-group">
+            <label for="customer-name">Seu Nome:</label>
+            <input type="text" id="customer-name" placeholder="Ex: Maria Clara" required>
+          </div>
+          <div class="input-group">
+            <label for="pickup-date">Data Retirada (mín. 10d):</label>
+            <input type="date" id="pickup-date" required>
+          </div>
         </div>
         <div class="input-group">
           <label for="order-notes">Observações ou Tema do Topo (opcional):</label>
-          <textarea id="order-notes" rows="2" placeholder="Ex: Topo com nome 'Lucas 30 anos', cores douradas..."></textarea>
+          <input type="text" id="order-notes" placeholder="Ex: Topo 'Lucas 30 anos', tons dourados...">
         </div>
       </div>
 
@@ -465,7 +470,7 @@
         <label class="custom-checkbox">
           <input type="checkbox" id="agree-policy-check" checked>
           <span class="checkmark"></span>
-          <span class="checkbox-label">Estou ciente das políticas de antecedência de 10 dias e retirada em Praia de Pipa.</span>
+          <span class="checkbox-label">Ciente da antecedência mínima de 10 dias e retirada em Pipa.</span>
         </label>
       </div>
 
