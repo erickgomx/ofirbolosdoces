@@ -25,6 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const DEFAULT_COBERTURAS = [
+    { id: 'chantily', name: 'Chantily', desc: 'Creme leve, delicado e batido em ponto perfeito', icon: '🧁' },
+    { id: 'chantininho', name: 'Chantininho', desc: 'Chantilly cremoso com puro leite Ninho', icon: '🥛' },
+    { id: 'glace', name: 'Glacê', desc: 'Cobertura clássica e aveludada de toque açucarado', icon: '✨' },
+    { id: 'brigadeiro', name: 'Brigadeiro', desc: 'Brigadeiro gourmet cremoso em ponto de bico', icon: '🍫' },
+    { id: 'ganache_branco', name: 'Ganache branco', desc: 'Emulsão nobre de chocolate branco e creme fresco', icon: '🤍' },
+    { id: 'ganache_chocolate', name: 'Ganache de chocolate', desc: 'Ganache aveludada de chocolate meio amargo puro', icon: '🤎' },
+    { id: 'sem_cobertura', name: 'Sem cobertura ( com acetato)', desc: 'Estilo Naked Cake artesanal protegido com acetato', icon: '🎂' }
+  ];
+
+  let coberturasList = [...DEFAULT_COBERTURAS];
+
+  function getCoberturaItem(id) {
+    return coberturasList.find(c => c.id === id) || coberturasList[0] || { name: 'Chantininho', desc: '', icon: '🥛' };
+  }
+
   const DEFAULT_RECHEIOS = [
     { id: 'morango', name: 'Morango', desc: 'Geleia artesanal de morangos selecionados', icon: '🍓', eq: 93, comp: 82, color: { r: 214, g: 40, b: 57 } },
     { id: 'ninho', name: 'Ninho', desc: 'Brigadeiro cremoso de puro Leite Ninho', icon: '🥛', eq: 96, comp: 70, color: { r: 255, g: 246, b: 229 } },
@@ -50,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let state = {
     sizeIndex: 2, // ARO 20 default
     massa: 'branco',
+    cobertura: 'chantininho',
     recheio: 'avela',
     topper: 'simples',
     viewMode: 'inteiro' // 'inteiro' or 'cortado'
@@ -72,12 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const sliderTicks = document.querySelectorAll('.tick');
 
   const massaCards = document.querySelectorAll('.massa-card');
+  const coberturaListContainer = document.getElementById('cobertura-list-container');
+  const coberturasCountBadge = document.getElementById('coberturas-count-badge');
   const recheioListContainer = document.getElementById('recheio-list-container');
   const recheiosCountBadge = document.getElementById('recheios-count-badge');
   const topperSelect = document.getElementById('topper-select');
 
   const summaryAro = document.getElementById('summary-aro');
   const summaryMassa = document.getElementById('summary-massa');
+  const summaryCobertura = document.getElementById('summary-cobertura');
   const summaryRecheio = document.getElementById('summary-recheio');
   const finalPriceValue = document.getElementById('final-price-value');
   const depositNoteText = document.getElementById('deposit-note-text');
@@ -113,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const modalSumSize = document.getElementById('modal-sum-size');
   const modalSumMassa = document.getElementById('modal-sum-massa');
+  const modalSumCobertura = document.getElementById('modal-sum-cobertura');
   const modalSumRecheio = document.getElementById('modal-sum-recheio');
   const modalSumTopo = document.getElementById('modal-sum-topo');
   const modalSumTotal = document.getElementById('modal-sum-total');
@@ -185,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const currentSize = SIZES[state.sizeIndex] || SIZES[2] || SIZES[0];
     const currentMassa = MASSAS[state.massa] || MASSAS['branco'];
+    const currentCobertura = getCoberturaItem(state.cobertura);
     const currentRecheio = getRecheioItem(state.recheio);
     const currentTopper = TOPPERS[state.topper] || TOPPERS['simples'];
 
@@ -212,6 +234,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (radio) radio.checked = isSel;
     });
 
+    // Cobertura Items
+    if (coberturaListContainer) {
+      coberturaListContainer.querySelectorAll('.cobertura-item').forEach(item => {
+        const val = item.getAttribute('data-cobertura');
+        const isSel = (val === state.cobertura);
+        item.classList.toggle('active', isSel);
+        const radio = item.querySelector('input[type="radio"]');
+        if (radio) radio.checked = isSel;
+      });
+    }
+
     // 5. Recheio Items
     if (recheioListContainer) {
       recheioListContainer.querySelectorAll('.recheio-item').forEach(item => {
@@ -226,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. Summary & Sensory Metrics
     summaryAro.textContent = `${currentSize.name} ${currentSize.slices}`;
     summaryMassa.textContent = currentMassa.name;
+    if (summaryCobertura) summaryCobertura.textContent = currentCobertura.name;
     summaryRecheio.textContent = currentRecheio.name;
 
     metricEquilibrioVal.textContent = `${currentRecheio.eq || 95}%`;
@@ -379,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const currentSize = (SIZES && SIZES[state.sizeIndex]) || SIZES[2] || SIZES[0];
         const currentMassa = (MASSAS && MASSAS[state.massa]) || { name: 'Branco (ovos)' };
+        const currentCobertura = getCoberturaItem(state.cobertura);
         const currentRecheio = getRecheioItem(state.recheio);
         const currentTopper = (TOPPERS && TOPPERS[state.topper]) || { name: 'Simples (Incluso)', extra: 0 };
         const totalPrice = (Number(currentSize.price) || 195) + (Number(currentTopper.extra) || 0);
@@ -386,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (modalSumSize && currentSize) modalSumSize.textContent = `${currentSize.name} ${currentSize.slices || ''}`;
         if (modalSumMassa && currentMassa) modalSumMassa.textContent = currentMassa.name;
+        if (modalSumCobertura && currentCobertura) modalSumCobertura.textContent = currentCobertura.name;
         if (modalSumRecheio && currentRecheio) modalSumRecheio.textContent = currentRecheio.name;
         if (modalSumTopo && currentTopper) modalSumTopo.textContent = currentTopper.name;
         if (modalSumTotal) modalSumTotal.textContent = `R$ ${totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
@@ -506,6 +542,7 @@ Gostaria de consultar sua disponibilidade para realizarmos esse projeto em Praia
 
     const currentSize = SIZES[state.sizeIndex];
     const currentMassa = MASSAS[state.massa];
+    const currentCobertura = getCoberturaItem(state.cobertura);
     const currentRecheio = getRecheioItem(state.recheio);
     const currentTopper = TOPPERS[state.topper];
     const totalPrice = currentSize.price + currentTopper.extra;
@@ -525,6 +562,7 @@ Olá Lucieda! Montei meu bolo exclusivo pelo site e gostaria de confirmar a enco
 📋 *ESPECIFICAÇÕES:*
 • *Tamanho:* ${currentSize.name} ${currentSize.slices} (${currentSize.diameter})
 • *Massa:* ${currentMassa.name}
+• *Cobertura:* ${currentCobertura.name}
 • *Recheio:* ${currentRecheio.name}
 • *Topo de Bolo:* ${currentTopper.name}
 
@@ -910,6 +948,14 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   const uploadSaveStatus = document.getElementById('upload-save-status');
   const adminGaleriaItems = document.getElementById('admin-galeria-items');
 
+  // Coberturas Admin
+  const newCoberturaName = document.getElementById('new-cobertura-name');
+  const newCoberturaDesc = document.getElementById('new-cobertura-desc');
+  const newCoberturaIcon = document.getElementById('new-cobertura-icon');
+  const btnAddCobertura = document.getElementById('btn-add-cobertura');
+  const coberturasSaveStatus = document.getElementById('coberturas-save-status');
+  const adminCoberturasItems = document.getElementById('admin-coberturas-items');
+
   // Recheios Admin
   const newRecheioName = document.getElementById('new-recheio-name');
   const newRecheioDesc = document.getElementById('new-recheio-desc');
@@ -951,6 +997,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
 
   function openAdminPanel() {
     renderPricesEditor();
+    renderAdminCoberturasList();
     renderAdminRecheiosList();
     renderAdminGaleriaList();
     openModal(adminPanelModal);
@@ -1021,6 +1068,8 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
 
       if (tabId === 'tab-galeria') {
         renderAdminGaleriaList();
+      } else if (tabId === 'tab-coberturas') {
+        renderAdminCoberturasList();
       } else if (tabId === 'tab-recheios') {
         renderAdminRecheiosList();
       }
@@ -1086,6 +1135,208 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
         btnSavePrices.querySelector('span').textContent = 'Salvar Alterações de Preço';
       }
     });
+  }
+
+  // --- COBERTURAS: DYNAMIC RENDERER IN CUSTOMIZER ---
+  function renderCustomizerCoberturas() {
+    if (!coberturaListContainer) return;
+
+    if (coberturasCountBadge) {
+      coberturasCountBadge.textContent = `${coberturasList.length} Opções`;
+    }
+
+    // Verify if state.cobertura exists in coberturasList; if not, fallback to first
+    if (!coberturasList.some(c => c.id === state.cobertura)) {
+      if (coberturasList.length > 0) {
+        state.cobertura = coberturasList[0].id;
+      }
+    }
+
+    coberturaListContainer.innerHTML = coberturasList.map(cobertura => {
+      const isChecked = state.cobertura === cobertura.id;
+      const iconDisplay = cobertura.icon || '🧁';
+      return `
+        <label class="cobertura-item recheio-item ${isChecked ? 'active' : ''}" data-cobertura="${escapeHTML(cobertura.id)}">
+          <input type="radio" name="cake-cobertura" value="${escapeHTML(cobertura.id)}" ${isChecked ? 'checked' : ''}>
+          <div class="recheio-indicator"></div>
+          <div class="recheio-content">
+            <div class="recheio-name">
+              <span class="recheio-emoji" aria-hidden="true">${escapeHTML(iconDisplay)}</span>
+              <strong>${escapeHTML(cobertura.name)}</strong>
+            </div>
+            <div class="recheio-desc">${escapeHTML(cobertura.desc || '')}</div>
+          </div>
+        </label>
+      `;
+    }).join('');
+
+    coberturaListContainer.querySelectorAll('.cobertura-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const val = item.getAttribute('data-cobertura');
+        if (val && state.cobertura !== val) {
+          state.cobertura = val;
+          updateApp();
+        }
+      });
+    });
+  }
+
+  // --- COBERTURAS: ADMIN MANAGEMENT ---
+  function renderAdminCoberturasList() {
+    if (!adminCoberturasItems) return;
+
+    if (coberturasList.length === 0) {
+      adminCoberturasItems.innerHTML = '<p class="tab-subtext">Nenhuma cobertura cadastrada no momento.</p>';
+      return;
+    }
+
+    adminCoberturasItems.innerHTML = coberturasList.map(item => `
+      <div class="admin-recheio-item admin-cobertura-item" data-id="${escapeHTML(item.id)}">
+        <span class="admin-recheio-icon">${escapeHTML(item.icon || '🧁')}</span>
+        <div class="admin-recheio-details">
+          <strong>${escapeHTML(item.name)}</strong>
+          <span>${escapeHTML(item.desc || 'Sem descrição')}</span>
+        </div>
+        <button class="admin-cobertura-delete-btn" data-id="${escapeHTML(item.id)}" title="Excluir cobertura" ${coberturasList.length <= 1 ? 'disabled title="Mínimo de 1 cobertura necessária"' : ''}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </button>
+      </div>
+    `).join('');
+
+    adminCoberturasItems.querySelectorAll('.admin-cobertura-delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const cobertura = coberturasList.find(c => c.id === id);
+        const name = cobertura ? cobertura.name : id;
+
+        if (coberturasList.length <= 1) {
+          alert('É necessário manter pelo menos 1 cobertura cadastrada para o simulador.');
+          return;
+        }
+
+        if (confirm(`Tem certeza que deseja remover a cobertura "${name}"?`)) {
+          btn.disabled = true;
+          coberturasList = coberturasList.filter(c => c.id !== id);
+          if (state.cobertura === id && coberturasList.length > 0) {
+            state.cobertura = coberturasList[0].id;
+          }
+
+          renderCustomizerCoberturas();
+          renderAdminCoberturasList();
+          updateApp();
+
+          if (coberturasSaveStatus) {
+            coberturasSaveStatus.textContent = 'Salvando alterações...';
+            coberturasSaveStatus.className = 'admin-save-status';
+          }
+
+          if (window.OfirSupabase && window.OfirSupabase.saveCoberturas) {
+            try {
+              await window.OfirSupabase.saveCoberturas(coberturasList);
+              if (coberturasSaveStatus) {
+                coberturasSaveStatus.textContent = '✓ Cobertura removida com sucesso!';
+                coberturasSaveStatus.className = 'admin-save-status success';
+              }
+            } catch (err) {
+              if (coberturasSaveStatus) {
+                coberturasSaveStatus.textContent = `Aviso: salvo localmente (${err.message || 'offline'})`;
+                coberturasSaveStatus.className = 'admin-save-status error';
+              }
+            }
+          }
+        }
+      });
+    });
+  }
+
+  function setupAdminCoberturas() {
+    if (!btnAddCobertura) return;
+
+    btnAddCobertura.addEventListener('click', async () => {
+      const name = (newCoberturaName && newCoberturaName.value.trim()) || '';
+      const desc = (newCoberturaDesc && newCoberturaDesc.value.trim()) || '';
+      const icon = (newCoberturaIcon && newCoberturaIcon.value) || '🧁';
+
+      if (!name) {
+        alert('Por favor, informe o nome da cobertura.');
+        if (newCoberturaName) newCoberturaName.focus();
+        return;
+      }
+
+      // Generate a slug ID
+      const baseSlug = name
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '');
+
+      let id = baseSlug || 'cobertura';
+      let counter = 1;
+      while (coberturasList.some(c => c.id === id)) {
+        id = `${baseSlug}_${counter++}`;
+      }
+
+      const newCobertura = {
+        id: id,
+        name: name,
+        desc: desc,
+        icon: icon
+      };
+
+      btnAddCobertura.disabled = true;
+      btnAddCobertura.querySelector('span').textContent = 'Cadastrando...';
+      if (coberturasSaveStatus) {
+        coberturasSaveStatus.textContent = '';
+        coberturasSaveStatus.className = 'admin-save-status';
+      }
+
+      try {
+        coberturasList.push(newCobertura);
+
+        renderCustomizerCoberturas();
+        renderAdminCoberturasList();
+        updateApp();
+
+        if (window.OfirSupabase && window.OfirSupabase.saveCoberturas) {
+          await window.OfirSupabase.saveCoberturas(coberturasList);
+        }
+
+        // Clear input form
+        if (newCoberturaName) newCoberturaName.value = '';
+        if (newCoberturaDesc) newCoberturaDesc.value = '';
+        if (newCoberturaIcon) newCoberturaIcon.value = '🧁';
+
+        if (coberturasSaveStatus) {
+          coberturasSaveStatus.textContent = '✓ Nova cobertura cadastrada com sucesso!';
+          coberturasSaveStatus.className = 'admin-save-status success';
+        }
+      } catch (err) {
+        if (coberturasSaveStatus) {
+          coberturasSaveStatus.textContent = `Aviso: salvo localmente (${err.message || 'offline'})`;
+          coberturasSaveStatus.className = 'admin-save-status error';
+        }
+      } finally {
+        btnAddCobertura.disabled = false;
+        btnAddCobertura.querySelector('span').textContent = 'Cadastrar Nova Cobertura';
+      }
+    });
+  }
+
+  async function loadInitialCoberturas() {
+    if (window.OfirSupabase && window.OfirSupabase.fetchCoberturas) {
+      try {
+        const dbCoberturas = await window.OfirSupabase.fetchCoberturas();
+        if (dbCoberturas && Array.isArray(dbCoberturas) && dbCoberturas.length > 0) {
+          coberturasList = dbCoberturas;
+        }
+      } catch (err) {
+        console.warn('Usando lista padrão de coberturas:', err);
+      }
+    }
+    renderCustomizerCoberturas();
+    updateApp();
   }
 
   // --- RECHEIOS: DYNAMIC RENDERER IN CUSTOMIZER ---
@@ -1503,11 +1754,13 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   // Initialize Modules
   async function initAppIntegrations() {
     setupUploadDropzone();
+    setupAdminCoberturas();
     setupAdminRecheios();
     if (window.OfirSupabase && window.OfirSupabase.autoDetectVercelConfig) {
       await window.OfirSupabase.autoDetectVercelConfig();
     }
     await loadInitialPrices();
+    await loadInitialCoberturas();
     await loadInitialRecheios();
     await loadGaleria();
     await checkAdminSessionOnBoot();
@@ -1515,6 +1768,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   initAppIntegrations();
 
   // Initial render
+  renderCustomizerCoberturas();
   renderCustomizerRecheios();
   updateApp();
 });

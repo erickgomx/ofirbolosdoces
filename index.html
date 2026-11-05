@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ofir Doceria | Doces e Bolos Gourmet — Praia de Pipa / RN</title>
-  <meta name="description" content="Monte seu bolo artesanal exclusivo na Ofir Doceria em Praia de Pipa. Escolha o aro, massa e recheio perfeito.">
+  <meta name="description" content="Monte seu bolo artesanal exclusivo na Ofir Doceria em Praia de Pipa. Escolha o aro, massa, cobertura e recheio perfeito.">
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Modern Sans) -->
@@ -182,10 +182,22 @@
           </div>
         </div>
 
-        <!-- 03. O RECHEIO -->
+        <!-- 03. A COBERTURA -->
+        <div class="panel-section" id="section-cobertura">
+          <div class="section-header">
+            <span class="section-tag">03. A COBERTURA</span>
+            <span class="section-info-badge" id="coberturas-count-badge">7 opções</span>
+          </div>
+
+          <div class="recheio-list cobertura-list" id="cobertura-list-container" role="radiogroup" aria-label="Escolha da Cobertura">
+            <!-- Gerado dinamicamente via JS a partir de coberturasList -->
+          </div>
+        </div>
+
+        <!-- 04. O RECHEIO -->
         <div class="panel-section" id="section-recheio">
           <div class="section-header">
-            <span class="section-tag">03. O RECHEIO</span>
+            <span class="section-tag">04. O RECHEIO</span>
             <span class="section-info-badge" id="recheios-count-badge">7 opções artesanais</span>
           </div>
 
@@ -269,6 +281,10 @@
           <div class="spec-row">
             <span class="spec-label">Massa:</span>
             <strong class="spec-value" id="summary-massa">Branco (ovos)</strong>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Cobertura:</span>
+            <strong class="spec-value" id="summary-cobertura">Chantininho</strong>
           </div>
           <div class="spec-row">
             <span class="spec-label">Recheio:</span>
@@ -431,6 +447,10 @@
           <div class="checkout-spec-item">
             <span class="spec-label">Massa</span>
             <strong class="spec-val" id="modal-sum-massa">Branco (ovos)</strong>
+          </div>
+          <div class="checkout-spec-item">
+            <span class="spec-label">Cobertura</span>
+            <strong class="spec-val" id="modal-sum-cobertura">Chantininho</strong>
           </div>
           <div class="checkout-spec-item">
             <span class="spec-label">Recheio</span>
@@ -739,6 +759,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           <span>Preços</span>
         </button>
+        <button class="admin-tab-btn" data-tab="tab-coberturas">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <span>Coberturas</span>
+        </button>
         <button class="admin-tab-btn" data-tab="tab-recheios">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
           <span>Recheios</span>
@@ -775,6 +799,57 @@
             <span class="admin-save-status" id="prices-save-status"></span>
           </div>
         </form>
+      </div>
+
+      <!-- TAB: COBERTURAS -->
+      <div class="admin-tab-content" id="tab-coberturas">
+        <p class="tab-explanation">Gerencie os tipos e acabamentos de coberturas disponíveis no simulador. Adicione novas opções ou remova tipos de acabamento.</p>
+
+        <div class="recheios-admin-layout">
+          <!-- Formulário: Adicionar Nova Cobertura -->
+          <div class="recheio-add-box">
+            <h4>Adicionar Nova Cobertura</h4>
+            
+            <div class="input-group">
+              <label for="new-cobertura-name">Nome da Cobertura:</label>
+              <input type="text" id="new-cobertura-name" placeholder="Ex: Chantininho, Ganache Branco...">
+            </div>
+
+            <div class="input-group">
+              <label for="new-cobertura-desc">Descrição / Acabamento:</label>
+              <input type="text" id="new-cobertura-desc" placeholder="Ex: Chantilly cremoso com leite em pó Ninho legítimo...">
+            </div>
+
+            <div class="input-group">
+              <label for="new-cobertura-icon">Ícone / Emoji da Cobertura:</label>
+              <select id="new-cobertura-icon" class="custom-select">
+                <option value="🧁">🧁 Chantilly / Leve</option>
+                <option value="🥛">🥛 Chantininho / Ninho</option>
+                <option value="✨">✨ Glacê / Clássico</option>
+                <option value="🍫">🍫 Brigadeiro / Chocolate</option>
+                <option value="🤍">🤍 Ganache Branco / Nobre</option>
+                <option value="🤎">🤎 Ganache Chocolate / Meio Amargo</option>
+                <option value="🎂">🎂 Sem Cobertura (Acetato) / Naked</option>
+                <option value="🍰">🍰 Tradicional / Outro</option>
+                <option value="🍓">🍓 Frutas / Floral</option>
+                <option value="🍯">🍯 Doce de Leite / Caramelo</option>
+              </select>
+            </div>
+
+            <button type="button" class="primary-cta-btn admin-upload-btn" id="btn-add-cobertura">
+              <span>Cadastrar Nova Cobertura</span>
+            </button>
+            <div class="admin-save-status" id="coberturas-save-status"></div>
+          </div>
+
+          <!-- Lista de Coberturas Atuais -->
+          <div class="recheios-manage-list-box">
+            <h4>Coberturas Disponíveis no Simulador</h4>
+            <div class="admin-recheios-items" id="admin-coberturas-items">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- TAB 2: RECHEIOS -->

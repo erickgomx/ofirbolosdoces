@@ -120,7 +120,16 @@ SET price = EXCLUDED.price,
     updated_at = timezone('utc'::text, now());
 
 INSERT INTO public.configuracoes (key, value) VALUES
-('topper_3d_price', '35'::jsonb)
+('topper_3d_price', '35'::jsonb),
+('coberturas_list', '[
+  {"id": "chantily", "name": "Chantily", "desc": "Creme suave, leve e clássico batido no ponto perfeito", "icon": "🧁"},
+  {"id": "chantininho", "name": "Chantininho", "desc": "Chantilly cremoso com puro leite Ninho", "icon": "🥛"},
+  {"id": "glace", "name": "Glacê", "desc": "Cobertura aveludada tradicional de toque açucarado delicado", "icon": "✨"},
+  {"id": "brigadeiro", "name": "Brigadeiro", "desc": "Brigadeiro gourmet cremoso e reluzente", "icon": "🍫"},
+  {"id": "ganache_branco", "name": "Ganache branco", "desc": "Emulsão nobre de chocolate branco e creme fresco", "icon": "🤍"},
+  {"id": "ganache_chocolate", "name": "Ganache de chocolate", "desc": "Ganache aveludada de chocolate meio amargo", "icon": "🤎"},
+  {"id": "sem_cobertura", "name": "Sem cobertura ( com acetato)", "desc": "Estilo Naked Cake artesanal protegido com acetato", "icon": "🎂"}
+]'::jsonb)
 ON CONFLICT (key) DO UPDATE 
 SET value = EXCLUDED.value,
     updated_at = timezone('utc'::text, now());

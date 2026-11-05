@@ -302,6 +302,64 @@
   }
 
   /**
+   * --- MÓDULO DE COBERTURAS ---
+   */
+  async function fetchCoberturas() {
+    if (!client) {
+      const local = localStorage.getItem('ofir_cached_coberturas');
+      return local ? JSON.parse(local) : null;
+    }
+
+    try {
+      const { data, error } = await client
+        .from('configuracoes')
+        .select('value')
+        .eq('key', 'coberturas_list')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.warn('[Supabase] Erro ao buscar coberturas:', error);
+      }
+
+      if (data && data.value && Array.isArray(data.value) && data.value.length > 0) {
+        localStorage.setItem('ofir_cached_coberturas', JSON.stringify(data.value));
+        return data.value;
+      }
+
+      const local = localStorage.getItem('ofir_cached_coberturas');
+      return local ? JSON.parse(local) : null;
+    } catch (err) {
+      console.warn('[Supabase] Erro ao consultar coberturas, usando cache local:', err);
+      const local = localStorage.getItem('ofir_cached_coberturas');
+      return local ? JSON.parse(local) : null;
+    }
+  }
+
+  async function saveCoberturas(coberturasList) {
+    localStorage.setItem('ofir_cached_coberturas', JSON.stringify(coberturasList));
+
+    if (client) {
+      try {
+        const { data, error } = await client
+          .from('configuracoes')
+          .upsert({
+            key: 'coberturas_list',
+            value: coberturasList,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'key' });
+
+        if (error) {
+          console.warn('[Supabase] Aviso ao persistir coberturas:', error);
+        }
+        return { success: true, data };
+      } catch (e) {
+        console.warn('[Supabase] Falha ao salvar coberturas na nuvem:', e);
+      }
+    }
+    return { success: true, data: coberturasList };
+  }
+
+  /**
    * --- MÓDULO DE GALERIA ---
    */
   async function fetchGallery() {
@@ -435,6 +493,8 @@
     onAuthStateChange,
     fetchPrices,
     savePrices,
+    fetchCoberturas,
+    saveCoberturas,
     fetchRecheios,
     saveRecheios,
     fetchGallery,
