@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'chocolate': {
       name: 'Chocolate',
       desc: 'Cacau nobre aveludado e intenso'
+    },
+    'red_velvet': {
+      name: 'Red Velvet',
+      desc: 'Massa aveludada com toque sutil de cacau'
     }
   };
 
@@ -175,14 +179,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initPickupDateConstraint();
 
-  // --- PRELOAD ALL 18 NATIVE HIGH-RES CAKE RENDERS ---
+  // --- PRELOAD ALL 24 NATIVE HIGH-RES CAKE RENDERS ---
   const CAKE_ASSETS = [
     'assets/bolo_inteiro_aro10.png', 'assets/bolo_inteiro_aro15.png', 'assets/bolo_inteiro_aro20.png',
     'assets/bolo_inteiro_aro25.png', 'assets/bolo_inteiro_aro28.png', 'assets/bolo_inteiro_aro30.png',
     'assets/bolo_cortado_branco_aro10.png', 'assets/bolo_cortado_branco_aro15.png', 'assets/bolo_cortado_branco_aro20.png',
     'assets/bolo_cortado_branco_aro25.png', 'assets/bolo_cortado_branco_aro28.png', 'assets/bolo_cortado_branco_aro30.png',
     'assets/bolo_cortado_chocolate_aro10.png', 'assets/bolo_cortado_chocolate_aro15.png', 'assets/bolo_cortado_chocolate_aro20.png',
-    'assets/bolo_cortado_chocolate_aro25.png', 'assets/bolo_cortado_chocolate_aro28.png', 'assets/bolo_cortado_chocolate_aro30.png'
+    'assets/bolo_cortado_chocolate_aro25.png', 'assets/bolo_cortado_chocolate_aro28.png', 'assets/bolo_cortado_chocolate_aro30.png',
+    'assets/bolo_cortado_red_velvet_aro10.png', 'assets/bolo_cortado_red_velvet_aro15.png', 'assets/bolo_cortado_red_velvet_aro20.png',
+    'assets/bolo_cortado_red_velvet_aro25.png', 'assets/bolo_cortado_red_velvet_aro28.png', 'assets/bolo_cortado_red_velvet_aro30.png'
   ];
   CAKE_ASSETS.forEach(src => {
     const img = new Image();
@@ -193,7 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentSize = SIZES[state.sizeIndex];
     const aroNum = currentSize.id.replace('aro-', '');
     if (state.viewMode === 'cortado') {
-      const massaType = (state.massa === 'chocolate') ? 'chocolate' : 'branco';
+      let massaType = 'branco';
+      if (state.massa === 'chocolate') massaType = 'chocolate';
+      else if (state.massa === 'red_velvet') massaType = 'red_velvet';
       return `assets/bolo_cortado_${massaType}_aro${aroNum}.png`;
     }
     return `assets/bolo_inteiro_aro${aroNum}.png`;
