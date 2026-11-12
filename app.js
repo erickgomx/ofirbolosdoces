@@ -2714,11 +2714,11 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
         <tr>
           <td>
             <strong>${escapeHTML(r.nome)}</strong>
-            <small style="display:block; opacity: 0.6;">${escapeHTML(r.tipo)}</small>
+            <small style="display:block; color: var(--text-muted);">${escapeHTML(r.tipo)}</small>
           </td>
           <td>${escapeHTML(r.qtd)}</td>
           <td>${escapeHTML(r.unit)}</td>
-          <td><strong style="color: var(--color-gold);">R$ ${r.subtotal.toFixed(2)}</strong></td>
+          <td><strong style="color: var(--gold-dark);">R$ ${r.subtotal.toFixed(2)}</strong></td>
         </tr>
       `).join('');
     }
@@ -2739,7 +2739,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2rem; color: rgba(255,255,255,0.5);">Nenhum insumo encontrado.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2rem; color: var(--text-muted);">Nenhum insumo encontrado.</td></tr>`;
       return;
     }
 
@@ -2765,7 +2765,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
           </td>
           <td>${item.peso_embalagem} ${unit}</td>
           <td>R$ ${Number(item.preco_pago || 0).toFixed(2)}</td>
-          <td><strong style="color: var(--color-gold);">R$ ${costPerUnit.toFixed(4)} / ${unit}</strong></td>
+          <td><strong style="color: var(--gold-dark);">R$ ${costPerUnit.toFixed(4)} / ${unit}</strong></td>
           <td><strong>${formatSaldo}</strong></td>
           <td>${min} ${unit}</td>
           <td>
@@ -2825,7 +2825,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     if (!container) return;
 
     if (adminReceitasCache.length === 0) {
-      container.innerHTML = '<p style="color: rgba(255,255,255,0.5);">Carregando fichas técnicas...</p>';
+      container.innerHTML = '<p style="color: var(--text-muted);">Carregando fichas técnicas...</p>';
       return;
     }
 
@@ -2855,13 +2855,13 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
             </div>
           </div>
 
-          <div style="background: rgba(197, 168, 128, 0.08); border: 1px solid rgba(197, 168, 128, 0.2); border-radius: 8px; padding: 0.65rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">Custo da Receita Pronta:</span>
-            <strong style="color: var(--color-gold); font-size: 0.95rem;">R$ ${met.costPerReadyGram.toFixed(4)} / g</strong>
+          <div style="background: #FAF7F2; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.65rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Custo da Receita Pronta:</span>
+            <strong style="color: var(--gold-dark); font-size: 0.95rem;">R$ ${met.costPerReadyGram.toFixed(4)} / g</strong>
           </div>
 
           <div class="ficha-ingredientes-list">
-            ${isSemCobertura ? '<p style="margin: 0; font-size: 0.72rem; color: rgba(255,255,255,0.5);">Estilo Naked Cake artesanal sem cobertura adicional.</p>' : ''}
+            ${isSemCobertura ? '<p style="margin: 0; font-size: 0.72rem; color: var(--text-muted);">Estilo Naked Cake artesanal sem cobertura adicional.</p>' : ''}
             ${(r.ingredientes || []).map(ing => {
               const ins = adminInsumosCache.find(i => String(i.id) === String(ing.insumo_id));
               const costG = getInsumoCustoUnitario(ins);
@@ -2869,7 +2869,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
               return `
                 <div class="ficha-ingrediente-row">
                   <span>${escapeHTML(ing.nome || ing.insumo_id)}: ${ing.quantidade_g}g</span>
-                  <strong style="color: rgba(255,255,255,0.9);">R$ ${part.toFixed(2)}</strong>
+                  <strong style="color: var(--text-main);">R$ ${part.toFixed(2)}</strong>
                 </div>
               `;
             }).join('')}
