@@ -1095,6 +1095,15 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   }
 
   // Admin Login Handler
+  const btnToggleAdminPwd = document.getElementById('btn-toggle-admin-pwd');
+  if (btnToggleAdminPwd && adminLoginPassword) {
+    btnToggleAdminPwd.addEventListener('click', () => {
+      const isPwd = adminLoginPassword.type === 'password';
+      adminLoginPassword.type = isPwd ? 'text' : 'password';
+      btnToggleAdminPwd.classList.toggle('showing', isPwd);
+    });
+  }
+
   if (adminLoginForm) {
     adminLoginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -1249,6 +1258,34 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
       }
     }
 
+    // Update Executive Summary KPIs for Orçamentos
+    const elKpiTotal = document.getElementById('orc-kpi-total');
+    const elKpiPend = document.getElementById('orc-kpi-pendentes');
+    const elKpiConf = document.getElementById('orc-kpi-confirmados');
+    const elKpiRec = document.getElementById('orc-kpi-receita');
+
+    let countPend = 0;
+    let countConf = 0;
+    let sumReceita = 0;
+
+    adminOrcamentosCache.forEach(o => {
+      const st = String(o.status || 'Pendente').toLowerCase();
+      if (st.includes('confirm') || st.includes('conclu')) {
+        countConf++;
+      } else if (!st.includes('cancel')) {
+        countPend++;
+      }
+      if (!st.includes('cancel')) {
+        const val = Number(o.valor_total || 0);
+        if (!isNaN(val) && val > 0) sumReceita += val;
+      }
+    });
+
+    if (elKpiTotal) elKpiTotal.textContent = String(totalAll);
+    if (elKpiPend) elKpiPend.textContent = String(countPend);
+    if (elKpiConf) elKpiConf.textContent = String(countConf);
+    if (elKpiRec) elKpiRec.textContent = `R$ ${sumReceita.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
     const query = (orcamentosSearchInput && orcamentosSearchInput.value.trim().toLowerCase()) || '';
     const statusFilter = (orcamentosFilterStatus && orcamentosFilterStatus.value) || 'all';
 
@@ -1318,29 +1355,46 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
       const sinalFormatted = item.sinal !== null && item.sinal !== undefined ? formatMoneyPtBr(item.sinal) : null;
       const isBaixado = orcamentosBaixadosIds && orcamentosBaixadosIds.has(String(item.id));
 
+      const clientNameStr = String(item.cliente_nome || 'Cliente').trim();
+      const initials = clientNameStr
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(w => w[0].toUpperCase())
+        .join('') || 'OF';
+
       return `
-        <article class="admin-orcamento-card" data-id="${escapeHTML(item.id)}">
+        <article class="admin-orcamento-card card-${statusClass}" data-id="${escapeHTML(item.id)}">
           <div class="orcamento-card-header">
-            <div class="orcamento-client-info">
-              <strong class="orcamento-client-name">${escapeHTML(item.cliente_nome || 'Cliente')}</strong>
-              <div class="orcamento-badges-row">
-                <span class="orcamento-type-badge ${isPersonalizado ? 'type-custom' : 'type-builder'}">${escapeHTML(tipoLabel)}</span>
-                <span class="orcamento-status-pill ${statusClass}">${escapeHTML(status)}</span>
+            <div class="orcamento-client-lead">
+              <div class="orcamento-avatar" aria-hidden="true">${escapeHTML(initials)}</div>
+              <div class="orcamento-client-info">
+                <strong class="orcamento-client-name">${escapeHTML(clientNameStr)}</strong>
+                <div class="orcamento-badges-row">
+                  <span class="orcamento-type-badge ${isPersonalizado ? 'type-custom' : 'type-builder'}">${escapeHTML(tipoLabel)}</span>
+                  <span class="orcamento-status-pill ${statusClass}">${escapeHTML(status)}</span>
+                </div>
               </div>
             </div>
             <div class="orcamento-date-meta">
-              <span class="orcamento-requested-at">Solicitado em <strong>${escapeHTML(requestedAt)}</strong></span>
-              <span class="orcamento-pickup-at">Retirada/Evento: <strong>${escapeHTML(pickupFormatted)}</strong></span>
+              <span class="orcamento-requested-at">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Solicitado em <strong>${escapeHTML(requestedAt)}</strong>
+              </span>
+              <span class="orcamento-pickup-at">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Retirada/Evento: <strong>${escapeHTML(pickupFormatted)}</strong>
+              </span>
             </div>
           </div>
 
           <div class="orcamento-choices-grid">
             <div class="orcamento-choice-item">
-              <span>Tamanho</span>
+              <span>Tamanho / Aro</span>
               <strong>${escapeHTML(item.tamanho || 'Não informado')}</strong>
             </div>
             <div class="orcamento-choice-item">
-              <span>Massa</span>
+              <span>Massa Artesanal</span>
               <strong>${escapeHTML(item.massa || 'Não informado')}</strong>
             </div>
             <div class="orcamento-choice-item">
@@ -1348,22 +1402,22 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
               <strong>${escapeHTML(item.cobertura || 'Não informado')}</strong>
             </div>
             <div class="orcamento-choice-item">
-              <span>Recheio</span>
+              <span>Recheio Gourmet</span>
               <strong>${escapeHTML(item.recheio || 'Não informado')}</strong>
             </div>
             <div class="orcamento-choice-item">
-              <span>Topo</span>
+              <span>Topo do Bolo</span>
               <strong>${escapeHTML(item.topo || 'Simples')}</strong>
             </div>
             <div class="orcamento-choice-item orcamento-price-item">
-              <span>Valor Estimado</span>
-              <strong>${escapeHTML(totalFormatted)}${sinalFormatted ? ` <small>(Sinal: ${escapeHTML(sinalFormatted)})</small>` : ''}</strong>
+              <span>Valor & Sinal (50%)</span>
+              <strong>${escapeHTML(totalFormatted)}${sinalFormatted ? ` <small>Sinal: ${escapeHTML(sinalFormatted)}</small>` : ''}</strong>
             </div>
           </div>
 
           ${item.observacoes ? `
             <div class="orcamento-notes-box">
-              <span>Observações:</span>
+              <span>Observações do Pedido:</span>
               <p>${escapeHTML(item.observacoes)}</p>
             </div>
           ` : ''}
@@ -1372,35 +1426,73 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
             <div class="orcamento-status-control">
               <label>Situação:</label>
               <select class="orcamento-status-select" data-id="${escapeHTML(item.id)}">
-                <option value="Pendente" ${status === 'Pendente' ? 'selected' : ''}>Pendente</option>
-                <option value="Confirmado" ${status === 'Confirmado' ? 'selected' : ''}>Confirmado</option>
-                <option value="Concluído" ${status === 'Concluído' ? 'selected' : ''}>Concluído</option>
-                <option value="Cancelado" ${status === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
+                <option value="Pendente" ${status === 'Pendente' ? 'selected' : ''}>⏳ Pendente</option>
+                <option value="Confirmado" ${status === 'Confirmado' ? 'selected' : ''}>💎 Confirmado</option>
+                <option value="Concluído" ${status === 'Concluído' ? 'selected' : ''}>✅ Concluído</option>
+                <option value="Cancelado" ${status === 'Cancelado' ? 'selected' : ''}>✕ Cancelado</option>
               </select>
             </div>
 
-            <div class="orcamento-estoque-actions">
-              ${isBaixado ? `
-                <span class="badge-orcamento-baixado" title="Insumos e embalagens debitados do estoque">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Insumos Baixados</span>
-                </span>
-              ` : `
-                <button type="button" class="btn-orcamento-baixa" data-id="${escapeHTML(item.id)}" title="Dar baixa dos insumos deste bolo no estoque">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Baixar Insumos</span>
-                </button>
-              `}
-            </div>
+            <div class="orcamento-action-cluster">
+              <button type="button" class="btn-orcamento-copy" data-id="${escapeHTML(item.id)}" title="Copiar resumo do pedido">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copiar Resumo</span>
+              </button>
 
-            <button type="button" class="admin-orcamento-delete-btn" data-id="${escapeHTML(item.id)}" title="Excluir registro">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              <span>Excluir</span>
-            </button>
+              <div class="orcamento-estoque-actions">
+                ${isBaixado ? `
+                  <span class="badge-orcamento-baixado" title="Insumos e embalagens debitados do estoque">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Insumos Baixados</span>
+                  </span>
+                ` : `
+                  <button type="button" class="btn-orcamento-baixa" data-id="${escapeHTML(item.id)}" title="Dar baixa dos insumos deste bolo no estoque">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Baixar Insumos</span>
+                  </button>
+                `}
+              </div>
+
+              <button type="button" class="admin-orcamento-delete-btn" data-id="${escapeHTML(item.id)}" title="Excluir registro">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Excluir</span>
+              </button>
+            </div>
           </div>
         </article>
       `;
     }).join('');
+
+    // Listener para Copiar Resumo do Orçamento
+    adminOrcamentosList.querySelectorAll('.btn-orcamento-copy').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        const orc = adminOrcamentosCache.find(o => String(o.id) === String(id));
+        if (!orc) return;
+        const resumoTxt = [
+          `✨ *RESUMO DO PEDIDO — OFIR DOCERIA*`,
+          `• Cliente: ${orc.cliente_nome || 'Cliente'}`,
+          `• Situação: ${orc.status || 'Pendente'}`,
+          `• Retirada: ${formatDatePtBr(orc.data_retirada)}`,
+          `• Tamanho: ${orc.tamanho || '-'}`,
+          `• Massa: ${orc.massa || '-'}`,
+          `• Cobertura: ${orc.cobertura || '-'}`,
+          `• Recheio: ${orc.recheio || '-'}`,
+          `• Topo: ${orc.topo || 'Simples'}`,
+          `• Valor Total: ${formatMoneyPtBr(orc.valor_total)}`,
+          orc.sinal ? `• Sinal (50%): ${formatMoneyPtBr(orc.sinal)}` : '',
+          orc.observacoes ? `• Obs: ${orc.observacoes}` : ''
+        ].filter(Boolean).join('\n');
+
+        try {
+          await navigator.clipboard.writeText(resumoTxt);
+          const spanEl = btn.querySelector('span');
+          const origTxt = spanEl.textContent;
+          spanEl.textContent = '✓ Copiado!';
+          setTimeout(() => { spanEl.textContent = origTxt; }, 1800);
+        } catch (_) {}
+      });
+    });
 
     // Listener para Baixa de Insumos direta do Orçamento
     adminOrcamentosList.querySelectorAll('.btn-orcamento-baixa').forEach(btn => {
@@ -1470,18 +1562,42 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   // Render Prices Editor
   function renderPricesEditor() {
     if (!pricesEditorGrid) return;
-    pricesEditorGrid.innerHTML = SIZES.map(size => `
-      <div class="price-edit-item">
-        <div class="price-edit-item-header">
-          <strong>${escapeHTML(size.name)}</strong>
-          <span>${escapeHTML(size.slices)} (${escapeHTML(size.diameter)})</span>
+    pricesEditorGrid.innerHTML = SIZES.map(size => {
+      const sinalVal = (Number(size.price || 0) / 2).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return `
+        <div class="price-edit-item">
+          <div class="price-edit-item-header">
+            <div class="price-aro-title-group">
+              <span class="price-aro-pill">${escapeHTML(size.diameter)}</span>
+              <strong>${escapeHTML(size.name)}</strong>
+            </div>
+            <span class="price-slices-tag">${escapeHTML(size.slices)}</span>
+          </div>
+          <div class="input-currency-wrap">
+            <span>R$</span>
+            <input type="number" min="10" step="1" id="input-price-${escapeHTML(size.id)}" data-size-id="${escapeHTML(size.id)}" value="${escapeHTML(size.price)}">
+          </div>
+          <div class="price-deposit-preview" id="preview-sinal-${escapeHTML(size.id)}">
+            <span>Sinal 50%:</span>
+            <strong>R$ ${sinalVal}</strong>
+          </div>
         </div>
-        <div class="input-currency-wrap">
-          <span>R$</span>
-          <input type="number" min="10" step="1" id="input-price-${escapeHTML(size.id)}" value="${escapeHTML(size.price)}">
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
+
+    pricesEditorGrid.querySelectorAll('input[type="number"]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const sId = inp.getAttribute('data-size-id');
+        const previewEl = document.getElementById(`preview-sinal-${sId}`);
+        if (previewEl) {
+          const val = Math.max(0, Number(inp.value || 0)) / 2;
+          const strongEl = previewEl.querySelector('strong');
+          if (strongEl) {
+            strongEl.textContent = `R$ ${val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          }
+        }
+      });
+    });
 
     if (adminPriceTopper && TOPPERS['3d']) {
       adminPriceTopper.value = TOPPERS['3d'].extra;

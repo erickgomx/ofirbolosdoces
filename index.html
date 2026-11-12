@@ -21,12 +21,14 @@
     <div class="admin-banner-inner">
       <div class="admin-status-badge">
         <span class="admin-pulse-dot"></span>
-        <span>Modo Administradora Conectado (Lucieda)</span>
+        <span class="admin-banner-eyebrow">ATELIER OFIR</span>
+        <span class="admin-banner-divider">•</span>
+        <span>Sessão Executiva Ativa (<strong>Lucieda</strong>)</span>
       </div>
       <div class="admin-banner-actions">
         <button class="admin-btn-action" id="btn-open-admin-dashboard">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          <span>Painel Admin (Orçamentos & Gestão)</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Abrir Central de Gestão</span>
         </button>
         <button class="admin-btn-action admin-btn-logout" id="btn-admin-logout">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -717,33 +719,51 @@
     <div class="modal-card admin-auth-card">
       <button class="modal-close-btn" id="close-admin-login-modal" aria-label="Fechar">✕</button>
 
-      <div class="modal-header modal-header-center">
-        <div class="admin-lock-badge">🔐</div>
-        <span class="modal-pretitle">Gestão do Atelier</span>
-        <h3 class="modal-title">Área da Administradora</h3>
-        <p class="modal-desc">Acesso restrito para atualização de preços e publicação de novas fotos na galeria.</p>
+      <div class="modal-header modal-header-center admin-auth-header">
+        <div class="admin-crest-emblem" aria-hidden="true">
+          <div class="admin-crest-ring">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2.5" ry="2.5"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              <circle cx="12" cy="16.5" r="1.2"/>
+            </svg>
+          </div>
+        </div>
+        <span class="modal-pretitle admin-auth-eyebrow">Atelier Ofir • Gestão Executiva</span>
+        <h3 class="modal-title admin-auth-title">Acesso da Administradora</h3>
+        <p class="modal-desc admin-auth-subtitle">Ambiente exclusivo para gestão de encomendas, precificação em tempo real, sabores e controle de estoque.</p>
       </div>
 
       <form id="admin-login-form" class="admin-login-form" onsubmit="return false;">
-        <div class="input-group">
-          <label for="admin-login-email">E-mail da Administradora:</label>
-          <input type="email" id="admin-login-email" placeholder="admin@ofirdoceria.com.br" required autocomplete="email">
+        <div class="input-group admin-input-group">
+          <label for="admin-login-email">E-mail Corporativo</label>
+          <div class="admin-input-icon-wrap">
+            <svg class="admin-field-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <input type="email" id="admin-login-email" placeholder="admin@ofirdoceria.com.br" required autocomplete="email">
+          </div>
         </div>
 
-        <div class="input-group">
-          <label for="admin-login-password">Senha de Acesso:</label>
-          <input type="password" id="admin-login-password" placeholder="••••••••" required autocomplete="current-password">
+        <div class="input-group admin-input-group">
+          <label for="admin-login-password">Chave de Segurança</label>
+          <div class="admin-input-icon-wrap">
+            <svg class="admin-field-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="admin-login-password" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="admin-pwd-toggle" id="btn-toggle-admin-pwd" aria-label="Mostrar ou ocultar senha" title="Mostrar/Ocultar senha">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="admin-auth-msg" id="admin-login-msg" style="display: none;"></div>
 
         <button type="submit" class="primary-cta-btn admin-submit-btn" id="btn-admin-submit-login">
-          <span>Entrar no Painel</span>
+          <span>Acessar Central de Gestão</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
 
         <div class="admin-auth-hint">
-          <span>Dica: Configure sua conta no Supabase Auth ou use as credenciais cadastradas.</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Conexão protegida via Supabase Auth • Atelier Praia de Pipa</span>
         </div>
       </form>
     </div>
@@ -752,62 +772,133 @@
   <!-- MODAL: Painel de Controle da Administradora -->
   <div class="modal-overlay" id="admin-panel-modal" aria-hidden="true" role="dialog">
     <div class="modal-card admin-panel-card">
-      <button class="modal-close-btn" id="close-admin-panel-modal" aria-label="Fechar painel">✕</button>
+      <button class="modal-close-btn admin-panel-close" id="close-admin-panel-modal" aria-label="Fechar painel">✕</button>
 
+      <!-- Sticky Top Command Bar -->
       <div class="admin-panel-top">
-        <div>
-          <span class="modal-pretitle">Atelier Praia de Pipa</span>
-          <h2 class="modal-title">Painel de Controle da Administradora</h2>
+        <div class="admin-brand-identity">
+          <div class="admin-avatar-crest">
+            <span>OF</span>
+          </div>
+          <div class="admin-title-stack">
+            <div class="admin-eyebrow-row">
+              <span class="modal-pretitle">Atelier Praia de Pipa • RN</span>
+              <span class="admin-live-sync-pill">
+                <span class="sync-dot"></span>
+                <span>Sincronizado em Tempo Real</span>
+              </span>
+            </div>
+            <h2 class="modal-title admin-dashboard-title">Central de Gestão & Operações</h2>
+          </div>
         </div>
-        <button class="admin-logout-link" id="btn-panel-logout">Encerrar Sessão</button>
+        <div class="admin-top-controls">
+          <div class="admin-operator-chip">
+            <span class="operator-dot"></span>
+            <span>Lucieda (Admin)</span>
+          </div>
+          <button class="admin-logout-link" id="btn-panel-logout" title="Encerrar sessão administrativa">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Encerrar Sessão</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Tabs Navigation -->
-      <div class="admin-tabs-nav">
-        <button class="admin-tab-btn active" data-tab="tab-orcamentos">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span>Orçamentos</span>
-          <span class="admin-tab-badge" id="orcamentos-tab-badge" style="display: none;">0</span>
-        </button>
-        <button class="admin-tab-btn" data-tab="tab-precos">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          <span>Preços</span>
-        </button>
-        <button class="admin-tab-btn" data-tab="tab-coberturas">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-          <span>Coberturas</span>
-        </button>
-        <button class="admin-tab-btn" data-tab="tab-recheios">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-          <span>Recheios</span>
-        </button>
-        <button class="admin-tab-btn" data-tab="tab-galeria">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-          <span>Galeria</span>
-        </button>
-        <button class="admin-tab-btn" data-tab="tab-estoque">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          <span>Estoque & Custos</span>
-          <span class="admin-tab-badge estoque-alert-badge" id="estoque-tab-badge" style="display: none;">!</span>
-        </button>
+      <!-- Segmented Pill Dock Navigation -->
+      <div class="admin-tabs-dock-wrap">
+        <div class="admin-tabs-nav" role="tablist" aria-label="Módulos Administrativos">
+          <button class="admin-tab-btn active" data-tab="tab-orcamentos" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Orçamentos</span>
+            <span class="admin-tab-badge" id="orcamentos-tab-badge" style="display: none;">0</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="tab-precos" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Preços & Aros</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="tab-coberturas" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            <span>Coberturas</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="tab-recheios" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+            <span>Recheios</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="tab-galeria" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            <span>Galeria</span>
+          </button>
+          <button class="admin-tab-btn" data-tab="tab-estoque" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Estoque & CMV</span>
+            <span class="admin-tab-badge estoque-alert-badge" id="estoque-tab-badge" style="display: none;">!</span>
+          </button>
+        </div>
       </div>
 
       <!-- TAB 0: ORÇAMENTOS SOLICITADOS -->
       <div class="admin-tab-content active" id="tab-orcamentos">
-        <p class="tab-explanation">Consulte os orçamentos solicitados pelos clientes pelo site, com as escolhas completas do bolo, data desejada de retirada e data/hora da solicitação.</p>
+        <div class="admin-section-intro">
+          <div>
+            <h3 class="admin-section-heading">Gestão de Encomendas & Orçamentos</h3>
+            <p class="tab-explanation">Acompanhe os pedidos enviados pelos clientes, atualize o status de confirmação, dê baixa direta nos insumos e responda via WhatsApp com 1 clique.</p>
+          </div>
+        </div>
+
+        <!-- Executive Summary KPI Strip for Orçamentos -->
+        <div class="orcamentos-kpi-strip">
+          <div class="orc-kpi-box">
+            <div class="orc-kpi-icon-wrap gold">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="orc-kpi-data">
+              <span class="orc-kpi-label">Total de Pedidos</span>
+              <strong class="orc-kpi-value" id="orc-kpi-total">0</strong>
+            </div>
+          </div>
+
+          <div class="orc-kpi-box">
+            <div class="orc-kpi-icon-wrap amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="orc-kpi-data">
+              <span class="orc-kpi-label">Aguardando Sinal</span>
+              <strong class="orc-kpi-value" id="orc-kpi-pendentes">0</strong>
+            </div>
+          </div>
+
+          <div class="orc-kpi-box">
+            <div class="orc-kpi-icon-wrap emerald">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="orc-kpi-data">
+              <span class="orc-kpi-label">Confirmados / Concluídos</span>
+              <strong class="orc-kpi-value" id="orc-kpi-confirmados">0</strong>
+            </div>
+          </div>
+
+          <div class="orc-kpi-box">
+            <div class="orc-kpi-icon-wrap obsidian">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="orc-kpi-data">
+              <span class="orc-kpi-label">Volume Estimado</span>
+              <strong class="orc-kpi-value" id="orc-kpi-receita">R$ 0,00</strong>
+            </div>
+          </div>
+        </div>
 
         <div class="orcamentos-toolbar">
           <div class="orcamentos-search-wrap">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="orcamentos-search-input" placeholder="Buscar por cliente, sabor, massa ou tamanho...">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="orcamentos-search-input" placeholder="Buscar por cliente, sabor, massa, data ou tamanho...">
           </div>
           <div class="orcamentos-filter-controls">
             <select id="orcamentos-filter-status" class="custom-select orcamentos-filter-select" aria-label="Filtrar por status">
               <option value="all">Todos os status</option>
-              <option value="Pendente">Pendente</option>
-              <option value="Confirmado">Confirmado</option>
-              <option value="Concluído">Concluído</option>
-              <option value="Cancelado">Cancelado</option>
+              <option value="Pendente">⏳ Pendente</option>
+              <option value="Confirmado">💎 Confirmado</option>
+              <option value="Concluído">✅ Concluído</option>
+              <option value="Cancelado">✕ Cancelado</option>
             </select>
             <button type="button" class="admin-refresh-btn" id="btn-refresh-orcamentos" title="Atualizar lista">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
@@ -828,7 +919,12 @@
 
       <!-- TAB 1: PREÇOS -->
       <div class="admin-tab-content" id="tab-precos">
-        <p class="tab-explanation">Ajuste os preços dos bolos artesanais em tempo real. Os valores são sincronizados com o banco de dados Supabase e atualizados imediatamente no simulador para os clientes.</p>
+        <div class="admin-section-intro">
+          <div>
+            <h3 class="admin-section-heading">Tabela de Preços & Dimensões</h3>
+            <p class="tab-explanation">Ajuste o valor de cada aro e o adicional de topo 3D. O cálculo do sinal de 50% e os preços do simulador são atualizados automaticamente para os clientes.</p>
+          </div>
+        </div>
         
         <form id="admin-prices-form" onsubmit="return false;">
           <div class="prices-editor-grid" id="prices-editor-grid">
@@ -836,8 +932,12 @@
           </div>
 
           <div class="price-extra-row">
-            <div class="input-group">
-              <label for="admin-price-topper">Topo Especial 3D (Acréscimo R$):</label>
+            <div class="input-group admin-topper-card">
+              <div class="admin-topper-info">
+                <span class="admin-topper-badge">ACABAMENTO PREMIUM</span>
+                <label for="admin-price-topper">Topo de Bolo Especial 3D (Acréscimo R$)</label>
+                <small>Adicionado sobre o valor base quando o cliente escolhe o Topo Especial 3D.</small>
+              </div>
               <div class="input-currency-wrap">
                 <span>R$</span>
                 <input type="number" id="admin-price-topper" min="0" step="1" value="35">
@@ -845,8 +945,9 @@
             </div>
           </div>
 
-          <div class="tab-actions-row">
+          <div class="tab-actions-row admin-sticky-save-bar">
             <button type="button" class="primary-cta-btn admin-save-btn" id="btn-save-prices">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               <span>Salvar Alterações de Preço</span>
             </button>
             <span class="admin-save-status" id="prices-save-status"></span>
@@ -856,12 +957,20 @@
 
       <!-- TAB: COBERTURAS -->
       <div class="admin-tab-content" id="tab-coberturas">
-        <p class="tab-explanation">Gerencie os tipos e acabamentos de coberturas disponíveis no simulador. Adicione novas opções ou remova tipos de acabamento.</p>
+        <div class="admin-section-intro">
+          <div>
+            <h3 class="admin-section-heading">Catálogo de Coberturas & Acabamentos</h3>
+            <p class="tab-explanation">Gerencie os acabamentos de alta confeitaria exibidos no passo 03 do simulador. Adicione novas texturas ou remova opções sazonais.</p>
+          </div>
+        </div>
 
         <div class="recheios-admin-layout">
           <!-- Formulário: Adicionar Nova Cobertura -->
           <div class="recheio-add-box">
-            <h4>Adicionar Nova Cobertura</h4>
+            <div class="admin-box-header">
+              <span class="admin-box-eyebrow">NOVA CRIAÇÃO</span>
+              <h4>Adicionar Nova Cobertura</h4>
+            </div>
             
             <div class="input-group">
               <label for="new-cobertura-name">Nome da Cobertura:</label>
@@ -890,6 +999,7 @@
             </div>
 
             <button type="button" class="primary-cta-btn admin-upload-btn" id="btn-add-cobertura">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Cadastrar Nova Cobertura</span>
             </button>
             <div class="admin-save-status" id="coberturas-save-status"></div>
@@ -897,7 +1007,10 @@
 
           <!-- Lista de Coberturas Atuais -->
           <div class="recheios-manage-list-box">
-            <h4>Coberturas Disponíveis no Simulador</h4>
+            <div class="admin-box-header">
+              <span class="admin-box-eyebrow">CATÁLOGO ATIVO</span>
+              <h4>Coberturas Disponíveis no Simulador</h4>
+            </div>
             <div class="admin-recheios-items" id="admin-coberturas-items">
               <!-- Renderizado dinamicamente via JS -->
             </div>
@@ -907,12 +1020,20 @@
 
       <!-- TAB 2: RECHEIOS -->
       <div class="admin-tab-content" id="tab-recheios">
-        <p class="tab-explanation">Gerencie os sabores de recheios disponíveis no simulador. Adicione novas criações da confeitaria ou remova sabores fora de temporada.</p>
+        <div class="admin-section-intro">
+          <div>
+            <h3 class="admin-section-heading">Curadoria de Sabores & Recheios</h3>
+            <p class="tab-explanation">Gerencie os sabores de recheios artesanais disponíveis no simulador. Adicione criações exclusivas ou atualize o cardápio da estação.</p>
+          </div>
+        </div>
 
         <div class="recheios-admin-layout">
           <!-- Formulário: Adicionar Novo Recheio -->
           <div class="recheio-add-box">
-            <h4>Adicionar Novo Recheio</h4>
+            <div class="admin-box-header">
+              <span class="admin-box-eyebrow">NOVO SABOR ARTESANAL</span>
+              <h4>Adicionar Novo Recheio</h4>
+            </div>
             
             <div class="input-group">
               <label for="new-recheio-name">Nome do Sabor:</label>
@@ -943,6 +1064,7 @@
             </div>
 
             <button type="button" class="primary-cta-btn admin-upload-btn" id="btn-add-recheio">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Cadastrar Novo Recheio</span>
             </button>
             <div class="admin-save-status" id="recheios-save-status"></div>
@@ -950,7 +1072,10 @@
 
           <!-- Lista de Recheios Atuais -->
           <div class="recheios-manage-list-box">
-            <h4>Sabores Disponíveis no Simulador</h4>
+            <div class="admin-box-header">
+              <span class="admin-box-eyebrow">CARDÁPIO ATIVO</span>
+              <h4>Sabores Disponíveis no Simulador</h4>
+            </div>
             <div class="admin-recheios-items" id="admin-recheios-items">
               <!-- Renderizado dinamicamente via JS -->
             </div>
@@ -960,19 +1085,31 @@
 
       <!-- TAB 2: GALERIA -->
       <div class="admin-tab-content" id="tab-galeria">
+        <div class="admin-section-intro">
+          <div>
+            <h3 class="admin-section-heading">Curadoria da Galeria & Portfólio</h3>
+            <p class="tab-explanation">Publique fotos em alta definição dos bolos entregues em Praia de Pipa. As imagens passam por otimização inteligente antes do envio.</p>
+          </div>
+        </div>
+
         <div class="galeria-admin-layout">
           
           <!-- Formulário de Upload -->
           <div class="galeria-upload-box">
-            <h4>Adicionar Nova Foto ao Portfólio</h4>
-            <p class="tab-subtext">Fotos têm limite de 2MB e contam com compressão inteligente automática para economizar espaço no plano gratuito de 500MB.</p>
+            <div class="admin-box-header">
+              <span class="admin-box-eyebrow">UPLOAD INTELIGENTE</span>
+              <h4>Adicionar Nova Foto ao Portfólio</h4>
+            </div>
+            <p class="tab-subtext">Fotos têm limite de 2MB e contam com compressão inteligente automática para economizar espaço na nuvem.</p>
 
             <div class="upload-dropzone" id="upload-dropzone">
               <input type="file" id="galeria-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;">
               <div class="dropzone-empty" id="dropzone-empty">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <p><strong>Clique aqui para escolher a foto</strong> ou arraste para cá</p>
-                <small>PNG, JPG ou WEBP (máx. 2MB - com redução automática)</small>
+                <div class="dropzone-icon-halo">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <p><strong>Clique para selecionar a imagem</strong> ou arraste o arquivo</p>
+                <small>Formatos PNG, JPG ou WEBP • Otimização automática inclusa</small>
               </div>
               <div class="dropzone-preview" id="dropzone-preview" style="display: none;">
                 <img id="preview-img" src="" alt="Prévia">
@@ -1006,6 +1143,7 @@
               </div>
 
               <button type="button" class="primary-cta-btn admin-upload-btn" id="btn-submit-upload-foto">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 <span>Publicar Foto na Galeria</span>
               </button>
               <div class="admin-save-status" id="upload-save-status"></div>
@@ -1014,7 +1152,10 @@
 
           <!-- Lista de Fotos Atuais -->
           <div class="galeria-manage-list-box">
-            <h4>Fotos Atualmente Publicadas</h4>
+            <div class="admin-box-header">
+              <span class="admin-box-eyebrow">ACERVO PUBLICADO</span>
+              <h4>Fotos Atualmente Publicadas</h4>
+            </div>
             <div class="admin-galeria-items" id="admin-galeria-items">
               <!-- Renderizado dinamicamente -->
             </div>
@@ -1027,34 +1168,46 @@
       <div class="admin-tab-content" id="tab-estoque">
         <div class="estoque-header-wrap">
           <div>
-            <h3 class="estoque-main-title">Calculadora de Estoque, Rendimento & Custos</h3>
-            <p class="tab-explanation">Controle o custo por grama de cada ingrediente, o rendimento real após cocção, os insumos especiais (embalagens, cakeboards, caixas e fitas) e dê baixa automática no estoque.</p>
+            <h3 class="estoque-main-title">Engenharia de Cardápio, Estoque & CMV</h3>
+            <p class="tab-explanation">Controle o custo exato por grama, o fator de rendimento real após cocção, embalagens especiais (cakeboards, caixas e fitas) e dê baixa automática no estoque.</p>
           </div>
           <button type="button" class="admin-refresh-btn" id="btn-refresh-estoque" title="Atualizar dados de estoque">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            <span>Atualizar</span>
+            <span>Sincronizar Estoque</span>
           </button>
         </div>
 
         <!-- KPI Cards -->
         <div class="estoque-kpis-grid">
           <div class="estoque-kpi-card">
-            <span class="estoque-kpi-lbl">Valor Total em Estoque</span>
+            <div class="estoque-kpi-top">
+              <span class="estoque-kpi-lbl">Patrimônio em Estoque</span>
+              <span class="estoque-kpi-icon gold"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            </div>
             <strong class="estoque-kpi-val" id="kpi-estoque-total">R$ 0,00</strong>
             <span class="estoque-kpi-sub" id="kpi-estoque-itens-count">Calculando insumos...</span>
           </div>
           <div class="estoque-kpi-card">
-            <span class="estoque-kpi-lbl">Insumos em Alerta Baixo</span>
+            <div class="estoque-kpi-top">
+              <span class="estoque-kpi-lbl">Alerta de Reposição</span>
+              <span class="estoque-kpi-icon alert"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            </div>
             <strong class="estoque-kpi-val highlight-alert" id="kpi-estoque-critico">0</strong>
             <span class="estoque-kpi-sub" id="kpi-estoque-critico-sub">Precisam de reposição</span>
           </div>
           <div class="estoque-kpi-card">
-            <span class="estoque-kpi-lbl">Margem Bruta Média</span>
+            <div class="estoque-kpi-top">
+              <span class="estoque-kpi-lbl">Margem Bruta Média</span>
+              <span class="estoque-kpi-icon profit"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
+            </div>
             <strong class="estoque-kpi-val highlight-profit" id="kpi-lucro-medio">0%</strong>
             <span class="estoque-kpi-sub">Lucro sobre preço de venda</span>
           </div>
           <div class="estoque-kpi-card">
-            <span class="estoque-kpi-lbl">Custo Médio / Fatia</span>
+            <div class="estoque-kpi-top">
+              <span class="estoque-kpi-lbl">CMV Médio / Fatia</span>
+              <span class="estoque-kpi-icon neutral"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span>
+            </div>
             <strong class="estoque-kpi-val" id="kpi-fatia-media">R$ 0,00</strong>
             <span class="estoque-kpi-sub">Custo de produção por fatia</span>
           </div>
