@@ -612,6 +612,460 @@
     return true;
   }
 
+  // ==============================================================================
+  // MÓDULO DE ESTOQUE, RENDIMENTO & CUSTOS
+  // ==============================================================================
+  const STORAGE_KEY_INSUMOS = 'ofir_estoque_insumos';
+  const STORAGE_KEY_RECEITAS = 'ofir_receitas';
+  const STORAGE_KEY_MOVIMENTACOES = 'ofir_estoque_movimentacoes';
+
+  const DEFAULT_ESTOQUE_INSUMOS = [
+    { id: 'leite_condensado', nome: 'Leite Condensado Integral Moça (395g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 395, preco_pago: 6.50, quantidade_atual: 15800, quantidade_minima: 3950 },
+    { id: 'creme_leite', nome: 'Creme de Leite 20% Gordura (200g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 200, preco_pago: 3.80, quantidade_atual: 8000, quantidade_minima: 2000 },
+    { id: 'farinha_trigo', nome: 'Farinha de Trigo Especial Confeitaria (1kg)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 5.50, quantidade_atual: 25000, quantidade_minima: 5000 },
+    { id: 'manteiga_extra', nome: 'Manteiga Extra Sem Sal (500g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 500, preco_pago: 22.00, quantidade_atual: 6000, quantidade_minima: 1500 },
+    { id: 'ovos_medios', nome: 'Ovos Médios Frescos de Granja (Dúzia ~600g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 600, preco_pago: 14.00, quantidade_atual: 7200, quantidade_minima: 1800 },
+    { id: 'acucar_refinado', nome: 'Açúcar Refinado Nobre (1kg)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 4.80, quantidade_atual: 20000, quantidade_minima: 4000 },
+    { id: 'cacau_100', nome: 'Cacau em Pó 100% Nobre Alcalino (500g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 500, preco_pago: 36.00, quantidade_atual: 3500, quantidade_minima: 1000 },
+    { id: 'leite_ninho', nome: 'Leite em Pó Ninho Integral (400g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 400, preco_pago: 18.50, quantidade_atual: 4800, quantidade_minima: 1200 },
+    { id: 'nutella_avela', nome: 'Creme de Avelã Nutella Original (650g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 650, preco_pago: 39.00, quantidade_atual: 5200, quantidade_minima: 1300 },
+    { id: 'chocolate_meio_amargo', nome: 'Chocolate Nobre 54% Meio Amargo em Gotas (1kg)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 48.00, quantidade_atual: 8000, quantidade_minima: 2000 },
+    { id: 'chocolate_branco', nome: 'Chocolate Nobre Branco Veludo em Gotas (1kg)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 52.00, quantidade_atual: 6000, quantidade_minima: 1500 },
+    { id: 'morangos_frescos', nome: 'Morangos Frescos Selecionados (Bandeja 250g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 250, preco_pago: 12.00, quantidade_atual: 2500, quantidade_minima: 750 },
+    { id: 'polpa_maracuja', nome: 'Polpa Pura de Maracujá Fresco (1kg)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 24.00, quantidade_atual: 4000, quantidade_minima: 1000 },
+    { id: 'abacaxi_fruta', nome: 'Abacaxi Pérola Fresco Descascado (1kg)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 12.00, quantidade_atual: 5000, quantidade_minima: 1000 },
+    { id: 'coco_ralado_fresco', nome: 'Coco Ralado Fino Puro Integral (500g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 500, preco_pago: 19.00, quantidade_atual: 3000, quantidade_minima: 1000 },
+    { id: 'chantilly_liquido', nome: 'Chantilly Líquido Tradicional Premium (1000g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 21.00, quantidade_atual: 9000, quantidade_minima: 2000 },
+    { id: 'leite_integral', nome: 'Leite Integral Pasteurizado (1000g)', categoria: 'ingrediente', unidade: 'g', peso_embalagem: 1000, preco_pago: 5.20, quantidade_atual: 12000, quantidade_minima: 3000 },
+    
+    // Embalagens & Insumos Especiais
+    { id: 'cakeboard_aro10', nome: 'Cakeboard Rígido Mármore 15cm (Aro 10)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 3.50, quantidade_atual: 30, quantidade_minima: 8 },
+    { id: 'cakeboard_aro15', nome: 'Cakeboard Rígido Mármore 20cm (Aro 15)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 4.50, quantidade_atual: 40, quantidade_minima: 10 },
+    { id: 'cakeboard_aro20', nome: 'Cakeboard Rígido Mármore 26cm (Aro 20)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 5.90, quantidade_atual: 45, quantidade_minima: 12 },
+    { id: 'cakeboard_aro25', nome: 'Cakeboard Rígido Mármore 32cm (Aro 25)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 7.60, quantidade_atual: 25, quantidade_minima: 6 },
+    { id: 'cakeboard_aro28', nome: 'Cakeboard Rígido Mármore 35cm (Aro 28)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 8.80, quantidade_atual: 20, quantidade_minima: 5 },
+    { id: 'cakeboard_aro30', nome: 'Cakeboard Rígido Mármore 38cm (Aro 30)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 10.40, quantidade_atual: 18, quantidade_minima: 5 },
+    { id: 'caixa_transporte_p', nome: 'Caixa Alta c/ Visor Panorâmico P (Aro 10 e 15)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 7.50, quantidade_atual: 35, quantidade_minima: 10 },
+    { id: 'caixa_transporte_g', nome: 'Caixa Alta c/ Visor Panorâmico G (Aro 20 a 30)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 11.50, quantidade_atual: 40, quantidade_minima: 10 },
+    { id: 'fita_cetim_luxo', nome: 'Fita de Cetim Personalizada Ouro (por bolo)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 1.40, quantidade_atual: 100, quantidade_minima: 20 },
+    { id: 'topo_simples', nome: 'Topo de Bolo Artesanal Simples (Incluso)', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 5.00, quantidade_atual: 50, quantidade_minima: 10 },
+    { id: 'topo_especial_3d', nome: 'Topo de Bolo Especial 3D Acrílico Nobre', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 22.00, quantidade_atual: 25, quantidade_minima: 5 },
+    { id: 'sacola_kraft_luxo', nome: 'Sacola Kraft Reforçada c/ Alça Torcida', categoria: 'embalagem', unidade: 'un', peso_embalagem: 1, preco_pago: 4.50, quantidade_atual: 50, quantidade_minima: 15 }
+  ];
+
+  const DEFAULT_RECEITAS = [
+    {
+      id: 'massa_branca',
+      nome: 'Massa Branca Amanteigada Veludo',
+      tipo: 'massa',
+      rendimento_final_g: 1000,
+      ingredientes: [
+        { insumo_id: 'farinha_trigo', nome: 'Farinha de Trigo', quantidade_g: 300 },
+        { insumo_id: 'manteiga_extra', nome: 'Manteiga Extra', quantidade_g: 200 },
+        { insumo_id: 'ovos_medios', nome: 'Ovos Médios', quantidade_g: 250 },
+        { insumo_id: 'acucar_refinado', nome: 'Açúcar Refinado', quantidade_g: 250 },
+        { insumo_id: 'leite_integral', nome: 'Leite Integral', quantidade_g: 150 }
+      ]
+    },
+    {
+      id: 'massa_cacau',
+      nome: 'Massa Cacau Nobre 100%',
+      tipo: 'massa',
+      rendimento_final_g: 1050,
+      ingredientes: [
+        { insumo_id: 'farinha_trigo', nome: 'Farinha de Trigo', quantidade_g: 250 },
+        { insumo_id: 'cacau_100', nome: 'Cacau 100%', quantidade_g: 80 },
+        { insumo_id: 'manteiga_extra', nome: 'Manteiga Extra', quantidade_g: 200 },
+        { insumo_id: 'ovos_medios', nome: 'Ovos Médios', quantidade_g: 250 },
+        { insumo_id: 'acucar_refinado', nome: 'Açúcar Refinado', quantidade_g: 250 },
+        { insumo_id: 'leite_integral', nome: 'Leite Integral', quantidade_g: 170 }
+      ]
+    },
+    {
+      id: 'recheio_ninho',
+      nome: 'Recheio Brigadeiro Gourmet de Ninho',
+      tipo: 'recheio',
+      rendimento_final_g: 1000,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 400 },
+        { insumo_id: 'leite_ninho', nome: 'Leite Ninho', quantidade_g: 120 },
+        { insumo_id: 'manteiga_extra', nome: 'Manteiga Extra', quantidade_g: 30 }
+      ]
+    },
+    {
+      id: 'recheio_avela',
+      nome: 'Recheio Creme Nobre de Avelã & Nutella',
+      tipo: 'recheio',
+      rendimento_final_g: 1150,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'nutella_avela', nome: 'Creme de Avelã Nutella', quantidade_g: 250 },
+        { insumo_id: 'chocolate_meio_amargo', nome: 'Chocolate Meio Amargo', quantidade_g: 100 }
+      ]
+    },
+    {
+      id: 'recheio_morango',
+      nome: 'Recheio Compota Artesanal de Morango & Ninho',
+      tipo: 'recheio',
+      rendimento_final_g: 1100,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'morangos_frescos', nome: 'Morangos Selecionados', quantidade_g: 300 },
+        { insumo_id: 'leite_ninho', nome: 'Leite Ninho', quantidade_g: 60 }
+      ]
+    },
+    {
+      id: 'recheio_chocolate',
+      nome: 'Recheio Brigadeiro Nobre Meio Amargo 54%',
+      tipo: 'recheio',
+      rendimento_final_g: 1050,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'chocolate_meio_amargo', nome: 'Chocolate Meio Amargo', quantidade_g: 200 },
+        { insumo_id: 'cacau_100', nome: 'Cacau 100%', quantidade_g: 40 }
+      ]
+    },
+    {
+      id: 'recheio_maracuja',
+      nome: 'Recheio Curd Suave de Maracujá Silvestre',
+      tipo: 'recheio',
+      rendimento_final_g: 1050,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'polpa_maracuja', nome: 'Polpa Pura de Maracujá', quantidade_g: 250 },
+        { insumo_id: 'chocolate_branco', nome: 'Chocolate Branco Veludo', quantidade_g: 80 }
+      ]
+    },
+    {
+      id: 'recheio_coco',
+      nome: 'Recheio Cocada Cremosa Artesanal de Pipa',
+      tipo: 'recheio',
+      rendimento_final_g: 1050,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'coco_ralado_fresco', nome: 'Coco Ralado Fresco', quantidade_g: 250 },
+        { insumo_id: 'manteiga_extra', nome: 'Manteiga Extra', quantidade_g: 20 }
+      ]
+    },
+    {
+      id: 'recheio_abacaxi',
+      nome: 'Recheio Doce de Abacaxi Pérola com Creme',
+      tipo: 'recheio',
+      rendimento_final_g: 1100,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'abacaxi_fruta', nome: 'Abacaxi Pérola Fresco', quantidade_g: 350 },
+        { insumo_id: 'acucar_refinado', nome: 'Açúcar Refinado', quantidade_g: 80 }
+      ]
+    },
+    {
+      id: 'cobertura_chantininho',
+      nome: 'Cobertura Chantininho Veludo Branco',
+      tipo: 'cobertura',
+      rendimento_final_g: 1000,
+      ingredientes: [
+        { insumo_id: 'chantilly_liquido', nome: 'Chantilly Líquido', quantidade_g: 800 },
+        { insumo_id: 'leite_ninho', nome: 'Leite Ninho', quantidade_g: 100 },
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado', quantidade_g: 100 }
+      ]
+    },
+    {
+      id: 'cobertura_ganache_branco',
+      nome: 'Cobertura Ganache Nobre Branco',
+      tipo: 'cobertura',
+      rendimento_final_g: 1000,
+      ingredientes: [
+        { insumo_id: 'chocolate_branco', nome: 'Chocolate Branco Veludo', quantidade_g: 700 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 }
+      ]
+    },
+    {
+      id: 'cobertura_ganache_chocolate',
+      nome: 'Cobertura Ganache Aveludado Meio Amargo',
+      tipo: 'cobertura',
+      rendimento_final_g: 1000,
+      ingredientes: [
+        { insumo_id: 'chocolate_meio_amargo', nome: 'Chocolate Meio Amargo', quantidade_g: 650 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 350 }
+      ]
+    },
+    {
+      id: 'cobertura_brigadeiro',
+      nome: 'Cobertura Brigadeiro Espelhado',
+      tipo: 'cobertura',
+      rendimento_final_g: 1000,
+      ingredientes: [
+        { insumo_id: 'leite_condensado', nome: 'Leite Condensado Moça', quantidade_g: 790 },
+        { insumo_id: 'creme_leite', nome: 'Creme de Leite 20%', quantidade_g: 300 },
+        { insumo_id: 'cacau_100', nome: 'Cacau Nobre 100%', quantidade_g: 50 },
+        { insumo_id: 'manteiga_extra', nome: 'Manteiga Extra', quantidade_g: 30 }
+      ]
+    },
+    {
+      id: 'cobertura_sem_cobertura',
+      nome: 'Sem Cobertura (Acetato de Proteção)',
+      tipo: 'cobertura',
+      rendimento_final_g: 1000,
+      ingredientes: []
+    }
+  ];
+
+  function getLocalInsumos() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_INSUMOS);
+      if (raw) return JSON.parse(raw);
+    } catch (_) {}
+    return DEFAULT_ESTOQUE_INSUMOS;
+  }
+
+  function setLocalInsumos(items) {
+    localStorage.setItem(STORAGE_KEY_INSUMOS, JSON.stringify(items));
+  }
+
+  function getLocalReceitas() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_RECEITAS);
+      if (raw) return JSON.parse(raw);
+    } catch (_) {}
+    return DEFAULT_RECEITAS;
+  }
+
+  function setLocalReceitas(items) {
+    localStorage.setItem(STORAGE_KEY_RECEITAS, JSON.stringify(items));
+  }
+
+  function getLocalMovimentacoes() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_MOVIMENTACOES);
+      if (raw) return JSON.parse(raw);
+    } catch (_) {}
+    return [];
+  }
+
+  function setLocalMovimentacoes(items) {
+    localStorage.setItem(STORAGE_KEY_MOVIMENTACOES, JSON.stringify(items));
+  }
+
+  async function fetchEstoqueInsumos() {
+    const localItems = getLocalInsumos();
+    if (!client) {
+      return { items: localItems, tableMissing: false, localOnly: true };
+    }
+
+    try {
+      const { data, error } = await client
+        .from('estoque_insumos')
+        .select('*')
+        .order('categoria', { ascending: true })
+        .order('nome', { ascending: true });
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        setLocalInsumos(data);
+        return { items: data, tableMissing: false, localOnly: false };
+      }
+      return { items: localItems, tableMissing: false, localOnly: false };
+    } catch (err) {
+      console.warn('[Supabase] Erro ao consultar estoque_insumos:', err);
+      const msg = (err && (err.message || err.code || '')) + '';
+      const tableMissing = msg.includes('does not exist') || err.code === '42P01' || err.code === 'PGRST205';
+      return { items: localItems, tableMissing, error: err, localOnly: true };
+    }
+  }
+
+  async function saveEstoqueInsumo(item) {
+    const items = getLocalInsumos();
+    const existingIndex = items.findIndex(i => String(i.id) === String(item.id));
+    if (existingIndex >= 0) {
+      items[existingIndex] = { ...items[existingIndex], ...item, updated_at: new Date().toISOString() };
+    } else {
+      items.push({ ...item, updated_at: new Date().toISOString() });
+    }
+    setLocalInsumos(items);
+
+    if (client) {
+      try {
+        await client.from('estoque_insumos').upsert([item]);
+      } catch (err) {
+        console.warn('[Supabase] Falha ao sincronizar insumo:', err);
+      }
+    }
+    return true;
+  }
+
+  async function deleteEstoqueInsumo(id) {
+    const items = getLocalInsumos().filter(i => String(i.id) !== String(id));
+    setLocalInsumos(items);
+
+    if (client) {
+      try {
+        await client.from('estoque_insumos').delete().eq('id', id);
+      } catch (err) {
+        console.warn('[Supabase] Falha ao excluir insumo:', err);
+      }
+    }
+    return true;
+  }
+
+  async function adjustEstoqueSaldo(id, deltaOrTotal, isDelta = true) {
+    const items = getLocalInsumos();
+    const item = items.find(i => String(i.id) === String(id));
+    if (item) {
+      if (isDelta) {
+        item.quantidade_atual = Math.max(0, Number(item.quantidade_atual || 0) + Number(deltaOrTotal));
+      } else {
+        item.quantidade_atual = Math.max(0, Number(deltaOrTotal));
+      }
+      item.updated_at = new Date().toISOString();
+      setLocalInsumos(items);
+
+      if (client) {
+        try {
+          await client.from('estoque_insumos').update({ quantidade_atual: item.quantidade_atual }).eq('id', id);
+        } catch (err) {
+          console.warn('[Supabase] Falha ao atualizar saldo:', err);
+        }
+      }
+    }
+    return item;
+  }
+
+  async function fetchReceitas() {
+    const local = getLocalReceitas();
+    if (!client) {
+      return { items: local, tableMissing: false, localOnly: true };
+    }
+
+    try {
+      const { data, error } = await client
+        .from('receitas')
+        .select('*')
+        .order('tipo', { ascending: true })
+        .order('nome', { ascending: true });
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        setLocalReceitas(data);
+        return { items: data, tableMissing: false, localOnly: false };
+      }
+      return { items: local, tableMissing: false, localOnly: false };
+    } catch (err) {
+      console.warn('[Supabase] Erro ao consultar receitas:', err);
+      const msg = (err && (err.message || err.code || '')) + '';
+      const tableMissing = msg.includes('does not exist') || err.code === '42P01' || err.code === 'PGRST205';
+      return { items: local, tableMissing, error: err, localOnly: true };
+    }
+  }
+
+  async function saveReceita(receita) {
+    const list = getLocalReceitas();
+    const idx = list.findIndex(r => String(r.id) === String(receita.id));
+    if (idx >= 0) {
+      list[idx] = { ...list[idx], ...receita, updated_at: new Date().toISOString() };
+    } else {
+      list.push({ ...receita, updated_at: new Date().toISOString() });
+    }
+    setLocalReceitas(list);
+
+    if (client) {
+      try {
+        await client.from('receitas').upsert([receita]);
+      } catch (err) {
+        console.warn('[Supabase] Falha ao sincronizar receita:', err);
+      }
+    }
+    return true;
+  }
+
+  async function fetchEstoqueMovimentacoes() {
+    const local = getLocalMovimentacoes();
+    if (!client) {
+      return { items: local, tableMissing: false, localOnly: true };
+    }
+
+    try {
+      const { data, error } = await client
+        .from('estoque_movimentacoes')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        setLocalMovimentacoes(data);
+        return { items: data, tableMissing: false, localOnly: false };
+      }
+      return { items: local, tableMissing: false, localOnly: false };
+    } catch (err) {
+      console.warn('[Supabase] Erro ao consultar movimentações:', err);
+      const msg = (err && (err.message || err.code || '')) + '';
+      const tableMissing = msg.includes('does not exist') || err.code === '42P01' || err.code === 'PGRST205';
+      return { items: local, tableMissing, error: err, localOnly: true };
+    }
+  }
+
+  async function registrarBaixaEstoque({ descricao, orcamento_id = null, custo_total = 0, detalhes = {}, itensBaixados = [] }) {
+    const movId = 'mov-' + Date.now();
+    const movRecord = {
+      id: movId,
+      tipo: 'saida_producao',
+      descricao,
+      orcamento_id,
+      custo_total,
+      detalhes,
+      created_at: new Date().toISOString()
+    };
+
+    // 1. Grava a movimentação local
+    const movs = getLocalMovimentacoes();
+    movs.unshift(movRecord);
+    setLocalMovimentacoes(movs.slice(0, 100));
+
+    // 2. Decrementa o saldo dos insumos
+    const insumos = getLocalInsumos();
+    itensBaixados.forEach(item => {
+      const found = insumos.find(i => String(i.id) === String(item.insumo_id));
+      if (found) {
+        const gasto = Number(item.quantidade || 0);
+        found.quantidade_atual = Math.max(0, Number(found.quantidade_atual || 0) - gasto);
+        found.updated_at = new Date().toISOString();
+      }
+    });
+    setLocalInsumos(insumos);
+
+    // 3. Sincroniza com Supabase se disponível
+    if (client) {
+      try {
+        await client.from('estoque_movimentacoes').insert([{
+          tipo: movRecord.tipo,
+          descricao: movRecord.descricao,
+          orcamento_id: movRecord.orcamento_id,
+          custo_total: movRecord.custo_total,
+          detalhes: movRecord.detalhes
+        }]);
+
+        // Atualiza os saldos dos insumos em paralelo
+        for (const it of itensBaixados) {
+          const updated = insumos.find(i => String(i.id) === String(it.insumo_id));
+          if (updated) {
+            await client.from('estoque_insumos').update({ quantidade_atual: updated.quantidade_atual }).eq('id', updated.id);
+          }
+        }
+      } catch (err) {
+        console.warn('[Supabase] Falha ao persistir baixa na nuvem:', err);
+      }
+    }
+
+    return movRecord;
+  }
+
   // Exportar para o escopo global
   window.OfirSupabase = {
     initClient,
@@ -635,7 +1089,16 @@
     saveOrcamento,
     fetchOrcamentos,
     updateOrcamentoStatus,
-    deleteOrcamento
+    deleteOrcamento,
+    // Estoque & Custos
+    fetchEstoqueInsumos,
+    saveEstoqueInsumo,
+    deleteEstoqueInsumo,
+    adjustEstoqueSaldo,
+    fetchReceitas,
+    saveReceita,
+    fetchEstoqueMovimentacoes,
+    registrarBaixaEstoque
   };
 
 })(window);

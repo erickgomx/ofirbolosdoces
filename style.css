@@ -4255,3 +4255,1104 @@ input[type="range"]#dimensions-range::-webkit-slider-thumb:hover {
   }
 }
 
+/* ==============================================================================
+   MÓDULO: CALCULADORA DE ESTOQUE, RENDIMENTO & CUSTOS (OFIR DOCERIA)
+   ============================================================================== */
+
+.estoque-header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.estoque-main-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: var(--color-gold);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.estoque-alert-badge {
+  background: #e65100;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0 5px;
+  line-height: 16px;
+  margin-left: 4px;
+}
+
+/* KPI Cards Grid */
+.estoque-kpis-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.estoque-kpi-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: 12px;
+  padding: 1.15rem 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.estoque-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--color-gold);
+  opacity: 0.7;
+}
+
+.estoque-kpi-lbl {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.4rem;
+}
+
+.estoque-kpi-val {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.estoque-kpi-val.highlight-alert {
+  color: #ff9800;
+}
+
+.estoque-kpi-val.highlight-profit {
+  color: #4caf50;
+}
+
+.estoque-kpi-sub {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Subtabs Nav */
+.estoque-subtabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(197, 168, 128, 0.2);
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+}
+
+.estoque-subtab-btn {
+  background: transparent;
+  border: 1px solid rgba(197, 168, 128, 0.18);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.estoque-subtab-btn:hover {
+  background: rgba(197, 168, 128, 0.08);
+  color: #ffffff;
+  border-color: rgba(197, 168, 128, 0.35);
+}
+
+.estoque-subtab-btn.active {
+  background: rgba(197, 168, 128, 0.16);
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 12px rgba(197, 168, 128, 0.2);
+  font-weight: 600;
+}
+
+.estoque-subtab-pane {
+  display: none;
+}
+
+.estoque-subtab-pane.active {
+  display: block;
+  animation: fadeInPane 0.3s ease;
+}
+
+@keyframes fadeInPane {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Calculadora: Grid Layout */
+.calc-layout-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.calc-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.calc-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--color-gold);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.calc-card-sub {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 1.25rem;
+}
+
+.calc-form-group {
+  margin-bottom: 1rem;
+}
+
+.calc-form-group label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.4rem;
+}
+
+.calc-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.calc-select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid rgba(197, 168, 128, 0.25);
+  background: rgba(18, 18, 20, 0.85);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.calc-pack-toggles {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(197, 168, 128, 0.25);
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1.25rem 0;
+}
+
+.pack-toggles-title {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.calc-check-lbl {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.calc-check-lbl:last-child {
+  margin-bottom: 0;
+}
+
+.calc-check-lbl input[type="checkbox"] {
+  accent-color: var(--color-gold);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.calc-action-box {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.calc-baixa-btn {
+  width: 100%;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #c5a880 0%, #a38257 100%);
+  color: #121214;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 4px 16px rgba(197, 168, 128, 0.3);
+}
+
+.calc-baixa-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(197, 168, 128, 0.45);
+}
+
+/* Placar Financeiro */
+.calc-finance-scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.finance-score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.finance-score-item.highlight {
+  background: rgba(76, 175, 80, 0.08);
+  border-radius: 8px;
+  padding: 0.4rem 0.2rem;
+  border: 1px solid rgba(76, 175, 80, 0.25);
+}
+
+.score-lbl {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.25rem;
+}
+
+.score-val {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.score-val.price-val {
+  color: #ffffff;
+}
+
+.score-val.cost-val {
+  color: #ff9800;
+}
+
+.score-val.profit-val {
+  color: #4caf50;
+}
+
+/* Medidor de Margem */
+.calc-margin-meter-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.margin-meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.4rem;
+}
+
+.margin-meter-header strong {
+  color: #4caf50;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+}
+
+.margin-meter-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(197, 168, 128, 0.2);
+}
+
+.margin-meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff9800 0%, #4caf50 50%, #2e7d32 100%);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* Métricas Secundárias */
+.calc-secondary-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(197, 168, 128, 0.15);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.sec-metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.sec-lbl {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.15rem;
+}
+
+.sec-val {
+  font-size: 0.88rem;
+  color: var(--color-gold);
+}
+
+/* Tabela Detalhada de Ingredientes & Embalagens Gastos */
+.calc-breakdown-table-wrap {
+  max-height: 310px;
+  overflow-y: auto;
+  border: 1px solid rgba(197, 168, 128, 0.15);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.calc-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.calc-breakdown-table th {
+  position: sticky;
+  top: 0;
+  background: #18181c;
+  color: var(--color-gold);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid rgba(197, 168, 128, 0.25);
+  z-index: 2;
+}
+
+.calc-breakdown-table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.calc-breakdown-table tr:last-child td {
+  border-bottom: none;
+}
+
+.calc-breakdown-table tr:hover td {
+  background: rgba(197, 168, 128, 0.04);
+}
+
+/* Subtab 2: Insumos Table */
+.insumos-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.insumos-table-container {
+  overflow-x: auto;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: 12px;
+}
+
+.insumos-full-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.insumos-full-table th {
+  background: rgba(197, 168, 128, 0.08);
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(197, 168, 128, 0.25);
+  white-space: nowrap;
+}
+
+.insumos-full-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.88);
+  vertical-align: middle;
+}
+
+.insumos-full-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.badge-cat {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-cat-ingrediente {
+  background: rgba(197, 168, 128, 0.15);
+  color: var(--color-gold);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+}
+
+.badge-cat-embalagem {
+  background: rgba(100, 181, 246, 0.15);
+  color: #90caf9;
+  border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.badge-status-ok {
+  color: #4caf50;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-status-alert {
+  color: #ff9800;
+  font-weight: 600;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.insumo-action-btns {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.insumo-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.insumo-action-btn:hover {
+  background: rgba(197, 168, 128, 0.2);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.insumo-action-btn.btn-delete:hover {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: #f44336;
+  color: #f44336;
+}
+
+/* Subtab 3: Fichas Técnicas */
+.fichas-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.ficha-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(197, 168, 128, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.ficha-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: #ffffff;
+}
+
+.ficha-tipo-tag {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  background: rgba(197, 168, 128, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.ficha-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 0.75rem 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.ficha-metric-col span {
+  display: block;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.2rem;
+}
+
+.ficha-metric-col strong {
+  font-size: 0.88rem;
+  color: #ffffff;
+}
+
+.ficha-metric-col strong.highlight-gold {
+  color: var(--color-gold);
+}
+
+.ficha-ingredientes-list {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+.ficha-ingrediente-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+/* Subtab 4: Histórico */
+.historico-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.historico-count {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.historico-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historico-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(197, 168, 128, 0.15);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.historico-main-info strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.historico-main-info span {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.historico-cost-info {
+  text-align: right;
+}
+
+.historico-cost-val {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #ff9800;
+}
+
+.historico-cost-lbl {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Modal Insumo & Entrada */
+.modal-insumo-card {
+  max-width: 550px;
+  width: 92%;
+}
+
+.insumo-preview-calc {
+  background: rgba(197, 168, 128, 0.08);
+  border: 1px solid rgba(197, 168, 128, 0.25);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.insumo-preview-calc strong {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--color-gold);
+}
+
+/* Botão de baixa de estoque dentro da aba Orçamentos */
+.orcamento-estoque-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.btn-orcamento-baixa {
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  color: var(--color-gold);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.btn-orcamento-baixa:hover {
+  background: var(--color-gold);
+  color: #121214;
+}
+
+.badge-orcamento-baixado {
+  background: rgba(76, 175, 80, 0.15);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: #4caf50;
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Responsividade Mobile para Estoque */
+@media (max-width: 900px) {
+  .estoque-kpis-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .calc-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .estoque-header-wrap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .estoque-kpis-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-finance-scoreboard {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .calc-secondary-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .insumos-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ==============================================================================
+   MÓDULO: SCANNER DE INSUMOS COM CÂMERA (LEITURA INTELIGENTE DE RÓTULOS)
+   ============================================================================== */
+
+.btn-camera-scanner {
+  background: linear-gradient(135deg, #c5a880 0%, #9e7d51 100%);
+  color: #121214;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 2px 10px rgba(197, 168, 128, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-camera-scanner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(197, 168, 128, 0.5);
+  color: #000;
+}
+
+.btn-scan-inline {
+  font-size: 0.72rem;
+  padding: 0.35rem 0.65rem;
+  margin-top: 0.45rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  border-color: rgba(197, 168, 128, 0.4);
+  color: var(--color-gold);
+}
+
+.btn-scan-inline:hover {
+  background: rgba(197, 168, 128, 0.15);
+  border-color: var(--color-gold);
+}
+
+.scanned-data-banner {
+  background: rgba(197, 168, 128, 0.12);
+  border: 1px solid rgba(197, 168, 128, 0.45);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-shadow: 0 4px 16px rgba(197, 168, 128, 0.15);
+  animation: fadeInBanner 0.35s ease;
+}
+
+@keyframes fadeInBanner {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scanned-gem {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.scanned-data-banner strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-gold);
+  margin-bottom: 0.15rem;
+}
+
+.scanned-data-banner p {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Modal Scanner Card */
+.modal-scanner-card {
+  max-width: 540px;
+  width: 94%;
+  padding: 1.5rem;
+  background: #141417;
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Viewfinder */
+.scanner-viewfinder-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 340px;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+  margin-bottom: 1.25rem;
+}
+
+#scanner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Mira do Scanner */
+.scanner-reticle {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.scanner-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--color-gold);
+  border-style: solid;
+  border-width: 0;
+}
+
+.scanner-corner.top-left {
+  top: -2px;
+  left: -2px;
+  border-top-width: 3px;
+  border-left-width: 3px;
+  border-top-left-radius: 8px;
+}
+
+.scanner-corner.top-right {
+  top: -2px;
+  right: -2px;
+  border-top-width: 3px;
+  border-right-width: 3px;
+  border-top-right-radius: 8px;
+}
+
+.scanner-corner.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+  border-bottom-left-radius: 8px;
+}
+
+.scanner-corner.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+  border-bottom-right-radius: 8px;
+}
+
+.scanner-laser-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-gold) 50%, transparent 100%);
+  box-shadow: 0 0 8px var(--color-gold);
+  animation: laserScan 2.2s infinite ease-in-out;
+}
+
+@keyframes laserScan {
+  0% { top: 0%; opacity: 0.3; }
+  50% { top: 98%; opacity: 1; }
+  100% { top: 0%; opacity: 0.3; }
+}
+
+/* Overlay de OCR em Carregamento */
+.scanner-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 18, 20, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  z-index: 10;
+}
+
+.scanner-spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(197, 168, 128, 0.25);
+  border-top-color: var(--color-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+#scanner-loading-text {
+  font-size: 0.85rem;
+  color: #ffffff;
+  font-weight: 500;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+/* Controles da Câmera */
+.scanner-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.scanner-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+
+.scanner-action-btn:hover {
+  background: rgba(197, 168, 128, 0.15);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.scanner-upload-lbl {
+  cursor: pointer;
+  margin: 0;
+}
+
+.scanner-capture-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: transparent;
+  border: 3px solid var(--color-gold);
+  padding: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 16px rgba(197, 168, 128, 0.4);
+}
+
+.scanner-capture-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 24px rgba(197, 168, 128, 0.6);
+}
+
+.capture-inner-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.scanner-capture-btn:active .capture-inner-circle {
+  background: var(--color-gold);
+}
+
+.scanner-tips-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.45;
+}
+
+.scanner-tips-box strong {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.scanner-tips-box em {
+  color: var(--color-gold);
+  font-style: normal;
+}
+
+@media (max-width: 500px) {
+  .modal-scanner-card {
+    padding: 1rem 0.85rem;
+  }
+
+  .scanner-viewfinder-wrap {
+    max-height: 260px;
+  }
+
+  .scanner-action-btn {
+    min-width: 80px;
+    font-size: 0.68rem;
+    padding: 0.5rem 0.4rem;
+  }
+
+  .scanner-capture-btn {
+    width: 54px;
+    height: 54px;
+  }
+}
+

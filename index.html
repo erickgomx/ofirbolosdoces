@@ -785,6 +785,11 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
           <span>Galeria</span>
         </button>
+        <button class="admin-tab-btn" data-tab="tab-estoque">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span>Estoque & Custos</span>
+          <span class="admin-tab-badge estoque-alert-badge" id="estoque-tab-badge" style="display: none;">!</span>
+        </button>
       </div>
 
       <!-- TAB 0: ORÇAMENTOS SOLICITADOS -->
@@ -1018,10 +1023,463 @@
         </div>
       </div>
 
+      <!-- TAB 5: ESTOQUE, RENDIMENTO & CUSTOS -->
+      <div class="admin-tab-content" id="tab-estoque">
+        <div class="estoque-header-wrap">
+          <div>
+            <h3 class="estoque-main-title">Calculadora de Estoque, Rendimento & Custos</h3>
+            <p class="tab-explanation">Controle o custo por grama de cada ingrediente, o rendimento real após cocção, os insumos especiais (embalagens, cakeboards, caixas e fitas) e dê baixa automática no estoque.</p>
+          </div>
+          <button type="button" class="admin-refresh-btn" id="btn-refresh-estoque" title="Atualizar dados de estoque">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <span>Atualizar</span>
+          </button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="estoque-kpis-grid">
+          <div class="estoque-kpi-card">
+            <span class="estoque-kpi-lbl">Valor Total em Estoque</span>
+            <strong class="estoque-kpi-val" id="kpi-estoque-total">R$ 0,00</strong>
+            <span class="estoque-kpi-sub" id="kpi-estoque-itens-count">Calculando insumos...</span>
+          </div>
+          <div class="estoque-kpi-card">
+            <span class="estoque-kpi-lbl">Insumos em Alerta Baixo</span>
+            <strong class="estoque-kpi-val highlight-alert" id="kpi-estoque-critico">0</strong>
+            <span class="estoque-kpi-sub" id="kpi-estoque-critico-sub">Precisam de reposição</span>
+          </div>
+          <div class="estoque-kpi-card">
+            <span class="estoque-kpi-lbl">Margem Bruta Média</span>
+            <strong class="estoque-kpi-val highlight-profit" id="kpi-lucro-medio">0%</strong>
+            <span class="estoque-kpi-sub">Lucro sobre preço de venda</span>
+          </div>
+          <div class="estoque-kpi-card">
+            <span class="estoque-kpi-lbl">Custo Médio / Fatia</span>
+            <strong class="estoque-kpi-val" id="kpi-fatia-media">R$ 0,00</strong>
+            <span class="estoque-kpi-sub">Custo de produção por fatia</span>
+          </div>
+        </div>
+
+        <!-- Sub-navegação interna de Estoque -->
+        <div class="estoque-subtabs-nav">
+          <button type="button" class="estoque-subtab-btn active" data-subtab="subtab-calculadora">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
+            <span>Calculadora por Aro & Saída</span>
+          </button>
+          <button type="button" class="estoque-subtab-btn" data-subtab="subtab-insumos">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span>Insumos & Embalagens</span>
+          </button>
+          <button type="button" class="estoque-subtab-btn" data-subtab="subtab-fichas">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Fichas Técnicas & Rendimento</span>
+          </button>
+          <button type="button" class="estoque-subtab-btn" data-subtab="subtab-historico">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Histórico de Saídas</span>
+          </button>
+        </div>
+
+        <!-- SUBTAB 1: CALCULADORA POR ARO & SAÍDA -->
+        <div class="estoque-subtab-pane active" id="subtab-calculadora">
+          <div class="calc-layout-grid">
+            
+            <!-- Coluna Esquerda: Seletor do Bolo -->
+            <div class="calc-card calc-controls-card">
+              <h4 class="calc-card-title">Configurar Bolo para Cálculo & Saída</h4>
+              <p class="calc-card-sub">Selecione o tamanho e os sabores para simular o gasto exato de massa, recheio, cobertura e insumos especiais.</p>
+              
+              <div class="calc-form-group">
+                <label for="calc-aro-select">Tamanho do Bolo (Aro):</label>
+                <select id="calc-aro-select" class="custom-select calc-select">
+                  <!-- Gerado dinamicamente com base nos aros -->
+                </select>
+              </div>
+
+              <div class="calc-form-row">
+                <div class="calc-form-group">
+                  <label for="calc-massa-select">Massa Artesanal:</label>
+                  <select id="calc-massa-select" class="custom-select calc-select">
+                    <option value="massa_branca">Massa Branca Amanteigada</option>
+                    <option value="massa_cacau">Massa Cacau Nobre 100%</option>
+                  </select>
+                </div>
+                <div class="calc-form-group">
+                  <label for="calc-recheio-select">Recheio Gourmet:</label>
+                  <select id="calc-recheio-select" class="custom-select calc-select">
+                    <!-- Gerado dinamicamente com recheios -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="calc-form-row">
+                <div class="calc-form-group">
+                  <label for="calc-cobertura-select">Cobertura & Acabamento:</label>
+                  <select id="calc-cobertura-select" class="custom-select calc-select">
+                    <!-- Gerado dinamicamente com coberturas -->
+                  </select>
+                </div>
+                <div class="calc-form-group">
+                  <label for="calc-topo-select">Topo de Bolo:</label>
+                  <select id="calc-topo-select" class="custom-select calc-select">
+                    <option value="topo_simples">Topo Simples (Incluso)</option>
+                    <option value="topo_especial_3d">Topo Especial 3D (+R$ 35)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Insumos Especiais & Embalagens Toggle -->
+              <div class="calc-pack-toggles">
+                <span class="pack-toggles-title">Embalagens & Insumos Especiais Inclusos:</span>
+                <label class="calc-check-lbl">
+                  <input type="checkbox" id="calc-check-cakeboard" checked>
+                  <span>Cakeboard Rígido Mármore (Compatível com o Aro)</span>
+                </label>
+                <label class="calc-check-lbl">
+                  <input type="checkbox" id="calc-check-caixa" checked>
+                  <span>Caixa Alta de Transporte com Visor Panorâmico</span>
+                </label>
+                <label class="calc-check-lbl">
+                  <input type="checkbox" id="calc-check-fita" checked>
+                  <span>Laço com Fita de Cetim Personalizada Ouro</span>
+                </label>
+                <label class="calc-check-lbl">
+                  <input type="checkbox" id="calc-check-sacola" checked>
+                  <span>Sacola Kraft Reforçada de Luxo</span>
+                </label>
+              </div>
+
+              <!-- Ação de Baixa de Estoque -->
+              <div class="calc-action-box">
+                <button type="button" class="primary-cta-btn calc-baixa-btn" id="btn-calc-dar-baixa">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Dar Baixa no Estoque deste Bolo</span>
+                </button>
+                <span class="admin-save-status" id="calc-baixa-status"></span>
+              </div>
+            </div>
+
+            <!-- Coluna Direita: Detalhamento de Custos e Margem -->
+            <div class="calc-card calc-results-card">
+              <h4 class="calc-card-title">Resultado Financeiro & Indicadores</h4>
+              
+              <!-- Placar Financeiro -->
+              <div class="calc-finance-scoreboard">
+                <div class="finance-score-item">
+                  <span class="score-lbl">Preço de Venda</span>
+                  <strong class="score-val price-val" id="calc-res-preco-venda">R$ 0,00</strong>
+                </div>
+                <div class="finance-score-item">
+                  <span class="score-lbl">Custo Total (CMV)</span>
+                  <strong class="score-val cost-val" id="calc-res-custo-total">R$ 0,00</strong>
+                </div>
+                <div class="finance-score-item highlight">
+                  <span class="score-lbl">Lucro Bruto</span>
+                  <strong class="score-val profit-val" id="calc-res-lucro-bruto">R$ 0,00</strong>
+                </div>
+              </div>
+
+              <!-- Barra de Margem de Lucro -->
+              <div class="calc-margin-meter-wrap">
+                <div class="margin-meter-header">
+                  <span>Margem de Lucro Bruta:</span>
+                  <strong id="calc-res-margem-pct">0%</strong>
+                </div>
+                <div class="margin-meter-bar">
+                  <div class="margin-meter-fill" id="calc-res-margem-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Métricas Secundárias -->
+              <div class="calc-secondary-metrics">
+                <div class="sec-metric">
+                  <span class="sec-lbl">Peso do Bolo Pronto:</span>
+                  <strong class="sec-val" id="calc-res-peso-total">~0g</strong>
+                </div>
+                <div class="sec-metric">
+                  <span class="sec-lbl">Custo por Fatia:</span>
+                  <strong class="sec-val" id="calc-res-custo-fatia">R$ 0,00</strong>
+                </div>
+                <div class="sec-metric">
+                  <span class="sec-lbl">Custo Médio / Grama:</span>
+                  <strong class="sec-val" id="calc-res-custo-grama">R$ 0,000 / g</strong>
+                </div>
+              </div>
+
+              <!-- Tabela Detalhada de Ingredientes & Embalagens Gastos -->
+              <div class="calc-breakdown-table-wrap">
+                <table class="calc-breakdown-table">
+                  <thead>
+                    <tr>
+                      <th>Componente / Insumo</th>
+                      <th>Qtd Gasta</th>
+                      <th>Custo Unitário</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calc-breakdown-tbody">
+                    <!-- Renderizado dinamicamente -->
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: GESTÃO DE INSUMOS & EMBALAGENS -->
+        <div class="estoque-subtab-pane" id="subtab-insumos">
+          <div class="insumos-toolbar">
+            <div class="orcamentos-search-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="insumos-search-input" placeholder="Buscar insumo por nome...">
+            </div>
+            <div class="orcamentos-filter-controls">
+              <select id="insumos-filter-cat" class="custom-select orcamentos-filter-select" aria-label="Filtrar por categoria">
+                <option value="all">Todas as Categorias</option>
+                <option value="ingrediente">Ingredientes Nobres</option>
+                <option value="embalagem">Embalagens & Especiais</option>
+              </select>
+              <button type="button" class="primary-cta-btn admin-btn-sm" id="btn-open-novo-insumo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Novo Insumo</span>
+              </button>
+              <button type="button" class="primary-cta-btn admin-btn-sm btn-camera-scanner" id="btn-open-camera-scanner" title="Escanear produto com a câmera">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <span>Escanear c/ Câmera</span>
+              </button>
+              <button type="button" class="secondary-outline-btn admin-btn-sm" id="btn-open-entrada-compras">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                <span>Entrada de Compras</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="insumos-table-container">
+            <table class="insumos-full-table">
+              <thead>
+                <tr>
+                  <th>Insumo / Item</th>
+                  <th>Categoria</th>
+                  <th>Embalagem Comprada</th>
+                  <th>Preço Pago</th>
+                  <th>Custo / Unid ou g</th>
+                  <th>Saldo em Estoque</th>
+                  <th>Nível Mínimo</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="insumos-table-tbody">
+                <!-- Renderizado dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: FICHAS TÉCNICAS & RENDIMENTO -->
+        <div class="estoque-subtab-pane" id="subtab-fichas">
+          <p class="tab-explanation">As fichas técnicas calculam o peso bruto dos ingredientes crus e comparam com o peso final pronto, calculando o <strong>fator de rendimento real (%)</strong> após o cozimento e o <strong>custo real por grama</strong> de recheios e massas.</p>
+          <div class="fichas-cards-grid" id="fichas-cards-grid">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+
+        <!-- SUBTAB 4: HISTÓRICO DE MOVIMENTAÇÕES -->
+        <div class="estoque-subtab-pane" id="subtab-historico">
+          <div class="historico-toolbar">
+            <p class="tab-explanation">Histórico de baixas de estoque registradas pelas produções e entradas de novas compras.</p>
+            <span class="historico-count" id="historico-count-lbl">Carregando histórico...</span>
+          </div>
+          <div class="historico-items-list" id="historico-items-list">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 
-  <!-- Scripts: Supabase JS CDN (Pinned & SRI Verified), Supabase Client & App Logic -->
+  <!-- MODAL: Cadastro / Edição de Insumo -->
+  <div class="modal-overlay" id="insumo-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card modal-insumo-card">
+      <button class="modal-close-btn" id="close-insumo-modal" aria-label="Fechar">✕</button>
+      <div class="modal-header">
+        <h3 class="modal-title" id="insumo-modal-title">Cadastrar Insumo / Embalagem</h3>
+        <p class="modal-desc">Defina o preço da embalagem comercial comprada para calcular o valor por grama ou unidade.</p>
+        <button type="button" class="secondary-outline-btn btn-scan-inline" id="btn-insumo-modal-scan">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Preencher Dados c/ Câmera</span>
+        </button>
+      </div>
+
+      <div class="scanned-data-banner" id="scanned-data-banner" style="display: none;">
+        <span class="scanned-gem">✨</span>
+        <div>
+          <strong>Dados identificados pela câmera!</strong>
+          <p>Confira o produto e o peso/conteúdo detectados. Agora informe apenas o <strong>Preço Pago (R$)</strong> e o saldo.</p>
+        </div>
+      </div>
+      <form id="insumo-form" onsubmit="return false;">
+        <input type="hidden" id="insumo-form-id">
+        
+        <div class="input-group">
+          <label for="insumo-form-nome">Nome do Insumo ou Embalagem:</label>
+          <input type="text" id="insumo-form-nome" required placeholder="Ex: Leite Condensado Moça 395g ou Cakeboard 26cm">
+        </div>
+
+        <div class="modal-inputs-row">
+          <div class="input-group">
+            <label for="insumo-form-categoria">Categoria:</label>
+            <select id="insumo-form-categoria" class="custom-select">
+              <option value="ingrediente">Ingrediente Culinário</option>
+              <option value="embalagem">Embalagem & Insumo Especial</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="insumo-form-unidade">Unidade de Medida:</label>
+            <select id="insumo-form-unidade" class="custom-select">
+              <option value="g">Gramas (g)</option>
+              <option value="ml">Mililitros (ml)</option>
+              <option value="un">Unidades (un)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-inputs-row">
+          <div class="input-group">
+            <label for="insumo-form-peso">Conteúdo da Embalagem Comercial:</label>
+            <input type="number" id="insumo-form-peso" step="any" min="0.01" required placeholder="Ex: 395 para lata, 1000 para 1kg">
+          </div>
+          <div class="input-group">
+            <label for="insumo-form-preco">Preço Pago pela Embalagem (R$):</label>
+            <input type="number" id="insumo-form-preco" step="0.01" min="0" required placeholder="Ex: 6.50">
+          </div>
+        </div>
+
+        <div class="modal-inputs-row">
+          <div class="input-group">
+            <label for="insumo-form-saldo">Saldo Atual em Estoque:</label>
+            <input type="number" id="insumo-form-saldo" step="any" min="0" required placeholder="Ex: 15800g ou 30 unidades">
+          </div>
+          <div class="input-group">
+            <label for="insumo-form-minimo">Estoque Mínimo (Alerta de Compra):</label>
+            <input type="number" id="insumo-form-minimo" step="any" min="0" required placeholder="Ex: 3950g ou 10 unidades">
+          </div>
+        </div>
+
+        <div class="insumo-preview-calc">
+          <span>Custo Calculado por Unidade / Grama:</span>
+          <strong id="insumo-preview-cost">R$ 0,000 / g</strong>
+        </div>
+
+        <div class="modal-actions-row">
+          <button type="button" class="primary-cta-btn admin-save-btn" id="btn-save-insumo-modal">Salvar Insumo</button>
+          <span class="admin-save-status" id="insumo-modal-status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Entrada Rápida de Compras -->
+  <div class="modal-overlay" id="entrada-compras-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card modal-insumo-card">
+      <button class="modal-close-btn" id="close-entrada-modal" aria-label="Fechar">✕</button>
+      <div class="modal-header">
+        <h3 class="modal-title">Entrada de Compras no Estoque</h3>
+        <p class="modal-desc">Adicione novas embalagens compradas para abastecer o estoque e atualizar o custo se necessário.</p>
+      </div>
+      <form id="entrada-compras-form" onsubmit="return false;">
+        <div class="input-group">
+          <label for="entrada-insumo-select">Selecione o Insumo / Embalagem:</label>
+          <select id="entrada-insumo-select" class="custom-select">
+            <!-- Gerado via JS -->
+          </select>
+        </div>
+
+        <div class="modal-inputs-row">
+          <div class="input-group">
+            <label for="entrada-qtd-embalagens">Qtd de Embalagens Compradas:</label>
+            <input type="number" id="entrada-qtd-embalagens" min="1" step="1" value="1" required>
+          </div>
+          <div class="input-group">
+            <label for="entrada-preco-novo">Preço Pago por Embalagem (R$):</label>
+            <input type="number" id="entrada-preco-novo" step="0.01" min="0" placeholder="Manter atual">
+          </div>
+        </div>
+
+        <div class="insumo-preview-calc" id="entrada-preview-box">
+          <span>Total a ser somado ao estoque:</span>
+          <strong id="entrada-preview-total">+0g</strong>
+        </div>
+
+        <div class="modal-actions-row">
+          <button type="button" class="primary-cta-btn admin-save-btn" id="btn-confirm-entrada-compras">Registrar Entrada no Estoque</button>
+          <span class="admin-save-status" id="entrada-modal-status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Scanner Inteligente de Insumos com Câmera -->
+  <div class="modal-overlay" id="camera-scanner-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card modal-scanner-card">
+      <button class="modal-close-btn" id="close-scanner-modal" aria-label="Fechar">✕</button>
+      <div class="modal-header">
+        <h3 class="modal-title">Escanear Embalagem / Produto</h3>
+        <p class="modal-desc">Aponte a câmera para a embalagem comercial (frente do rótulo com nome do produto e peso líquido).</p>
+      </div>
+
+      <!-- Viewfinder da Câmera -->
+      <div class="scanner-viewfinder-wrap">
+        <video id="scanner-video" playsinline autoplay muted></video>
+        <canvas id="scanner-canvas" style="display: none;"></canvas>
+        
+        <!-- Retículo / Mira Dourada do Scanner -->
+        <div class="scanner-reticle">
+          <div class="scanner-corner top-left"></div>
+          <div class="scanner-corner top-right"></div>
+          <div class="scanner-corner bottom-left"></div>
+          <div class="scanner-corner bottom-right"></div>
+          <div class="scanner-laser-line"></div>
+        </div>
+
+        <!-- Feedback de Carregamento / Leitura OCR -->
+        <div class="scanner-loading-overlay" id="scanner-loading-overlay" style="display: none;">
+          <div class="scanner-spinner"></div>
+          <span id="scanner-loading-text">Analisando rótulo com visão computacional...</span>
+        </div>
+      </div>
+
+      <!-- Controles de Ação da Câmera -->
+      <div class="scanner-controls-bar">
+        <button type="button" class="scanner-action-btn" id="btn-scanner-switch-camera" title="Trocar Câmera (Traseira/Frontal)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16.2A4.5 4.5 0 0 0 21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M4 7.8a4.5 4.5 0 0 0-1 4.2 9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+          <span>Trocar Câmera</span>
+        </button>
+
+        <button type="button" class="scanner-capture-btn" id="btn-scanner-capture" title="Capturar e Ler Rótulo">
+          <span class="capture-inner-circle"></span>
+        </button>
+
+        <label class="scanner-action-btn scanner-upload-lbl" title="Carregar Foto ou Usar Câmera Nativa">
+          <input type="file" id="scanner-file-input" accept="image/*" capture="environment" style="display: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <span>Tirar Foto / Arquivo</span>
+        </label>
+      </div>
+
+      <!-- Dica Rápida para o Usuário -->
+      <div class="scanner-tips-box">
+        <span>💡 <strong>Dica de leitura:</strong> Mantenha a embalagem firme e enquadre o nome (ex: <em>Leite Moça</em>, <em>Cacau 100%</em>, <em>Cakeboard 26cm</em>) e o peso (ex: <em>395g</em>, <em>1kg</em>, <em>200g</em>).</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: Tesseract.js OCR, Supabase JS CDN, Supabase Client & App Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.js" integrity="sha384-Tgoms7a53eyQOCcKXlBrA1X967mm3BHK43f3979dACl74tZlLW+O85pmfCuhfUtx" crossorigin="anonymous"></script>
   <script src="supabaseClient.js"></script>
   <script src="app.js"></script>
