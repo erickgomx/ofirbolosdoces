@@ -107,7 +107,69 @@ EXCEPTION
     WHEN undefined_table THEN NULL;
 END $$;
 
--- 4. CARGA DE DADOS INICIAIS DO ATELIER
+-- 4. TABELA DE ORÇAMENTOS SOLICITADOS PELOS CLIENTES
+CREATE TABLE IF NOT EXISTS public.orcamentos (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tipo TEXT NOT NULL DEFAULT 'Monte seu Bolo',
+    cliente_nome TEXT NOT NULL,
+    data_retirada TEXT,
+    tamanho TEXT,
+    massa TEXT,
+    cobertura TEXT,
+    recheio TEXT,
+    topo TEXT,
+    valor_total NUMERIC,
+    sinal NUMERIC,
+    observacoes TEXT,
+    escolhas JSONB,
+    status TEXT NOT NULL DEFAULT 'Pendente',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_orcamentos_created_at ON public.orcamentos (created_at DESC);
+
+ALTER TABLE public.orcamentos ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    DROP POLICY IF EXISTS "Envio público de orçamentos" ON public.orcamentos;
+    CREATE POLICY "Envio público de orçamentos" ON public.orcamentos
+    FOR INSERT WITH CHECK (true);
+
+    DROP POLICY IF EXISTS "Leitura de orçamentos por admin" ON public.orcamentos;
+    CREATE POLICY "Leitura de orçamentos por admin" ON public.orcamentos
+    FOR SELECT USING (
+        auth.role() = 'authenticated' AND (
+            NOT EXISTS (SELECT 1 FROM public.admin_users) OR 
+            EXISTS (SELECT 1 FROM public.admin_users WHERE email = auth.jwt() ->> 'email')
+        )
+    );
+
+    DROP POLICY IF EXISTS "Atualização de orçamentos por admin" ON public.orcamentos;
+    CREATE POLICY "Atualização de orçamentos por admin" ON public.orcamentos
+    FOR UPDATE USING (
+        auth.role() = 'authenticated' AND (
+            NOT EXISTS (SELECT 1 FROM public.admin_users) OR 
+            EXISTS (SELECT 1 FROM public.admin_users WHERE email = auth.jwt() ->> 'email')
+        )
+    );
+
+    DROP POLICY IF EXISTS "Exclusão de orçamentos por admin" ON public.orcamentos;
+    CREATE POLICY "Exclusão de orçamentos por admin" ON public.orcamentos
+    FOR DELETE USING (
+        auth.role() = 'authenticated' AND (
+            NOT EXISTS (SELECT 1 FROM public.admin_users) OR 
+            EXISTS (SELECT 1 FROM public.admin_users WHERE email = auth.jwt() ->> 'email')
+        )
+    );
+
+    GRANT INSERT ON public.orcamentos TO anon, authenticated;
+    GRANT SELECT, UPDATE, DELETE ON public.orcamentos TO authenticated;
+EXCEPTION
+    WHEN undefined_table THEN NULL;
+END $$;
+
+-- 5. CARGA DE DADOS INICIAIS DO ATELIER
 INSERT INTO public.precos (id, name, diameter, slices, price, scale, sort_order) VALUES
 ('aro-10', 'ARO 10', '10 cm', '(6-8 fatias)', 70, 0.52, 1),
 ('aro-15', 'ARO 15', '15 cm', '(12-15 fatias)', 135, 0.63, 2),

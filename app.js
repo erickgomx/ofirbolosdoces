@@ -509,6 +509,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  let lastRecordedQuoteSig = '';
+  let lastRecordedQuoteAt = 0;
+
+  function recordOrcamentoSilently(payload) {
+    if (!window.OfirSupabase || !window.OfirSupabase.saveOrcamento) return;
+    try {
+      const sig = JSON.stringify(payload);
+      const now = Date.now();
+      if (sig === lastRecordedQuoteSig && now - lastRecordedQuoteAt < 2500) {
+        return;
+      }
+      lastRecordedQuoteSig = sig;
+      lastRecordedQuoteAt = now;
+      window.OfirSupabase.saveOrcamento(payload).catch(err => {
+        console.warn('[Orçamento] Falha silenciosa ao registrar:', err);
+      });
+    } catch (err) {
+      console.warn('[Orçamento] Erro ao preparar registro:', err);
+    }
+  }
+
   // --- WHATSAPP CUSTOM CAKE GENERATOR ---
   if (btnSendCustomWhatsapp) {
     btnSendCustomWhatsapp.addEventListener('click', () => {
@@ -523,6 +544,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const parts = eventDate.split('-');
         formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
       }
+
+      recordOrcamentoSilently({
+        tipo: 'Personalizado',
+        cliente_nome: clientName,
+        data_retirada: eventDate || null,
+        tamanho: `${andares} • ${guests}`,
+        massa: 'Sob medida',
+        cobertura: 'Sob medida',
+        recheio: 'Sob medida',
+        topo: 'Personalizado',
+        valor_total: null,
+        sinal: null,
+        observacoes: notes,
+        escolhas: {
+          guests,
+          andares,
+          notes
+        }
+      });
 
       const customMessage = 
 `🎂 *SOLICITAÇÃO DE PROJETO: BOLO PERSONALIZADO*
@@ -561,6 +601,36 @@ Gostaria de consultar sua disponibilidade para realizarmos esse projeto em Praia
       const parts = pickupDate.split('-');
       formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
+
+    recordOrcamentoSilently({
+      tipo: 'Monte seu Bolo',
+      cliente_nome: name,
+      data_retirada: pickupDate || null,
+      tamanho: `${currentSize.name} ${currentSize.slices} (${currentSize.diameter})`,
+      massa: currentMassa.name,
+      cobertura: currentCobertura.name,
+      recheio: currentRecheio.name,
+      topo: currentTopper.name,
+      valor_total: totalPrice,
+      sinal: depositPrice,
+      observacoes: notes,
+      escolhas: {
+        size_id: currentSize.id,
+        size_name: currentSize.name,
+        slices: currentSize.slices,
+        diameter: currentSize.diameter,
+        massa_id: state.massa,
+        massa_name: currentMassa.name,
+        cobertura_id: state.cobertura,
+        cobertura_name: currentCobertura.name,
+        recheio_id: state.recheio,
+        recheio_name: currentRecheio.name,
+        topper_id: state.topper,
+        topper_name: currentTopper.name,
+        valor_total: totalPrice,
+        sinal: depositPrice
+      }
+    });
 
     const message = 
 `🎂 *NOVO PEDIDO - OFIR BOLOS & DOCES*
@@ -972,8 +1042,19 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   const recheiosSaveStatus = document.getElementById('recheios-save-status');
   const adminRecheiosItems = document.getElementById('admin-recheios-items');
 
+  // Orçamentos Admin
+  const adminOrcamentosList = document.getElementById('admin-orcamentos-list');
+  const orcamentosSearchInput = document.getElementById('orcamentos-search-input');
+  const orcamentosFilterStatus = document.getElementById('orcamentos-filter-status');
+  const btnRefreshOrcamentos = document.getElementById('btn-refresh-orcamentos');
+  const orcamentosCountLabel = document.getElementById('orcamentos-count-label');
+  const orcamentosStatusMsg = document.getElementById('orcamentos-status-msg');
+  const orcamentosTabBadge = document.getElementById('orcamentos-tab-badge');
+
   let currentAdminSession = null;
   let stagedUploadFile = null;
+  let adminOrcamentosCache = [];
+  let orcamentosTableMissing = false;
 
   function setAdminAuthState(session) {
     currentAdminSession = session;
@@ -1004,6 +1085,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
   if (btnOpenAdminDashboard) btnOpenAdminDashboard.addEventListener('click', openAdminPanel);
 
   function openAdminPanel() {
+    loadAdminOrcamentos();
     renderPricesEditor();
     renderAdminCoberturasList();
     renderAdminRecheiosList();
@@ -1074,7 +1156,9 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
       const targetContent = document.getElementById(tabId);
       if (targetContent) targetContent.classList.add('active');
 
-      if (tabId === 'tab-galeria') {
+      if (tabId === 'tab-orcamentos') {
+        loadAdminOrcamentos();
+      } else if (tabId === 'tab-galeria') {
         renderAdminGaleriaList();
       } else if (tabId === 'tab-coberturas') {
         renderAdminCoberturasList();
@@ -1083,6 +1167,276 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
       }
     });
   });
+
+  // --- ORÇAMENTOS: ADMIN MANAGEMENT ---
+  function formatDatePtBr(dateStr) {
+    if (!dateStr) return 'A definir';
+    const str = String(dateStr).trim();
+    if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
+      const [y, m, d] = str.slice(0, 10).split('-');
+      return `${d}/${m}/${y}`;
+    }
+    return str;
+  }
+
+  function formatDateTimePtBr(isoStr) {
+    if (!isoStr) return 'Data indisponível';
+    try {
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return String(isoStr);
+      return d.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (_) {
+      return String(isoStr);
+    }
+  }
+
+  function formatMoneyPtBr(val) {
+    if (val === null || val === undefined || val === '') return 'Sob consulta';
+    const num = Number(val);
+    if (isNaN(num)) return 'Sob consulta';
+    return `R$ ${num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  function getOrcamentoStatusClass(status) {
+    const s = String(status || 'Pendente').toLowerCase();
+    if (s.includes('confirm')) return 'status-confirmado';
+    if (s.includes('conclu')) return 'status-concluido';
+    if (s.includes('cancel')) return 'status-cancelado';
+    return 'status-pendente';
+  }
+
+  async function loadAdminOrcamentos() {
+    if (!adminOrcamentosList) return;
+    adminOrcamentosList.innerHTML = '<div class="orcamentos-empty-box"><p>Carregando orçamentos salvos...</p></div>';
+    if (orcamentosCountLabel) orcamentosCountLabel.textContent = 'Buscando registros...';
+
+    try {
+      if (window.OfirSupabase && window.OfirSupabase.fetchOrcamentos) {
+        const res = await window.OfirSupabase.fetchOrcamentos();
+        adminOrcamentosCache = res.items || [];
+        orcamentosTableMissing = Boolean(res.tableMissing);
+      } else {
+        adminOrcamentosCache = [];
+        orcamentosTableMissing = false;
+      }
+    } catch (err) {
+      console.warn('[Admin Orçamentos] Falha ao carregar:', err);
+      adminOrcamentosCache = [];
+    }
+
+    renderAdminOrcamentosList();
+  }
+
+  function renderAdminOrcamentosList() {
+    if (!adminOrcamentosList) return;
+
+    const totalAll = adminOrcamentosCache.length;
+    if (orcamentosTabBadge) {
+      if (totalAll > 0) {
+        orcamentosTabBadge.textContent = String(totalAll);
+        orcamentosTabBadge.style.display = 'inline-flex';
+      } else {
+        orcamentosTabBadge.style.display = 'none';
+      }
+    }
+
+    const query = (orcamentosSearchInput && orcamentosSearchInput.value.trim().toLowerCase()) || '';
+    const statusFilter = (orcamentosFilterStatus && orcamentosFilterStatus.value) || 'all';
+
+    const filtered = adminOrcamentosCache.filter(item => {
+      const itemStatus = item.status || 'Pendente';
+      if (statusFilter !== 'all' && itemStatus !== statusFilter) {
+        return false;
+      }
+      if (!query) return true;
+
+      const searchable = [
+        item.cliente_nome,
+        item.tipo,
+        item.tamanho,
+        item.massa,
+        item.cobertura,
+        item.recheio,
+        item.topo,
+        item.observacoes,
+        formatDatePtBr(item.data_retirada),
+        formatDateTimePtBr(item.created_at)
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return searchable.includes(query);
+    });
+
+    if (orcamentosCountLabel) {
+      if (totalAll === 0) {
+        orcamentosCountLabel.textContent = 'Nenhum orçamento registrado ainda';
+      } else if (filtered.length === totalAll) {
+        orcamentosCountLabel.textContent = `${totalAll} ${totalAll === 1 ? 'orçamento solicitado' : 'orçamentos solicitados'}`;
+      } else {
+        orcamentosCountLabel.textContent = `Exibindo ${filtered.length} de ${totalAll} orçamentos`;
+      }
+    }
+
+    if (orcamentosTableMissing && filtered.length === 0) {
+      adminOrcamentosList.innerHTML = `
+        <div class="orcamentos-empty-box orcamentos-setup-alert">
+          <strong>Tabela de Orçamentos ainda não criada no Supabase</strong>
+          <p>Para consultar orçamentos na nuvem entre dispositivos, execute o script atualizado <code>supabase_schema.sql</code> no SQL Editor do seu Supabase.</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (filtered.length === 0) {
+      adminOrcamentosList.innerHTML = `
+        <div class="orcamentos-empty-box">
+          <p>${totalAll === 0 ? 'Nenhum orçamento foi solicitado até o momento.' : 'Nenhum orçamento corresponde aos filtros aplicados.'}</p>
+        </div>
+      `;
+      return;
+    }
+
+    adminOrcamentosList.innerHTML = filtered.map(item => {
+      const status = item.status || 'Pendente';
+      const statusClass = getOrcamentoStatusClass(status);
+      const tipoLabel = item.tipo || 'Monte seu Bolo';
+      const isPersonalizado = tipoLabel.toLowerCase().includes('personalizado');
+      const requestedAt = formatDateTimePtBr(item.created_at);
+      const pickupFormatted = formatDatePtBr(item.data_retirada);
+      const totalFormatted = formatMoneyPtBr(item.valor_total);
+      const sinalFormatted = item.sinal !== null && item.sinal !== undefined ? formatMoneyPtBr(item.sinal) : null;
+
+      return `
+        <article class="admin-orcamento-card" data-id="${escapeHTML(item.id)}">
+          <div class="orcamento-card-header">
+            <div class="orcamento-client-info">
+              <strong class="orcamento-client-name">${escapeHTML(item.cliente_nome || 'Cliente')}</strong>
+              <div class="orcamento-badges-row">
+                <span class="orcamento-type-badge ${isPersonalizado ? 'type-custom' : 'type-builder'}">${escapeHTML(tipoLabel)}</span>
+                <span class="orcamento-status-pill ${statusClass}">${escapeHTML(status)}</span>
+              </div>
+            </div>
+            <div class="orcamento-date-meta">
+              <span class="orcamento-requested-at">Solicitado em <strong>${escapeHTML(requestedAt)}</strong></span>
+              <span class="orcamento-pickup-at">Retirada/Evento: <strong>${escapeHTML(pickupFormatted)}</strong></span>
+            </div>
+          </div>
+
+          <div class="orcamento-choices-grid">
+            <div class="orcamento-choice-item">
+              <span>Tamanho</span>
+              <strong>${escapeHTML(item.tamanho || 'Não informado')}</strong>
+            </div>
+            <div class="orcamento-choice-item">
+              <span>Massa</span>
+              <strong>${escapeHTML(item.massa || 'Não informado')}</strong>
+            </div>
+            <div class="orcamento-choice-item">
+              <span>Cobertura</span>
+              <strong>${escapeHTML(item.cobertura || 'Não informado')}</strong>
+            </div>
+            <div class="orcamento-choice-item">
+              <span>Recheio</span>
+              <strong>${escapeHTML(item.recheio || 'Não informado')}</strong>
+            </div>
+            <div class="orcamento-choice-item">
+              <span>Topo</span>
+              <strong>${escapeHTML(item.topo || 'Simples')}</strong>
+            </div>
+            <div class="orcamento-choice-item orcamento-price-item">
+              <span>Valor Estimado</span>
+              <strong>${escapeHTML(totalFormatted)}${sinalFormatted ? ` <small>(Sinal: ${escapeHTML(sinalFormatted)})</small>` : ''}</strong>
+            </div>
+          </div>
+
+          ${item.observacoes ? `
+            <div class="orcamento-notes-box">
+              <span>Observações:</span>
+              <p>${escapeHTML(item.observacoes)}</p>
+            </div>
+          ` : ''}
+
+          <div class="orcamento-card-actions">
+            <div class="orcamento-status-control">
+              <label>Situação:</label>
+              <select class="orcamento-status-select" data-id="${escapeHTML(item.id)}">
+                <option value="Pendente" ${status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                <option value="Confirmado" ${status === 'Confirmado' ? 'selected' : ''}>Confirmado</option>
+                <option value="Concluído" ${status === 'Concluído' ? 'selected' : ''}>Concluído</option>
+                <option value="Cancelado" ${status === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
+              </select>
+            </div>
+            <button type="button" class="admin-orcamento-delete-btn" data-id="${escapeHTML(item.id)}" title="Excluir registro">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span>Excluir</span>
+            </button>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    adminOrcamentosList.querySelectorAll('.orcamento-status-select').forEach(selectEl => {
+      selectEl.addEventListener('change', async () => {
+        const id = selectEl.getAttribute('data-id');
+        const newStatus = selectEl.value;
+        selectEl.disabled = true;
+        try {
+          if (window.OfirSupabase && window.OfirSupabase.updateOrcamentoStatus) {
+            await window.OfirSupabase.updateOrcamentoStatus(id, newStatus);
+          }
+          const found = adminOrcamentosCache.find(o => String(o.id) === String(id));
+          if (found) found.status = newStatus;
+          renderAdminOrcamentosList();
+          if (orcamentosStatusMsg) {
+            orcamentosStatusMsg.textContent = '✓ Status atualizado!';
+            orcamentosStatusMsg.className = 'admin-save-status success';
+            setTimeout(() => { orcamentosStatusMsg.textContent = ''; }, 2500);
+          }
+        } catch (err) {
+          alert(`Erro ao atualizar status: ${err.message || 'Falha na conexão'}`);
+          renderAdminOrcamentosList();
+        }
+      });
+    });
+
+    adminOrcamentosList.querySelectorAll('.admin-orcamento-delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        if (!confirm('Deseja excluir este orçamento do histórico?')) return;
+        btn.disabled = true;
+        try {
+          if (window.OfirSupabase && window.OfirSupabase.deleteOrcamento) {
+            await window.OfirSupabase.deleteOrcamento(id);
+          }
+          adminOrcamentosCache = adminOrcamentosCache.filter(o => String(o.id) !== String(id));
+          renderAdminOrcamentosList();
+        } catch (err) {
+          alert(`Erro ao excluir orçamento: ${err.message || 'Falha na conexão'}`);
+          btn.disabled = false;
+        }
+      });
+    });
+  }
+
+  function setupAdminOrcamentos() {
+    if (orcamentosSearchInput) {
+      orcamentosSearchInput.addEventListener('input', renderAdminOrcamentosList);
+    }
+    if (orcamentosFilterStatus) {
+      orcamentosFilterStatus.addEventListener('change', renderAdminOrcamentosList);
+    }
+    if (btnRefreshOrcamentos) {
+      btnRefreshOrcamentos.addEventListener('click', loadAdminOrcamentos);
+    }
+  }
 
   // Render Prices Editor
   function renderPricesEditor() {
@@ -1764,6 +2118,7 @@ ${notes ? `• *Observações/Tema:* ${notes}\n` : ''}
     setupUploadDropzone();
     setupAdminCoberturas();
     setupAdminRecheios();
+    setupAdminOrcamentos();
     if (window.OfirSupabase && window.OfirSupabase.autoDetectVercelConfig) {
       await window.OfirSupabase.autoDetectVercelConfig();
     }

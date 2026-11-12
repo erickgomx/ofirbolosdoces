@@ -480,6 +480,138 @@
     return true;
   }
 
+  /**
+   * --- MÓDULO DE ORÇAMENTOS SOLICITADOS ---
+   */
+  const STORAGE_KEY_ORCAMENTOS = 'ofir_cached_orcamentos';
+
+  function getLocalOrcamentos() {
+    try {
+      const local = localStorage.getItem(STORAGE_KEY_ORCAMENTOS);
+      return local ? JSON.parse(local) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveLocalOrcamento(row) {
+    try {
+      const current = getLocalOrcamentos();
+      const updated = [row, ...current].slice(0, 100);
+      localStorage.setItem(STORAGE_KEY_ORCAMENTOS, JSON.stringify(updated));
+    } catch (_) {}
+  }
+
+  async function saveOrcamento(payload) {
+    const nowIso = new Date().toISOString();
+    const row = {
+      tipo: payload.tipo || 'Monte seu Bolo',
+      cliente_nome: (payload.cliente_nome || 'Cliente').trim(),
+      data_retirada: payload.data_retirada || null,
+      tamanho: payload.tamanho || null,
+      massa: payload.massa || null,
+      cobertura: payload.cobertura || null,
+      recheio: payload.recheio || null,
+      topo: payload.topo || null,
+      valor_total: payload.valor_total !== null && payload.valor_total !== undefined ? Number(payload.valor_total) : null,
+      sinal: payload.sinal !== null && payload.sinal !== undefined ? Number(payload.sinal) : null,
+      observacoes: payload.observacoes ? String(payload.observacoes).trim() : null,
+      escolhas: payload.escolhas || {},
+      status: 'Pendente'
+    };
+
+    const localBackup = {
+      ...row,
+      id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      created_at: nowIso,
+      localOnly: true
+    };
+
+    if (!client) {
+      saveLocalOrcamento(localBackup);
+      return { success: true, localOnly: true, data: localBackup };
+    }
+
+    try {
+      // insert sem .select() pois a política RLS permite INSERT público, mas SELECT apenas para Admin
+      const { error } = await client
+        .from('orcamentos')
+        .insert([row]);
+
+      if (error) throw error;
+      return { success: true, localOnly: false };
+    } catch (err) {
+      console.warn('[Supabase] Aviso ao salvar orçamento no banco, mantendo backup local:', err);
+      saveLocalOrcamento(localBackup);
+      return { success: false, error: err, localOnly: true, data: localBackup };
+    }
+  }
+
+  async function fetchOrcamentos() {
+    const localItems = getLocalOrcamentos();
+    if (!client) {
+      return { items: localItems, tableMissing: false, localOnly: true };
+    }
+
+    try {
+      const { data, error } = await client
+        .from('orcamentos')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(200);
+
+      if (error) throw error;
+
+      const dbItems = Array.isArray(data) ? data : [];
+      const localOnlyItems = localItems.filter(item => item.localOnly);
+      const merged = [...dbItems, ...localOnlyItems].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+      return { items: merged, tableMissing: false, localOnly: false };
+    } catch (err) {
+      console.warn('[Supabase] Erro ao consultar orçamentos:', err);
+      const msg = (err && (err.message || err.code || '')) + '';
+      const tableMissing = msg.includes('does not exist') || err.code === '42P01' || err.code === 'PGRST205';
+      return { items: localItems, tableMissing, error: err, localOnly: true };
+    }
+  }
+
+  async function updateOrcamentoStatus(id, newStatus) {
+    if (String(id).startsWith('local-')) {
+      const updated = getLocalOrcamentos().map(item =>
+        String(item.id) === String(id) ? { ...item, status: newStatus } : item
+      );
+      localStorage.setItem(STORAGE_KEY_ORCAMENTOS, JSON.stringify(updated));
+      return true;
+    }
+
+    if (!client) throw new Error('Supabase não conectado.');
+    const { error } = await client
+      .from('orcamentos')
+      .update({ status: newStatus })
+      .eq('id', id);
+
+    if (error) throw error;
+    return true;
+  }
+
+  async function deleteOrcamento(id) {
+    if (String(id).startsWith('local-')) {
+      const updated = getLocalOrcamentos().filter(item => String(item.id) !== String(id));
+      localStorage.setItem(STORAGE_KEY_ORCAMENTOS, JSON.stringify(updated));
+      return true;
+    }
+
+    if (!client) throw new Error('Supabase não conectado.');
+    const { error } = await client
+      .from('orcamentos')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    return true;
+  }
+
   // Exportar para o escopo global
   window.OfirSupabase = {
     initClient,
@@ -499,7 +631,11 @@
     saveRecheios,
     fetchGallery,
     uploadGalleryPhoto,
-    deleteGalleryPhoto
+    deleteGalleryPhoto,
+    saveOrcamento,
+    fetchOrcamentos,
+    updateOrcamentoStatus,
+    deleteOrcamento
   };
 
 })(window);
